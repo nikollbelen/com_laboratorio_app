@@ -32,7 +32,7 @@ export class VistaPrincipal {
                     <div class="relative">
                         <input type="checkbox" id="menu-toggle" class="hidden peer">
                         <label for="menu-toggle" class="fixed inset-0 hidden peer-checked:block z-[-1] cursor-default"></label>
-                        <label for="menu-toggle" class="flex size-12 items-center justify-center rounded-full VistaPrincipal-glass-panel text-on-surface shadow-lg cursor-pointer peer-checked:bg-primary/20 peer-checked:text-primary transition-all active:scale-90">
+                        <label for="menu-toggle" class="flex size-12 items-center justify-center rounded-full VistaPrincipal-glass-panel text-on-surface shadow-lg cursor-pointer transition-all active:scale-90" style="color: var(--color-on-surface);">
                             <span class="material-symbols-outlined pointer-events-none">more_vert</span>
                         </label>
                         <div class="absolute top-full right-0 mt-3 p-2 VistaPrincipal-glass-panel rounded-2xl shadow-2xl flex flex-col gap-2 min-w-[150px] opacity-0 translate-y-[-10px] scale-90 pointer-events-none peer-checked:opacity-100 peer-checked:translate-y-0 peer-checked:scale-100 peer-checked:pointer-events-auto VistaPrincipal-menu-transition origin-top-right">
@@ -79,10 +79,10 @@ export class VistaPrincipal {
 
                     <!-- Avatar Button -->
                     <div class="relative group">
-                        <button class="w-14 h-14 md:w-16 md:h-16 rounded-full VistaPrincipal-glass-panel VistaPrincipal-inner-glow flex items-center justify-center overflow-hidden border-2 border-primary/30 shadow-[0_0_30px_rgba(var(--color-primary-rgb),0.2)] hover:scale-110 transition-transform">
+                        <button class="w-14 h-14 md:w-16 md:h-16 rounded-full VistaPrincipal-glass-panel VistaPrincipal-inner-glow flex items-center justify-center overflow-hidden border-2 shadow-[0_0_30px_rgba(var(--color-primary-rgb),0.2)] hover:scale-110 transition-transform" style="border-color: rgba(var(--color-primary-rgb), 0.3);">
                             <img alt="AI Assistant" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu4sV7nQIyj6IjKF2TlD3Hus9Ha10yPHiz_rKggb4Liif13Ej2MZMobbnOXQp4nzaN5yPjJg5I1rpI5si8VayIqKY6OhLLtzeO-3bZxRR9km-S66xW8yw4UbHkWHs_LA1HF-L5o74H1EtpzwJUB1G6w-H3ZD6yYXR5lwGpMGHpOeBLD_TGv9Fqhs6AcI7DkJNIqWi34hEu2QRLoY9JE9LnOgIZZO06mJBzXwKIsVsWzIwJ2GxoQrb6dxgbg4XrdywR8fWUsTyR7eJ6" />
                         </button>
-                        <div class="absolute -top-1 -right-1 w-3.5 h-3.5 md:w-4 md:h-4 bg-primary rounded-full animate-pulse shadow-[0_0_10px_var(--glow-primary)]"></div>
+                        <div class="absolute -top-1 -right-1 w-3.5 h-3.5 md:w-4 md:h-4 rounded-full animate-pulse shadow-[0_0_10px_var(--glow-primary)]" style="background-color: var(--color-primary);"></div>
                     </div>
                 </div>
 
@@ -102,25 +102,22 @@ export class VistaPrincipal {
                         box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
                     }
 
-                    .VistaPrincipal-hover-active:hover, .VistaPrincipal-btn-active {
+                    .VistaPrincipal-hover-active:hover, .VistaPrincipal-btn-active, .VistaPrincipal-menu-item-hover:hover {
                         background: rgba(var(--color-primary-rgb), 0.2) !important;
                         color: var(--color-primary) !important;
                         border-color: rgba(var(--color-primary-rgb), 0.3) !important;
                         box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.4);
                     }
 
-                    .VistaPrincipal-hover-active:hover .material-symbols-outlined, .VistaPrincipal-btn-active .material-symbols-outlined {
+                    .VistaPrincipal-hover-active:hover .material-symbols-outlined, 
+                    .VistaPrincipal-btn-active .material-symbols-outlined,
+                    .VistaPrincipal-menu-item-hover:hover .material-symbols-outlined {
+                        color: var(--color-primary) !important;
                         font-variation-settings: 'FILL' 1 !important;
                     }
 
                     .VistaPrincipal-menu-transition {
                         transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-                    }
-
-                    .VistaPrincipal-menu-item-hover:hover {
-                        background: rgba(var(--color-primary-rgb), 0.2) !important;
-                        color: var(--color-primary) !important;
-                        border-color: rgba(var(--color-primary-rgb), 0.3) !important;
                     }
 
                     @keyframes VistaPrincipal-fadeInSlideRight {
@@ -138,10 +135,10 @@ export class VistaPrincipal {
     renderTopButton(icon, label) {
         return `
             <div class="relative group">
-                <button class="w-12 h-12 flex items-center justify-center rounded-full VistaPrincipal-glass-panel hover:bg-white/10 transition-all shadow-xl">
-                    <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">${icon}</span>
+                <button class="w-12 h-12 flex items-center justify-center rounded-full VistaPrincipal-glass-panel VistaPrincipal-hover-active transition-all shadow-xl">
+                    <span class="material-symbols-outlined text-on-surface-variant">${icon}</span>
                 </button>
-                <span class="absolute top-full mt-2 right-0 px-3 py-1 VistaPrincipal-glass-panel text-xs font-medium text-primary opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-none whitespace-nowrap rounded-md shadow-lg border-primary/20">${label}</span>
+                <span class="absolute top-full mt-2 right-0 px-3 py-1 VistaPrincipal-glass-panel text-xs font-medium opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-none whitespace-nowrap rounded-md shadow-lg" style="color: var(--color-primary); border-color: rgba(var(--color-primary-rgb), 0.2);">${label}</span>
             </div>
         `;
     }
@@ -149,7 +146,7 @@ export class VistaPrincipal {
     renderMobileMenuButton(icon, label) {
         return `
             <button class="flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm">
-                <span class="material-symbols-outlined text-xl text-on-surface-variant group-hover:text-primary">${icon}</span>
+                <span class="material-symbols-outlined text-xl text-on-surface-variant">${icon}</span>
                 <span class="font-medium">${label}</span>
             </button>
         `;
@@ -165,13 +162,15 @@ export class VistaPrincipal {
     }
 
     renderBottomNavButton(icon, label, active = false) {
+        const activeColor = active ? 'style="color: var(--color-primary);"' : '';
+        const activeBg = active ? 'style="background-color: var(--color-primary);"' : '';
         return `
-            <a class="flex flex-col items-center gap-0.5 p-1 ${active ? 'text-primary' : 'text-on-surface-variant'}" href="#">
+            <a class="flex flex-col items-center gap-0.5 p-1 ${active ? '' : 'text-on-surface-variant'}" ${activeColor} href="#">
                 <div class="h-7 flex items-center justify-center">
                     <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' ${active ? 1 : 0};">${icon}</span>
                 </div>
                 <span class="text-[9px] font-bold tracking-tight">${label}</span>
-                ${active ? '<div class="w-3 h-0.5 bg-primary rounded-full mt-0.5"></div>' : ''}
+                ${active ? `<div class="w-3 h-0.5 rounded-full mt-0.5" ${activeBg}></div>` : ''}
             </a>
         `;
     }
