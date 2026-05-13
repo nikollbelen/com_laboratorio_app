@@ -34,18 +34,80 @@ const server = http.createServer((req, res) => {
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', () => {
             try {
-                JSON.parse(body); 
-                fs.writeFile(TARGET_FILE, body, 'utf8', (err) => {
+                const config = JSON.parse(body);
+                const audioDir = path.join(__dirname, '../app/audios');
+                const tempDir = path.join(audioDir, '_tmp_sync_' + Date.now());
+
+                // 1. Si hay reordenamiento detectado por originalId, procedemos a renombrar audios
+                const findRenames = (nodes, list = []) => {
+                    nodes.forEach(node => {
+                        if (node.originalId && node.originalId !== node.id) {
+                            list.push({ old: node.originalId.replace('paso', ''), new: node.id.replace('paso', '') });
+                        }
+                        if (node.children) findRenames(node.children, list);
+                    });
+                    return list;
+                };
+
+                const renames = findRenames(config.menu || []);
+                
+                if (renames.length > 0) {
+                    console.log(`[AudioSync] Detectados ${renames.length} reordenamientos. Sincronizando archivos...`);
+                    
+                    if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
+
+                    // Mover todos los audios actuales a temp para evitar colisiones
+                    const files = fs.readdirSync(audioDir).filter(f => f.endsWith('.mp3'));
+                    files.forEach(f => {
+                        fs.renameSync(path.join(audioDir, f), path.join(tempDir, f));
+                    });
+
+                    // Mover de vuelta con los nuevos nombres
+                    renames.forEach(r => {
+                        const oldFile = `${r.old}.mp3`;
+                        const newFile = `${r.new}.mp3`;
+                        if (fs.existsSync(path.join(tempDir, oldFile))) {
+                            fs.renameSync(path.join(tempDir, oldFile), path.join(audioDir, newFile));
+                            console.log(`[AudioSync] Renombrado: ${oldFile} -> ${newFile}`);
+                        }
+                    });
+
+                    // Los que no cambiaron también deben volver
+                    const remaining = fs.readdirSync(tempDir);
+                    remaining.forEach(f => {
+                        if (!fs.existsSync(path.join(audioDir, f))) {
+                            fs.renameSync(path.join(tempDir, f), path.join(audioDir, f));
+                        }
+                    });
+
+                    // Limpiar temp
+                    fs.rmdirSync(tempDir, { recursive: true });
+                }
+
+                // Limpiar los originalId antes de guardar el JSON final
+                const cleanOriginalIds = (nodes) => {
+                    nodes.forEach(node => {
+                        delete node.originalId;
+                        if (node.children) cleanOriginalIds(node.children);
+                    });
+                };
+                cleanOriginalIds(config.menu || []);
+
+                fs.writeFile(TARGET_FILE, JSON.stringify(config, null, 2), 'utf8', (err) => {
                     if (err) { 
                         res.writeHead(500); 
                         res.end(JSON.stringify({ status: 'error', message: err.message })); 
                     } else { 
-                        console.log(`[OK] info.json actualizado.`); 
+                        console.log(`[OK] info.json actualizado y audios sincronizados.`); 
                         res.writeHead(200); 
                         res.end(JSON.stringify({ status: 'success' })); 
                     }
                 });
-            } catch (e) { res.writeHead(400); res.end(JSON.stringify({ status: 'error', message: 'JSON inválido' })); }
+            } catch (e) { 
+                console.error("[Save Error]", e);
+                res.writeHead(400); 
+                res.end(JSON.stringify({ status: 'error', message: 'JSON inválido o error en sincronización' })); 
+            }
         });
     } 
     // --- ENDPOINT: GENERAR TTS (ElevenLabs) ---

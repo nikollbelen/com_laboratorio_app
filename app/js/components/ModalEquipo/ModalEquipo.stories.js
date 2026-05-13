@@ -4,7 +4,7 @@ export default {
   title: 'Modales/ModalEquipo',
   parameters: {
     layout: 'fullscreen',
-    backgrounds: { default: 'oscuro' },
+    backgrounds: { default: 'white' },
   },
   argTypes: {
     name: { control: 'text' },

@@ -13,18 +13,19 @@
       theme: {
         extend: {
           colors: {
-            "primary":             "#0066ff",
-            "primary-light":       "#66aaff",
+            "primary":             "var(--color-primary)",
+            "primary-light":       "var(--color-primary-light)",
             "on-primary":          "#ffffff",
-            "primary-container":   "#003cbf",
-            "on-primary-container":"#d0e4ff",
+            "primary-container":   "var(--color-primary-container)",
+            "on-primary-container":"var(--color-on-primary-container)",
             "surface":             "#0b1326",
-            "on-surface":          "#dae2fd",
-            "surface-variant":     "#2d3449",
-            "on-surface-variant":  "#c7c4d7",
-            "surface-container":   "#171f33",
-            "secondary-container": "#334282",
+            "on-surface":          "#ffffff",
+            "surface-variant":     "var(--color-surface-variant)",
+            "on-surface-variant":  "var(--color-on-surface-variant)",
+            "surface-container":   "var(--color-surface-container)",
+            "secondary-container": "var(--color-secondary-container)",
             "background":          "#0b1326",
+            "on-surface-dark":     "#1a1c1e",
           },
           fontFamily: {
             "sans": ["Inter", "sans-serif"],
@@ -68,8 +69,9 @@
       --color-on-primary:        #ffffff;
       --color-primary-container: #003cbf;
       --color-surface:           #0b1326;
-      --color-on-surface:        #dae2fd;
-      --color-on-surface-variant:#c7c4d7;
+      --color-on-surface:        #ffffff;
+      --color-on-surface-variant:#a0a0a0;
+      --color-text-dark:         #1a1c1e;
       --glow-primary:            rgba(0, 102, 255, 0.45);
       --glow-primary-strong:     rgba(0, 102, 255, 0.75);
       --gradient-primary:        linear-gradient(135deg, #0066ff 0%, #003cbf 100%);
@@ -107,11 +109,8 @@
     <!-- Preloader -->
     <div id="preloader-container"></div>
 
-    <!-- Menú lateral -->
-    <div id="menu-container" style="display:none;"></div>
-
-    <!-- Botones flotantes de ayuda (abajo-derecha) -->
-    <div id="ayudas-container" style="display:none;"></div>
+    <!-- Vista Principal -->
+    <div id="vista-principal-container" style="display:none;"></div>
 
     <!-- Botón retroceso -->
     <div id="retroceso-container"></div>

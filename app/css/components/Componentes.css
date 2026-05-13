@@ -28,7 +28,7 @@
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
-  background-color: rgba(0,0,0,0.5);
+  background-color: var(--color-surface-variant, rgba(0,0,0,0.5));
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   display: flex;
   align-items: center;
@@ -50,8 +50,8 @@
 .Description {
   font-size: 1.1rem;
   font-weight: 400;
-  background: rgb(0 0 0 / 66%);
-  color: #fff;
+  background: var(--color-surface-variant, rgb(0 0 0 / 66%));
+  color: var(--color-on-surface, #fff);
   padding: 0.8rem;
   border-radius: 1rem;
   white-space: nowrap;
@@ -167,7 +167,7 @@
 /* Cards dentro de modales */
 .ModalTitle {
   font-weight: 500;
-  color: #fff;
+  color: var(--color-on-surface, #fff);
   text-align: center;
   font-size: 2.5rem;
   margin: 0;
@@ -175,7 +175,7 @@
 @media (max-width: 1050px) { .ModalTitle { font-size: 1.5rem; } }
 
 .ModalSubTitle {
-  color: #fff;
+  color: var(--color-on-surface-variant, #fff);
   text-align: center;
   font-size: 1rem;
   margin: 0;
@@ -219,7 +219,7 @@
 .ModalCard p {
   text-align: center;
   font-size: 1rem;
-  color: #fff;
+  color: var(--color-on-surface, #fff);
   margin-top: 1rem;
   margin-bottom: 0;
 }

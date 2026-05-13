@@ -4,7 +4,7 @@ export default {
   title: 'Modales/GuardarEscenario',
   parameters: {
     layout: 'fullscreen',
-    backgrounds: { default: 'oscuro' },
+    backgrounds: { default: 'white' },
   },
 };
 

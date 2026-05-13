@@ -12,8 +12,8 @@ class SoundManagerClass {
         this._menuClose = new Audio('./sounds/menu-close.mp3');
 
         // Configuración de volumen global
-        this._hover.volume     = 0.3;
-        this._click.volume     = 0.5;
+        this._hover.volume     = 0.6;
+        this._click.volume     = 0.7;
         this._menuOpen.volume  = 0.4;
         this._menuClose.volume = 0.4;
     }
@@ -23,7 +23,7 @@ class SoundManagerClass {
         try {
             audio.pause();
             audio.currentTime = 0;
-            audio.play().catch(() => {}); // Suprimir error si el browser bloquea autoplay
+            audio.play().catch(() => {});
         } catch(e) {}
     }
 
@@ -46,6 +46,12 @@ class SoundManagerClass {
 
     isMuted() {
         return !!this._muted;
+    }
+
+    toggleMute() {
+        const newMuted = !this.isMuted();
+        this.setMuted(newMuted);
+        return newMuted;
     }
 }
 

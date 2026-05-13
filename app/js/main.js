@@ -3,8 +3,7 @@
  */
 
 import { SoundManager }   from './utils/SoundManager.js';
-import { MenuLateral }    from './components/MenuLateral/MenuLateral.js';
-import { AyudasViewer }   from './components/AyudasViewer/AyudasViewer.js';
+import { VistaPrincipal } from './components/VistaPrincipal/VistaPrincipal.js';
 import { Preloader }      from './components/Preloader/Preloader.js';
 import { BotonRetroceso } from './components/BotonRetroceso/BotonRetroceso.js';
 import { PantallaMobile } from './components/PantallaMobile/PantallaMobile.js';
@@ -20,7 +19,14 @@ const Lab = {
     retroceso:  null,
     historial:  [],
     v3dReady:   false,
-    engine:     null
+    engine:     null,
+    lastHoveredBtn: null,
+    components: {
+        vistaPrincipal: null,
+        modalAyuda:     null,
+        modalObjetivos: null,
+        modalEquipo:    null
+    }
 };
 
 // ── Inicialización ────────────────────────────────────────────────────────────
@@ -63,6 +69,21 @@ async function init() {
         document.documentElement.style.setProperty('--color-primary-rgb',       rgb);
         document.documentElement.style.setProperty('--color-primary-light',     `rgb(${Math.min(255,r+60)}, ${Math.min(255,g+60)}, ${Math.min(255,b+60)})`);
         document.documentElement.style.setProperty('--color-primary-container', `rgb(${Math.max(0,r-60)}, ${Math.max(0,g-60)}, ${Math.max(0,b-60)})`);
+        document.documentElement.style.setProperty('--color-on-primary-container', '#ffffff');
+        
+        // Colores de superficie (Fijos para modo claro sobre blanco)
+        document.documentElement.style.setProperty('--color-surface',           '#ffffff');
+        document.documentElement.style.setProperty('--color-on-surface',        '#1a1c1e');
+        document.documentElement.style.setProperty('--color-surface-variant',   '#f0f1f4');
+        document.documentElement.style.setProperty('--color-on-surface-variant','#44474e');
+        document.documentElement.style.setProperty('--color-surface-container', '#f8f9fb');
+
+        // Calcular un secundario complementario o derivado (en este caso un tono más suave)
+        const sr = Math.min(255, r + 40);
+        const sg = Math.min(255, g + 40);
+        const sb = Math.min(255, b + 80);
+        document.documentElement.style.setProperty('--color-secondary-container', `rgba(${sr}, ${sg}, ${sb}, 0.2)`);
+
         document.documentElement.style.setProperty('--glow-primary',            `rgba(${r}, ${g}, ${b}, 0.45)`);
         document.documentElement.style.setProperty('--glow-primary-strong',     `rgba(${r}, ${g}, ${b}, 0.75)`);
         document.documentElement.style.setProperty('--gradient-primary',        `linear-gradient(135deg, ${config.themeColor} 0%, rgb(${Math.max(0,r-60)},${Math.max(0,g-60)},${Math.max(0,b-60)}) 100%)`);
@@ -81,46 +102,168 @@ async function init() {
         const btn = e.target.closest('[data-preloader-btn]');
         if (btn && !btn.disabled) {
             preloader.hide();
+            // En lugar de mostrar la vista principal, mostramos la guía de navegación
             setTimeout(() => {
-                document.getElementById('ayudas-container').style.display = 'flex';
-                document.getElementById('menu-container').style.display   = 'flex';
-            }, 400);
+                Lab.components.modalAyuda.open();
+            }, 500);
         }
     });
 
     new PantallaMobile('mobile-container');
-    new ModalAyuda('modal-ayuda-container');
-    new ModalObjetivos('modal-objetivos-container', config.objetivos || []);
-    new ModalEquipo('modal-equipo-container', config.epp || []);
-    new AyudasViewer('ayudas-container', config.ayudas);
+    
+    // Inicializamos el modal con un callback para mostrar la UI principal al cerrar
+    Lab.components.modalAyuda = new ModalAyuda('modal-ayuda-container', {
+        onClose: () => {
+            const container = document.getElementById('vista-principal-container');
+            if (container && container.style.display !== 'block') {
+                container.style.display = 'block';
+                // Opcional: Sonido de entrada de UI
+                SoundManager.playMenuOpen();
+            }
+        }
+    });
+    
+    Lab.components.modalObjetivos = new ModalObjetivos('modal-objetivos-container', config.objetivos || []);
+    Lab.components.modalEquipo = new ModalEquipo('modal-equipo-container', config.epp || []);
+    
+    Lab.components.vistaPrincipal = new VistaPrincipal('vista-principal-container', {
+        ...(config.ayudas || {}),
+        menuItems: config.menu || [],
+        lang: config.defaultLang || 'es'
+    });
+
+    // Delegación de eventos para VistaPrincipal
+    const vistaPrincipalEl = document.getElementById('vista-principal-container');
+    vistaPrincipalEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+
+        const action = btn.getAttribute('data-action');
+        const id     = btn.getAttribute('data-id');
+
+        if (action === 'paso' && id) {
+            // Buscamos la configuración del paso en el JSON
+            const paso = config.menu.find(m => m.id === id);
+            if (paso) {
+                window.dispatchEvent(new CustomEvent('menu:paso', { detail: { paso } }));
+                
+                // Actualizar estado visual de botones (HUD y Mobile Nav)
+                vistaPrincipalEl.querySelectorAll('[data-action="paso"]').forEach(el => {
+                    const isTarget = el.getAttribute('data-id') === id;
+                    // HUD buttons
+                    if (el.tagName === 'BUTTON') {
+                        el.classList.toggle('VistaPrincipal-btn-active', isTarget);
+                    }
+                    // Bottom Nav links
+                    if (el.tagName === 'A') {
+                        el.classList.toggle('text-on-surface-dark', !isTarget);
+                        const icon = el.querySelector('.material-symbols-outlined');
+                        if (icon) {
+                            icon.style.color = isTarget ? 'var(--color-primary)' : '';
+                            icon.style.fontVariationSettings = `'FILL' ${isTarget ? 1 : 0}`;
+                        }
+                        const line = el.querySelector('.VistaPrincipal-nav-indicator');
+                        if (isTarget && !line) {
+                            const lineDiv = document.createElement('div');
+                            lineDiv.className = 'w-3 h-0.5 rounded-full mt-0.5 VistaPrincipal-nav-indicator';
+                            lineDiv.style.backgroundColor = 'var(--color-primary)';
+                            el.appendChild(lineDiv);
+                        } else if (!isTarget && line) {
+                            line.remove();
+                        }
+                    }
+                });
+            }
+        }
+
+        if (action === 'lang') {
+            const currentLang = Lab.components.vistaPrincipal.options.lang;
+            const newLang = currentLang === 'es' ? 'en' : 'es';
+            Lab.components.vistaPrincipal.setLanguage(newLang);
+            window.dispatchEvent(new CustomEvent('lang:change', { detail: { lang: newLang } }));
+        }
+
+        if (action === 'help') {
+            const isVisible = Lab.components.vistaPrincipal.options.assistantVisible;
+            Lab.components.vistaPrincipal.setAssistantVisible(!isVisible);
+        }
+
+        if (action === 'ayuda-guia') {
+            Lab.components.modalAyuda.open();
+        }
+        
+        if (action === 'objetivos') {
+            window.dispatchEvent(new CustomEvent('modal:objetivos:open'));
+        }
+        
+        if (action === 'equipo') {
+            window.dispatchEvent(new CustomEvent('modal:equipo:open'));
+        }
+
+        if (action === 'save') {
+            // Por ahora solo un log o evento genérico
+            console.log("[Lab] Guardar escenario...");
+        }
+        
+        if (action === 'sound') {
+            const isMuted = SoundManager.toggleMute();
+            const icon = btn.querySelector('.material-symbols-outlined');
+            if (icon) icon.textContent = isMuted ? 'volume_off' : 'volume_up';
+        }
+        
+        // Reproducir sonido de click para cualquier botón con acción
+        SoundManager.playClick();
+    });
+
+    // Delegación de sonido para Hover (Mouseover)
+    vistaPrincipalEl.addEventListener('mouseover', (e) => {
+        const btn = e.target.closest('button, [data-action], a');
+        if (btn && btn !== Lab.lastHoveredBtn) {
+            Lab.lastHoveredBtn = btn;
+            SoundManager.playHover();
+        }
+    });
+
+    vistaPrincipalEl.addEventListener('mouseout', (e) => {
+        const btn = e.target.closest('button, [data-action], a');
+        if (btn && !btn.contains(e.relatedTarget)) {
+            Lab.lastHoveredBtn = null;
+        }
+    });
     
     Lab.retroceso = new BotonRetroceso('retroceso-container');
-    
-    Lab.menu = new MenuLateral(
-        'menu-container',
-        config.menu,
-        config.menuIconImage,
-        config.laboratorio,
-        config.laboratorioEN || config.laboratorio,
-    );
 
     window.addEventListener('menu:paso', onPasoSeleccionado);
     window.addEventListener('menu:reset', onMenuReset);
     window.addEventListener('retroceso:click', onRetroceso);
+    window.addEventListener('modal:ayuda:open', () => Lab.components.modalAyuda.open());
+    window.addEventListener('modal:objetivos:open', () => Lab.components.modalObjetivos.open());
+    window.addEventListener('modal:equipo:open', () => Lab.components.modalEquipo.open());
     window.addEventListener('v3d:mostrar_retroceso', () => Lab.retroceso?.mostrar());
     window.addEventListener('v3d:ocultar_retroceso',  () => Lab.retroceso?.ocultar());
     window.addEventListener('v3d:navegar', (e) => onNavegacionInterna(e.detail?.id));
     window.addEventListener('v3d:playAudio', (e) => Lab.engine.playStepAudio(e.detail.id));
 
-    // Sincronizar idioma con el iframe
+    // Sincronizar idioma con el iframe y los componentes
     window.addEventListener('lang:change', (e) => {
+        const lang = e.detail?.lang || 'es';
+        
+        // 1. Actualizar clases en el body para componentes CSS-driven (como ModalAyuda)
+        document.body.classList.remove('lang-es', 'lang-en');
+        document.body.classList.add(`lang-${lang}`);
+
+        // 2. Notificar a los componentes JS-driven
+        Object.values(Lab.components).forEach(c => {
+            if (c && typeof c.setLanguage === 'function') c.setLanguage(lang);
+        });
+
+        // 3. Iframe (Verge3D)
         const iframe = document.getElementById('v3d-container');
         if (!iframe || !iframe.contentDocument) return;
         const iframeBody = iframe.contentDocument.body;
         if (!iframeBody) return;
-        const lang = e.detail?.lang || 'es';
-        iframeBody.classList.toggle('lang-es', lang === 'es');
-        iframeBody.classList.toggle('lang-en', lang === 'en');
+        iframeBody.classList.remove('lang-es', 'lang-en');
+        iframeBody.classList.add(`lang-${lang}`);
     });
 
     // Inicializamos el motor 3D
@@ -185,7 +328,7 @@ function ejecutarPaso(pasoId, skipAudio = false) {
     
     // Reproducir audio del paso si no se indica lo contrario
     if (!skipAudio) {
-        Lab.engine.playStepAudio(pasoId);
+        Lab.engine.playStepAudio(pasoConfig);
     } else {
         if (Lab.engine.audio) Lab.engine.audio.stop();
     }

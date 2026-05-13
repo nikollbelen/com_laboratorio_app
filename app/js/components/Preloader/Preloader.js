@@ -75,7 +75,7 @@ export class Preloader {
                                             <span class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest text-[11px]">Iniciando Núcleo...</span>
                                             <span data-preloader-pct class="text-primary-light font-headline-lg-mobile text-headline-lg-mobile font-bold">${this.data.progress}%</span>
                                         </div>
-                                        <div class="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                                        <div class="h-1 w-full bg-on-surface/5 rounded-full overflow-hidden">
                                             <div data-preloader-bar class="h-full bg-primary rounded-full shadow-[0_0_15px_var(--glow-primary-strong)]" style="width: ${this.data.progress}%; transition: width 0.4s ease;"></div>
                                         </div>
                                     </div>
@@ -124,7 +124,7 @@ export class Preloader {
                                                 <span class="text-on-surface-variant text-[10px] uppercase tracking-widest font-bold">INICIANDO NÚCLEO...</span>
                                                 <span data-preloader-pct class="text-primary-light font-bold text-sm">${this.data.progress}%</span>
                                             </div>
-                                            <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/10">
+                                            <div class="h-1.5 w-full bg-on-surface/5 rounded-full overflow-hidden border border-on-surface/10">
                                                 <div data-preloader-bar class="h-full bg-primary rounded-full Preloader-progress-shimmer shadow-[0_0_20px_var(--color-primary)]" style="width: ${this.data.progress}%; transition: width 0.4s ease;"></div>
                                             </div>
                                         </div>
@@ -158,10 +158,10 @@ export class Preloader {
                     transition: opacity 0.6s ease;
                 }
                 .Preloader-glass-panel {
-                    background: rgba(255, 255, 255, 0.04);
+                    background: rgba(255, 255, 255, 0.08);
                     backdrop-filter: blur(20px);
                     -webkit-backdrop-filter: blur(20px);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(255, 255, 255, 0.15);
                 }
                 .Preloader-inner-glow {
                     box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);

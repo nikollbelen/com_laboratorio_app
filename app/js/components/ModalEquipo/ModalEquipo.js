@@ -14,42 +14,88 @@ export class ModalEquipo {
             nextService: data.nextService || '12/2027',
             wear: data.wear || '14%'
         };
+        this.options = { lang: 'es' };
         if (this.container) this.render();
     }
 
-    render() {
-        this.container.innerHTML = `
-            <div class="ModalEquipo-root dark bg-surface text-on-surface fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-6 bg-surface/20">
-                <!-- Background Context Mockup -->
-                <div class="fixed inset-0 z-0 pointer-events-none">
-                    <img alt="Industrial Engine" class="w-full h-full object-cover grayscale opacity-40 contrast-125"
-                        src="/images/fondo_ejemplo.png" />
-                </div>
+    setLanguage(lang) {
+        this.options.lang = lang;
+        if (this.container) {
+            const isVisible = this.container.querySelector('.ModalEquipo-root')?.classList.contains('visible');
+            this.render();
+            if (isVisible) this.container.querySelector('.ModalEquipo-root').classList.add('visible');
+        }
+    }
 
-                <div class="ModalEquipo-glass-panel w-full max-w-4xl max-h-[90vh] rounded-lg shadow-2xl relative flex flex-col overflow-hidden animate-in fade-in zoom-in duration-300 z-10">
+    open() {
+        if (this.container) {
+            this.container.style.display = 'block';
+            requestAnimationFrame(() => {
+                const modal = this.container.querySelector('.ModalEquipo-root');
+                if (modal) modal.classList.add('visible');
+            });
+        }
+    }
+
+    close() {
+        const modal = this.container.querySelector('.ModalEquipo-root');
+        if (modal) {
+            modal.classList.remove('visible');
+            setTimeout(() => {
+                if (this.container) this.container.style.display = 'none';
+            }, 300);
+        }
+    }
+
+    render() {
+        const lang = this.options.lang;
+        const t = {
+            es: { 
+                title: 'Información del Equipo', 
+                subtitle: 'Especificaciones Técnicas y Estado Operativo',
+                motor: 'Motor', tipo: 'Tipo', fabricante: 'Fabricante', combustible: 'Combustible', estado: 'Estado',
+                mantenimiento: 'Mantenimiento e Historial', ultima: 'Última Inspección', proxima: 'Próximo Servicio', 
+                componentes: 'Estado de Componentes', ok: 'Todo en rango', desgaste: 'Desgaste', ficha: 'Ver Ficha Técnica Completa'
+            },
+            en: { 
+                title: 'Equipment Information', 
+                subtitle: 'Technical Specifications and Operational Status',
+                motor: 'Engine', tipo: 'Type', fabricante: 'Manufacturer', combustible: 'Fuel', estado: 'Status',
+                mantenimiento: 'Maintenance & History', ultima: 'Last Inspection', proxima: 'Next Service', 
+                componentes: 'Component Status', ok: 'All in range', desgaste: 'Wear', ficha: 'View Full Data Sheet'
+            }
+        }[lang] || {};
+
+        this.container.innerHTML = `
+            <div class="ModalEquipo-root dark fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300">
+                <!-- Backdrop Blur -->
+                <div class="absolute inset-0 bg-surface/20 backdrop-blur-md"></div>
+
+                <div class="ModalEquipo-glass-panel w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl relative flex flex-col overflow-hidden animate-in fade-in zoom-in duration-500 z-10"
+                     style="background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.5); backdrop-filter: blur(20px);">
                     
                     <!-- Close Button -->
-                    <button class="absolute top-4 right-4 md:top-6 md:right-6 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full hover:bg-white/10 text-on-surface-variant hover:text-white transition-colors">
-                        <span class="material-symbols-outlined text-xl md:text-2xl">close</span>
+                    <button class="ModalEquipo-close absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/5 text-[#1a1c1e] hover:text-black transition-colors z-20">
+                        <span class="material-symbols-outlined text-2xl">close</span>
                     </button>
 
                     <!-- Header -->
-                    <div class="p-6 pb-2 md:p-8 md:pb-4">
-                        <h2 class="text-primary font-display text-xl md:text-2xl font-bold tracking-[0.1em] md:tracking-[0.2em] mb-1 uppercase">Información del Equipo</h2>
-                        <p class="font-medium text-xs md:text-sm" style="color: var(--color-on-surface-variant); opacity: 0.8;">Especificaciones Técnicas y Estado Operativo</p>
+                    <div class="p-8 pb-4">
+                        <h2 class="text-primary font-display text-2xl md:text-3xl font-bold tracking-[0.15em] mb-1 uppercase">${t.title}</h2>
+                        <p class="font-bold text-xs md:text-sm text-[#1a1c1e]/70">${t.subtitle}</p>
                     </div>
 
                     <!-- Content -->
                     <div class="p-6 md:p-8 pt-2 md:pt-4 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 overflow-y-auto ModalEquipo-custom-scrollbar transition-all">
                         <!-- Left Section -->
                         <div class="space-y-6">
-                            ${this.renderDataField('Motor', this.data.name)}
-                            ${this.renderDataField('Tipo', this.data.type)}
-                            ${this.renderDataField('Fabricante', this.data.manufacturer)}
-                            ${this.renderDataField('Combustible', this.data.fuel)}
+                            ${this.renderDataField(t.motor, this.data.name)}
+                            ${this.renderDataField(t.tipo, this.data.type)}
+                            ${this.renderDataField(t.fabricante, this.data.manufacturer)}
+                            ${this.renderDataField(t.combustible, this.data.fuel)}
                             
                             <div class="flex items-center gap-3 pt-2">
-                                <span class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color: var(--color-primary); opacity: 0.65;">Estado</span>
+                                <span class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color: var(--color-primary); opacity: 0.65;">${t.estado}</span>
                                 <span class="flex items-center gap-2 px-3 py-1 bg-green-500/10 text-green-400 rounded-full text-xs font-bold border border-green-500/20">
                                     <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
                                     ${this.data.status}
@@ -59,17 +105,17 @@ export class ModalEquipo {
                         <!-- Right Section (Maintenance/History) -->
                         <div class="bg-white/5 rounded-lg p-5 md:p-6 border border-white/5 space-y-6">
                             <h3 class="text-xs font-bold text-primary uppercase tracking-[0.15em] mb-4 border-b border-white/10 pb-2">
-                                Mantenimiento e Historial</h3>
+                                ${t.mantenimiento}</h3>
                             <div class="space-y-4">
-                                ${this.renderHistoryItem('Última Inspección', this.data.lastInspection)}
-                                ${this.renderHistoryItem('Próximo Servicio', this.data.nextService)}
-                                ${this.renderHistoryItem('Estado de Componentes', 'Todo en rango', 'text-green-400')}
+                                ${this.renderHistoryItem(t.ultima, this.data.lastInspection)}
+                                ${this.renderHistoryItem(t.proxima, this.data.nextService)}
+                                ${this.renderHistoryItem(t.componentes, t.ok, 'text-green-400')}
                             </div>
                             <!-- Symbolic Bar Chart -->
                             <div class="pt-4">
                                 <div class="flex justify-between items-end mb-2">
-                                    <span class="text-[10px] uppercase tracking-wider text-on-surface-variant">Desgaste</span>
-                                    <span class="text-xs text-white">${this.data.wear}</span>
+                                    <span class="text-[10px] uppercase tracking-wider text-[#1a1c1e]/60 font-bold">${t.desgaste}</span>
+                                    <span class="text-xs text-[#1a1c1e] font-bold">${this.data.wear}</span>
                                 </div>
                                 <div class="flex items-end gap-1.5 h-16">
                                     <div class="w-full h-[20%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.4);"></div>
@@ -87,55 +133,46 @@ export class ModalEquipo {
                     <!-- Footer / Bottom Section -->
                     <div class="p-4 md:p-8 pt-0 md:pt-4 flex justify-center flex-shrink-0">
                         <button class="w-full px-6 py-2.5 md:py-4 bg-primary text-on-primary font-bold rounded-xl md:rounded-2xl hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-lg text-[11px] md:text-base uppercase tracking-[0.15em] md:tracking-wider group">
-                            <span class="text-center">Ver Ficha Técnica Completa</span>
+                            <span class="text-center">${t.ficha}</span>
                             <span class="hidden md:block material-symbols-outlined text-xl transition-transform group-hover:translate-x-1">arrow_forward</span>
                         </button>
                     </div>
                 </div>
             </div>
-            
             <style>
-                .ModalEquipo-glass-panel {
-                    backdrop-filter: blur(25px);
-                    background: rgba(255, 255, 255, 0.05);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                }
-
-                .ModalEquipo-root .material-symbols-outlined {
-                    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-                }
-
-                .ModalEquipo-custom-scrollbar::-webkit-scrollbar {
-                    width: 4px;
-                }
-
-                .ModalEquipo-custom-scrollbar::-webkit-scrollbar-track {
-                    background: rgba(255, 255, 255, 0.05);
-                    border-radius: 10px;
-                }
-
-                .ModalEquipo-custom-scrollbar::-webkit-scrollbar-thumb {
-                    background: var(--glow-primary);
-                    border-radius: 10px;
+                .ModalEquipo-root.visible {
+                    opacity: 1;
+                    pointer-events: auto;
                 }
             </style>
         `;
+
+        // Event Listeners
+        const closeBtn = this.container.querySelector('.ModalEquipo-close');
+        if (closeBtn) closeBtn.addEventListener('click', () => this.close());
+
+        const root = this.container.querySelector('.ModalEquipo-root');
+        if (root) {
+            root.addEventListener('click', (e) => {
+                if (e.target === root) this.close();
+            });
+        }
     }
 
     renderDataField(label, value) {
         return `
             <div class="space-y-1">
                 <span class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color: var(--color-primary); opacity: 0.65;">${label}</span>
-                <p class="text-white text-lg font-medium">${value}</p>
+                <p class="text-[#1a1c1e] text-lg font-medium">${value}</p>
             </div>
         `;
     }
 
-    renderHistoryItem(label, value, colorClass = 'text-white') {
+    renderHistoryItem(label, value, colorClass = 'text-[#1a1c1e]') {
         return `
             <div class="flex justify-between items-center text-sm">
-                <span class="text-on-surface-variant">${label}</span>
-                <span class="${colorClass} font-medium">${value}</span>
+                <span class="text-[#1a1c1e]/60 font-medium">${label}</span>
+                <span class="${colorClass} font-bold">${value}</span>
             </div>
         `;
     }

@@ -96,7 +96,7 @@ export class V3DEngine {
         }
     }
 
-    playStepAudio(pasoId) {
-        if (this.audio) this.audio.playStepAudio(pasoId);
+    playStepAudio(paso) {
+        if (this.audio) this.audio.playStepAudio(paso);
     }
 }

@@ -360,7 +360,7 @@ window.openModal = function (nodeData) {
         window.renderTags('tags-resaltar', currentTags.stepResaltar);
         document.getElementById('inpStopAnim').checked = nodeData.detener_animaciones || false;
 
-        // Cargar datos de TTS basados en ID
+        // Cargar datos de TTS basados en ID (Numérico como desea el usuario)
         const audioId = nodeData.id.replace('paso', '');
         const audioPath = `audios/${audioId}.mp3`;
         document.getElementById('inpAudioPath').value = audioPath;
@@ -458,6 +458,12 @@ window.handleDrop = function(e, targetIndex) {
     if (draggedIdx === null || draggedIdx === targetIndex) return;
     
     const list = selectedNode.children || selectedNode._children || [];
+    
+    // Antes de mover, nos aseguramos que todos los hijos tengan su originalId
+    list.forEach(item => {
+        if (!item.originalId) item.originalId = item.id;
+    });
+
     const item = list.splice(draggedIdx, 1)[0];
     list.splice(targetIndex, 0, item);
     
@@ -621,15 +627,28 @@ window.playCurrentTTS = function() {
     const path = document.getElementById('inpAudioPath').value;
     if (!path) return;
     
-    // Bypass cache con timestamp para oir el nuevo audio inmediatamente
-    const fullUrl = `../app/${path}?t=${Date.now()}`; 
-    console.log("[Editor] Reproduciendo:", fullUrl);
-    
-    const audio = new Audio(fullUrl);
-    audio.play().catch(e => {
-        console.error("Error al reproducir audio:", e);
-        alert("No se encontró el audio para este paso.\nUsa el botón de locutar (🎙️) para generarlo.");
-    });
+    // Lista de intentos: el path actual (slug) y el fallback (numérico)
+    const slug = path;
+    const numericId = selectedNode.id.replace('paso', '') + '.mp3';
+    const fallbackPath = `audios/${numericId}`;
+
+    const tryPlay = (urls) => {
+        if (urls.length === 0) {
+            alert("No se encontró el audio para este paso.\nUsa el botón de locutar (🎙️) para generarlo.");
+            return;
+        }
+
+        const currentPath = urls.shift();
+        const fullUrl = `../app/${currentPath}?t=${Date.now()}`; 
+        console.log("[Editor] Probando audio:", fullUrl);
+        
+        const audio = new Audio(fullUrl);
+        audio.play().catch(() => {
+            tryPlay(urls);
+        });
+    };
+
+    tryPlay([slug, fallbackPath]);
 };
 
 // --- HELPER: MODAL DE CONFIRMACIÓN CUSTOM ---
@@ -655,6 +674,13 @@ window.showConfirm = function(title, message) {
             resolve(false);
         };
     });
+};
+
+window._slugify = function(text) {
+    if (!text) return "";
+    return text.toString().toLowerCase().trim()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, '_').replace(/[^\w-]+/g, '').replace(/--+/g, '_');
 };
 
 init();

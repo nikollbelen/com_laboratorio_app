@@ -4,7 +4,7 @@ export default {
   title: 'Componentes/Preloader',
   parameters: {
     layout: 'fullscreen',
-    backgrounds: { default: 'oscuro' },
+    backgrounds: { default: 'white' },
   },
   argTypes: {
     progress: { control: { type: 'range', min: 0, max: 100, step: 1 } },

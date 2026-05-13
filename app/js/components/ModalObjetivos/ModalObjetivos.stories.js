@@ -4,7 +4,7 @@ export default {
   title: 'Modales/ModalObjetivos',
   parameters: {
     layout: 'fullscreen',
-    backgrounds: { default: 'oscuro' },
+    backgrounds: { default: 'white' },
   },
   argTypes: {
     title: { control: 'text' },

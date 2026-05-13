@@ -4,17 +4,24 @@ export default {
   title: 'Vistas/VistaPrincipal',
   parameters: {
     layout: 'fullscreen',
-    backgrounds: { default: 'oscuro' },
+    backgrounds: { default: 'white' },
   },
 };
 
-const Template = () => {
+const Template = (args) => {
   const container = document.createElement('div');
   container.id = 'vistaprincipal-mount';
   
-  // Renderizado diferido para asegurar que el DOM esté listo
   setTimeout(() => {
-    new VistaPrincipal('vistaprincipal-mount');
+    new VistaPrincipal('vistaprincipal-mount', {
+        tieneBotonLang: true,
+        tieneBotonSonido: true,
+        tieneBotonGuardar: true,
+        tieneBotonAyuda: true,
+        tieneBotonObjetivos: true,
+        tieneBotonEquipo: true,
+        ...args
+    });
   }, 0);
   
   return container;
@@ -22,6 +29,13 @@ const Template = () => {
 
 export const PorDefecto = Template.bind({});
 PorDefecto.storyName = 'Diseño de Escritorio';
+PorDefecto.args = {
+  menuItems: [
+    { id: 'paso1', ESdescription: 'Vista Libre', ENdescription: 'Free View', icon: 'deployed_code' },
+    { id: 'paso2', ESdescription: 'Partes', ENdescription: 'Components', icon: 'settings_input_component' },
+    { id: 'paso3', ESdescription: 'Explosión', ENdescription: 'Explosion', icon: 'open_in_full' }
+  ]
+};
 
 export const Movil = Template.bind({});
 Movil.storyName = 'Diseño Móvil';

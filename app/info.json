@@ -4,7 +4,7 @@
   "imageUrl": "./images/fondo.png",
   "logoUrl": "./images/logo_chinalco.png",
   "menuIconImage": "./images/icon1.png",
-  "themeColor": "#3874ff",
+  "themeColor": "#10b981",
   "inicioEstado": {
     "camara": "Cam_Pos_01",
     "camaraDireccion": "Cam_Dir_01",
@@ -17,8 +17,8 @@
     {
       "id": "paso1",
       "ESdescription": "Vista Libre",
-      "ENdescription": "New Step 1",
-      "icon": "./images/icon2.png",
+      "ENdescription": "Free View",
+      "icon": "deployed_code",
       "animaciones": [],
       "objetos_mostrar": [],
       "objetos_ocultar": []
@@ -26,8 +26,8 @@
     {
       "id": "paso2",
       "ESdescription": "Partes",
-      "ENdescription": "New Step 2",
-      "icon": "./images/icon2.png",
+      "ENdescription": "Components",
+      "icon": "settings_input_component",
       "animaciones": [],
       "objetos_mostrar": [],
       "objetos_ocultar": []
@@ -35,8 +35,8 @@
     {
       "id": "paso3",
       "ESdescription": "Explosion",
-      "ENdescription": "New Step 3",
-      "icon": "./images/icon2.png",
+      "ENdescription": "Explosion",
+      "icon": "open_in_full",
       "animaciones": [],
       "objetos_mostrar": [],
       "objetos_ocultar": []
@@ -44,8 +44,8 @@
     {
       "id": "paso4",
       "ESdescription": "Modo Rayos X",
-      "ENdescription": "New Step 4",
-      "icon": "./images/icon2.png",
+      "ENdescription": "X-Ray Mode",
+      "icon": "document_scanner",
       "animaciones": [],
       "objetos_mostrar": [],
       "objetos_ocultar": []
@@ -53,22 +53,29 @@
     {
       "id": "paso5",
       "ESdescription": "Animacion",
-      "ENdescription": "New Step 5",
-      "icon": "./images/icon2.png",
+      "ENdescription": "Animation",
+      "icon": "play_circle",
       "animaciones": [],
       "objetos_mostrar": [],
-      "objetos_ocultar": []
+      "objetos_ocultar": [],
+      "camara": "",
+      "camaraDireccion": "",
+      "objeto_resaltar": [],
+      "detener_animaciones": false,
+      "audio_path": "audios/5.mp3"
     }
   ],
   "ayudas": {
     "tieneBotonAyuda": true,
-    "tieneBotonObjetivos": false,
-    "tieneBotonEquipo": false,
+    "tieneBotonObjetivos": true,
+    "tieneBotonEquipo": true,
     "tieneBotonSonido": true,
-    "tieneBotonLang": false,
-    "tieneBotonGuardar": true
+    "tieneBotonLang": true,
+    "tieneBotonGuardar": false
   },
   "backgroundColor": "#00c26e",
   "backgroundType": "image",
-  "laboratorioEN": "SAG Mill"
+  "laboratorioEN": "SAG Mill",
+  "objetivos": [],
+  "epp": []
 }

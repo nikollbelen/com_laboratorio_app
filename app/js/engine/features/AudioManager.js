@@ -11,33 +11,33 @@ export class AudioManager {
         this.basePath = './audios/';
     }
 
-    /**
-     * Reproduce el audio asociado a un ID de paso.
-     * @param {string} pasoId - ID del paso (ej: "paso2_5_1")
-     */
-    playStepAudio(pasoId) {
-        if (!pasoId) return;
+    playStepAudio(paso) {
+        if (!paso) return;
 
-        // Si el sonido está silenciado globalmente, no reproducimos nada
         if (SoundManager.isMuted()) {
             this.stop();
             return;
         }
 
-        // 1. Detener cualquier audio que se esté reproduciendo actualmente
         this.stop();
 
-        // 2. Construir la ruta: paso2_5_1 -> 2_5_1.mp3
-        const fileName = pasoId.replace('paso', '') + '.mp3';
-        const url = `${this.basePath}${fileName}`;
+        // Volviendo al sistema numérico puro por petición del usuario
+        const numericId = paso.id.replace('paso', '');
+        const url = `${this.basePath}${numericId}.mp3`;
 
-        // 3. Crear y reproducir
+        console.log(`[AudioManager] Reproduciendo audio: ${url}`);
         this.currentAudio = new Audio(url);
-        
         this.currentAudio.play().catch(err => {
-            // No alertamos al usuario para no interrumpir la experiencia si falta un audio
-            console.warn(`[AudioManager] Audio no encontrado o bloqueado para ${pasoId}: ${url}`);
+            console.warn(`[AudioManager] Audio no encontrado: ${url}`);
         });
+    }
+
+    _slugify(text) {
+        return text.toString().toLowerCase().trim()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Quitar acentos
+            .replace(/\s+/g, '_')           // Espacios por guiones bajos
+            .replace(/[^\w-]+/g, '')       // Quitar caracteres especiales
+            .replace(/--+/g, '_');          // Quitar guiones dobles
     }
 
     /**
