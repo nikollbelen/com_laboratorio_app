@@ -334,8 +334,18 @@ function ejecutarPaso(pasoId, skipAudio = false) {
     }
 
     // 1. Visibilidad y Resaltado
+    // Empezamos con todo visible para que cada paso sea independiente
     Lab.engine.visibility.showEverything();
-    Lab.engine.visibility.hideAll(pasoConfig.objetos_ocultar || []);
+    
+    // Aplicamos los ocultos específicos de este paso
+    if (pasoConfig.objetos_ocultar && Array.isArray(pasoConfig.objetos_ocultar)) {
+        Lab.engine.visibility.hideAll(pasoConfig.objetos_ocultar);
+    }
+    
+    // Si el paso explícitamente pide mostrar algo (por si acaso)
+    if (pasoConfig.objetos_mostrar && Array.isArray(pasoConfig.objetos_mostrar)) {
+        Lab.engine.visibility.showAll(pasoConfig.objetos_mostrar);
+    }
     
     Lab.engine.currentStepSelection = pasoConfig.objeto_resaltar || [];
     if (Lab.engine.currentStepSelection.length) {

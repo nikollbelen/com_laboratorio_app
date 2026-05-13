@@ -5,20 +5,20 @@ export class VisibilityManager {
 
     getObjectByName(name) {
         if (!name || !this.appInstance) return null;
-        let objTarget = null;
-        this.appInstance.scene.traverse((obj) => {
-            if (obj.name === name) objTarget = obj;
-        });
-        return objTarget;
+        // La mayoría de las veces el nombre es único, usamos el método nativo por velocidad
+        return this.appInstance.scene.getObjectByName(name);
     }
 
     change(names, bool) {
+        if (!names || !this.appInstance) return;
         const namesArray = (typeof names === 'string') ? [names] : names;
-        if (!namesArray || namesArray.length === 0) return;
+        if (namesArray.length === 0) return;
 
-        namesArray.forEach((n) => {
-            const o = this.getObjectByName(n);
-            if (o) o.visible = bool;
+        // Para asegurar que encontramos TODOS los objetos con ese nombre (por si hay duplicados o clones)
+        this.appInstance.scene.traverse((o) => {
+            if (namesArray.includes(o.name)) {
+                o.visible = bool;
+            }
         });
     }
 

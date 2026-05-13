@@ -219,6 +219,13 @@ window.validateMeshInput = function(input) {
         input.classList.remove('invalid-asset');
         return;
     }
+
+    // Si es una coordenada manual [x,y,z], es válida por definición en el editor
+    if (value.startsWith('[') && value.includes(']')) {
+        input.classList.remove('invalid-asset');
+        input.title = "Coordenada manual detectada";
+        return;
+    }
     
     if (sceneAssets.meshes.length > 0) {
         if (!sceneAssets.meshes.includes(value)) {
@@ -366,6 +373,17 @@ window.openModal = function (nodeData) {
         document.getElementById('inpAudioPath').value = audioPath;
         document.getElementById('tts-status').innerText = '';
         document.getElementById('btnPlayTTS').disabled = false;
+    }
+
+    // Inicializar modos de cámara (Detectar si es coordenada o nombre de objeto)
+    const initCamValue = nodeData.isRoot ? (nodeData.inicioEstado?.camara || '') : (nodeData.camara || '');
+    const isRawMode = initCamValue.startsWith('[');
+    if (nodeData.isRoot) {
+        document.getElementById('selInitCamMode').value = isRawMode ? 'coords' : 'names';
+        window.toggleCamInputs('root');
+    } else {
+        document.getElementById('selStepCamMode').value = isRawMode ? 'coords' : 'names';
+        window.toggleCamInputs('step');
     }
 
     // Ejecutar validación inicial de todos los campos de malla
@@ -681,6 +699,96 @@ window._slugify = function(text) {
     return text.toString().toLowerCase().trim()
         .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         .replace(/\s+/g, '_').replace(/[^\w-]+/g, '').replace(/--+/g, '_');
+};
+
+window.toggleCamInputs = function (type) {
+    const mode = document.getElementById(type === 'root' ? 'selInitCamMode' : 'selStepCamMode').value;
+    const manualEl = document.getElementById(type === 'root' ? 'root-cam-manual' : 'step-cam-manual');
+    const logEl = document.getElementById(type === 'root' ? 'root-cam-log' : 'step-cam-log');
+    
+    // Labels
+    const lblPos = document.getElementById(type === 'root' ? 'lblInitPos' : 'lblStepPos');
+    const lblDir = document.getElementById(type === 'root' ? 'lblInitDir' : 'lblStepDir');
+
+    if (mode === 'log') {
+        manualEl.style.display = 'none';
+        logEl.style.display = 'block';
+    } else {
+        manualEl.style.display = 'grid';
+        logEl.style.display = 'none';
+        
+        if (mode === 'names') {
+            lblPos.textContent = "Objeto Posición";
+            lblDir.textContent = "Objeto Dirección";
+        } else {
+            lblPos.textContent = "Posición [x, y, z]";
+            lblDir.textContent = "Target [x, y, z]";
+        }
+    }
+};
+
+window.processRawCamLog = function (type) {
+    const logInp = document.getElementById(type === 'root' ? 'inpInitRawLog' : 'inpStepRawLog');
+    const posInp = document.getElementById(type === 'root' ? 'inpInitCam' : 'inpPosicion');
+    const dirInp = document.getElementById(type === 'root' ? 'inpInitDir' : 'inpDireccion');
+    const text = logInp.value.trim();
+
+    const posMatch = text.match(/Pos:\s*\[([\d\.-]+,\s*[\d\.-]+,\s*[\d\.-]+)\]/);
+    const targetMatch = text.match(/Target:\s*\[([\d\.-]+,\s*[\d\.-]+,\s*[\d\.-]+)\]/);
+
+    if (posMatch && posMatch[1]) {
+        posInp.value = `[${posMatch[1]}]`;
+    }
+    if (targetMatch && targetMatch[1]) {
+        dirInp.value = `[${targetMatch[1]}]`;
+    }
+
+    if (posMatch || targetMatch) {
+        // Al aplicar un log, cambiamos automáticamente al modo "Coordenadas (Manual)"
+        document.getElementById(type === 'root' ? 'selInitCamMode' : 'selStepCamMode').value = 'coords';
+        window.toggleCamInputs(type);
+        window.validateMeshInput(posInp);
+        window.validateMeshInput(dirInp);
+        logInp.value = ''; 
+    } else {
+        alert("Formato de log no reconocido. Asegúrate de copiarlo tal cual de la consola.");
+    }
+};
+
+window.smartPasteCamera = async function(idPos, idDir) {
+    try {
+        const text = await navigator.clipboard.readText();
+        // Regex para capturar: [Camera Log] Pos: [x, y, z] Target: [x, y, z]
+        // O simplemente: Pos: [x, y, z] Target: [x, y, z]
+        const posMatch = text.match(/Pos:\s*\[([\d\.-]+,\s*[\d\.-]+,\s*[\d\.-]+)\]/);
+        const targetMatch = text.match(/Target:\s*\[([\d\.-]+,\s*[\d\.-]+,\s*[\d\.-]+)\]/);
+
+        if (posMatch && posMatch[1]) {
+            document.getElementById(idPos).value = `[${posMatch[1]}]`;
+            console.log(`[Editor] Posición pegada: [${posMatch[1]}]`);
+        }
+        if (targetMatch && targetMatch[1]) {
+            document.getElementById(idDir).value = `[${targetMatch[1]}]`;
+            console.log(`[Editor] Dirección pegada: [${targetMatch[1]}]`);
+        }
+
+        if (!posMatch && !targetMatch) {
+            // Si no coincide con el log, intentar pegar el texto tal cual si parece una coordenada
+            if (text.includes('[') && text.includes(']')) {
+                document.getElementById(idPos).value = text;
+            } else {
+                alert("El portapapeles no contiene un formato de cámara válido.\nCopia el log de la consola: [Camera Log] Pos: [...] Target: [...]");
+            }
+        }
+        
+        // Ejecutar validación para que no se marque en rojo si es válido
+        window.validateMeshInput(document.getElementById(idPos));
+        window.validateMeshInput(document.getElementById(idDir));
+
+    } catch (err) {
+        console.error('Error al acceder al portapapeles:', err);
+        alert("No se pudo acceder al portapapeles. Asegúrate de dar permisos.");
+    }
 };
 
 init();

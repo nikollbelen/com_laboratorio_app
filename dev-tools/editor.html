@@ -29,6 +29,22 @@
             box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.2), 0 4px 12px rgba(0,0,0,0.3);
             transform: translateY(-2px);
         }
+        .mini-select {
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            font-size: 11px;
+            font-weight: 600;
+            color: #475569;
+            background: white;
+            cursor: pointer;
+            outline: none;
+        }
+        .mini-select:hover { border-color: #3874ff; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -114,16 +130,39 @@
 
                             <div class="form-group full-width">
                                 <label>Estado Inicial (Laboratorio)</label>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                    <div class="form-group">
-                                        <label>Cámara Posición</label>
-                                        <input type="text" id="inpInitCam" placeholder="Cam_Pos_01" />
+                                    <div class="form-group full-width" style="background: #f8fafc; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 15px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                            <label style="font-weight: 800; color: #1e293b; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;">Configuración de Cámara</label>
+                                            <select id="selInitCamMode" class="mini-select" onchange="toggleCamInputs('root')" style="border-color: #3874ff; color: #3874ff;">
+                                                <option value="names">Nombres (Objetos)</option>
+                                                <option value="coords">Coordenadas (Manual)</option>
+                                                <option value="log">Log de Consola (Auto)</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <!-- Modo Nombres / Coordenadas (Ambos usan 2 inputs) -->
+                                        <div id="root-cam-manual" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                            <div class="form-group">
+                                                <label id="lblInitPos">Objeto Posición</label>
+                                                <input type="text" id="inpInitCam" placeholder="Cam_Pos_01" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label id="lblInitDir">Objeto Dirección</label>
+                                                <input type="text" id="inpInitDir" placeholder="Cam_Dir_01" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Modo Log -->
+                                        <div id="root-cam-log" style="display: none; animation: slideIn 0.2s ease-out;">
+                                            <div class="form-group">
+                                                <label>Pegar Log Completo de la Consola</label>
+                                                <div style="display: flex; gap: 8px;">
+                                                    <input type="text" id="inpInitRawLog" placeholder="[Camera Log] Pos: [...] Target: [...]" style="flex: 1; font-family: monospace; font-size: 11px;" />
+                                                    <button type="button" class="btn-save" style="margin:0; padding: 0 15px; height: 38px; font-size: 11px;" onclick="processRawCamLog('root')">Aplicar</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Cámara Dirección</label>
-                                        <input type="text" id="inpInitDir" placeholder="Cam_Dir_01" />
-                                    </div>
-                                </div>
                                 
                                 <div style="margin-top:15px; padding: 10px; background: #f1f5f9; border-radius: 4px;">
                                     <label style="color:#1e293b; font-weight: bold;">1. Visibilidad Inicial</label>
@@ -179,8 +218,40 @@
                                 </div>
                             </div>
                             <div class="form-group"> <label>Etiqueta / ID</label> <input type="text" id="inpEtiqueta" placeholder="Ej: etiquetaPosObj" /> </div>
-                            <div class="form-group"> <label>Posición (Cámara)</label> <input type="text" id="inpPosicion" placeholder="COORDENADA_POS" /> </div>
-                            <div class="form-group"> <label>Dirección (Cámara)</label> <input type="text" id="inpDireccion" placeholder="COORDENADA_DIR" /> </div>
+                             
+                             <div class="form-group full-width" style="background: #f1f5f9; padding: 15px; border-radius: 12px; border: 1px solid #cbd5e1; grid-column: span 2; margin-bottom: 10px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                    <label style="font-weight: 800; color: #334155; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;">Configuración de Cámara</label>
+                                    <select id="selStepCamMode" class="mini-select" onchange="toggleCamInputs('step')" style="border-color: #3874ff; color: #3874ff;">
+                                        <option value="names">Nombres (Objetos)</option>
+                                        <option value="coords">Coordenadas (Manual)</option>
+                                        <option value="log">Log de Consola (Auto)</option>
+                                    </select>
+                                </div>
+
+                                <!-- Modo Nombres / Coordenadas -->
+                                <div id="step-cam-manual" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                    <div class="form-group">
+                                        <label id="lblStepPos">Objeto Posición</label>
+                                        <input type="text" id="inpPosicion" placeholder="COORDENADA_POS" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label id="lblStepDir">Objeto Dirección</label>
+                                        <input type="text" id="inpDireccion" placeholder="COORDENADA_DIR" />
+                                    </div>
+                                </div>
+
+                                <!-- Modo Log -->
+                                <div id="step-cam-log" style="display: none; animation: slideIn 0.2s ease-out;">
+                                    <div class="form-group">
+                                        <label>Pegar Log Completo de la Consola</label>
+                                        <div style="display: flex; gap: 8px;">
+                                            <input type="text" id="inpStepRawLog" placeholder="[Camera Log] Pos: [...] Target: [...]" style="flex: 1; font-family: monospace; font-size: 11px;" />
+                                            <button type="button" class="btn-save" style="margin:0; padding: 0 15px; height: 38px; font-size: 11px;" onclick="processRawCamLog('step')">Aplicar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                             </div>
                             
                             <div class="form-group full-width" style="margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px;">
                                 <label style="cursor:pointer; display:flex; align-items:center; gap:8px;">

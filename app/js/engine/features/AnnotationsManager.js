@@ -26,11 +26,7 @@ export class AnnotationsManager {
 
     getObjectByName(name) {
         if (!name || !this.appInstance) return null;
-        let objTarget = null;
-        this.appInstance.scene.traverse((obj) => {
-            if (obj.name === name) objTarget = obj;
-        });
-        return objTarget;
+        return this.appInstance.scene.getObjectByName(name);
     }
 
     handleAnnot(add, sel, annotText, contents, id) {

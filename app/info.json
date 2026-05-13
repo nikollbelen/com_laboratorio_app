@@ -6,10 +6,32 @@
   "menuIconImage": "./images/icon1.png",
   "themeColor": "#10b981",
   "inicioEstado": {
-    "camara": "Cam_Pos_01",
-    "camaraDireccion": "Cam_Dir_01",
+    "camara": "[-4004.453, 1836.578, 5339.057]",
+    "camaraDireccion": "[-844.337, 599.293, 652.299]",
     "ocultarObjetos": [
-      "flechas01_mesh"
+      "mineral02_mesh",
+      "mineral03_mesh",
+      "materialLiquido_mesh",
+      "flechas02_mesh",
+      "flechas03_mesh",
+      "flechas01_mesh",
+      "ball_01_mesh",
+      "ball_02_mesh",
+      "ball_03_mesh",
+      "ball_04_mesh",
+      "ball_05_mesh",
+      "ball_06_mesh",
+      "ball_07_mesh",
+      "ball_08_mesh",
+      "ball_09_mesh",
+      "ball_10_mesh",
+      "ball_11_mesh",
+      "ball_12_mesh",
+      "ball_13_mesh",
+      "ball_14_mesh",
+      "ball_15_mesh",
+      "ballExtra_01_mesh",
+      "ballExtra_02_mesh"
     ],
     "animacionInicio": null
   },
@@ -21,7 +43,36 @@
       "icon": "deployed_code",
       "animaciones": [],
       "objetos_mostrar": [],
-      "objetos_ocultar": []
+      "objetos_ocultar": [
+        "mineral02_mesh",
+        "mineral03_mesh",
+        "materialLiquido_mesh",
+        "flechas02_mesh",
+        "flechas03_mesh",
+        "flechas01_mesh",
+        "ball_01_mesh",
+        "ball_02_mesh",
+        "ball_03_mesh",
+        "ball_04_mesh",
+        "ball_05_mesh",
+        "ball_06_mesh",
+        "ball_07_mesh",
+        "ball_08_mesh",
+        "ball_09_mesh",
+        "ball_10_mesh",
+        "ball_11_mesh",
+        "ball_12_mesh",
+        "ball_13_mesh",
+        "ball_14_mesh",
+        "ball_15_mesh",
+        "ballExtra_01_mesh",
+        "ballExtra_02_mesh"
+      ],
+      "camara": "[-4004.453, 1836.578, 5339.057]",
+      "camaraDireccion": "[-844.337, 599.293, 652.299]",
+      "objeto_resaltar": [],
+      "detener_animaciones": true,
+      "audio_path": "audios/1.mp3"
     },
     {
       "id": "paso2",
@@ -30,16 +81,300 @@
       "icon": "settings_input_component",
       "animaciones": [],
       "objetos_mostrar": [],
-      "objetos_ocultar": []
+      "objetos_ocultar": [
+        "mineral02_mesh",
+        "mineral03_mesh",
+        "materialLiquido_mesh",
+        "flechas02_mesh",
+        "flechas03_mesh",
+        "flechas01_mesh",
+        "ball_01_mesh",
+        "ball_02_mesh",
+        "ball_03_mesh",
+        "ball_04_mesh",
+        "ball_05_mesh",
+        "ball_06_mesh",
+        "ball_07_mesh",
+        "ball_08_mesh",
+        "ball_09_mesh",
+        "ball_10_mesh",
+        "ball_11_mesh",
+        "ball_12_mesh",
+        "ball_13_mesh",
+        "ball_14_mesh",
+        "ball_15_mesh",
+        "ballExtra_01_mesh",
+        "ballExtra_02_mesh"
+      ],
+      "camara": "[-706.592, 790.770, 6349.141]",
+      "camaraDireccion": "[-423.954, 620.798, -486.737]",
+      "objeto_resaltar": [],
+      "detener_animaciones": true,
+      "audio_path": "audios/2.mp3",
+      "_children": null
     },
     {
       "id": "paso3",
       "ESdescription": "Explosion",
       "ENdescription": "Explosion",
       "icon": "open_in_full",
-      "animaciones": [],
+      "animaciones": [
+        {
+          "nombre": "chuteAlimentacion_group",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "rotor_group",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "cojineteFijoA_group",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "cojineteFront_P01_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "cojineteFront_P02_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "padHidro01_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "padEmpuje_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "trunionA_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "tapaA_group",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "estator02_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "estator03_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "estator04_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "estator01_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "revestimientos02_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "revestimientos04_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "lub_group",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "conjuntoFreno_group",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "freno02_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "shell_group",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "tapaDescarga_group",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "tapaMolino03_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "trunioD_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "cojineteD_group",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "cojinetePost_P01_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "cojinetePost_P02_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "padHidro02_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "tromel_group",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "chute_mesh",
+          "frame": [
+            300,
+            380
+          ],
+          "modo": "LoopOnce"
+        }
+      ],
       "objetos_mostrar": [],
-      "objetos_ocultar": []
+      "objetos_ocultar": [
+        "mineral02_mesh",
+        "mineral03_mesh",
+        "materialLiquido_mesh",
+        "flechas02_mesh",
+        "flechas03_mesh",
+        "flechas01_mesh",
+        "ball_01_mesh",
+        "ball_02_mesh",
+        "ball_03_mesh",
+        "ball_04_mesh",
+        "ball_05_mesh",
+        "ball_06_mesh",
+        "ball_07_mesh",
+        "ball_08_mesh",
+        "ball_09_mesh",
+        "ball_10_mesh",
+        "ball_11_mesh",
+        "ball_12_mesh",
+        "ball_13_mesh",
+        "ball_14_mesh",
+        "ball_15_mesh",
+        "ballExtra_01_mesh",
+        "ballExtra_02_mesh"
+      ],
+      "camara": "[-3036.428, 2193.488, 6394.333]",
+      "camaraDireccion": "[-686.893, 915.346, 94.807]",
+      "objeto_resaltar": [],
+      "detener_animaciones": true,
+      "audio_path": "audios/3.mp3"
     },
     {
       "id": "paso4",
@@ -48,20 +383,321 @@
       "icon": "document_scanner",
       "animaciones": [],
       "objetos_mostrar": [],
-      "objetos_ocultar": []
+      "objetos_ocultar": [
+        "mineral02_mesh",
+        "mineral03_mesh",
+        "materialLiquido_mesh",
+        "flechas02_mesh",
+        "flechas03_mesh",
+        "flechas01_mesh",
+        "ball_01_mesh",
+        "ball_02_mesh",
+        "ball_03_mesh",
+        "ball_04_mesh",
+        "ball_05_mesh",
+        "ball_06_mesh",
+        "ball_07_mesh",
+        "ball_08_mesh",
+        "ball_09_mesh",
+        "ball_10_mesh",
+        "ball_11_mesh",
+        "ball_12_mesh",
+        "ball_13_mesh",
+        "ball_14_mesh",
+        "ball_15_mesh",
+        "ballExtra_01_mesh",
+        "ballExtra_02_mesh"
+      ],
+      "camara": "",
+      "camaraDireccion": "",
+      "objeto_resaltar": [],
+      "detener_animaciones": true,
+      "audio_path": "audios/4.mp3"
     },
     {
       "id": "paso5",
       "ESdescription": "Animacion",
       "ENdescription": "Animation",
       "icon": "play_circle",
-      "animaciones": [],
+      "animaciones": [
+        {
+          "nombre": "SAG_lc",
+          "frame": [
+            0,
+            300
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola01_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola02_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola03_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola04_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola05_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola06_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola07_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola08_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola09_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola10_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola11_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola12_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola13_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola14_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola15_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bolasExtra01_lc",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bolasExtra02_lc",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "flechas02_mesh",
+          "frame": [
+            0,
+            300
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "flechas03_mesh",
+          "frame": [
+            0,
+            300
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "mineral03_mesh",
+          "frame": [
+            0,
+            300
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_main_jnt",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt2",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt3",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt4",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt5",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt6",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt7",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt8",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt9",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt10",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt11",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt12",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        }
+      ],
       "objetos_mostrar": [],
-      "objetos_ocultar": [],
-      "camara": "",
-      "camaraDireccion": "",
+      "objetos_ocultar": [
+        "chute_mesh",
+        "tapaD_mesh",
+        "revestimientos03_mesh",
+        "cojinetePost_P01_mesh",
+        "cojinetePost_P02_mesh",
+        "trunioD_mesh"
+      ],
+      "camara": "cam_Pos25",
+      "camaraDireccion": "cam_Dir25",
       "objeto_resaltar": [],
-      "detener_animaciones": false,
+      "detener_animaciones": true,
       "audio_path": "audios/5.mp3"
     }
   ],

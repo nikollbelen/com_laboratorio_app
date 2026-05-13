@@ -69,10 +69,10 @@ export class ModalEquipo {
         this.container.innerHTML = `
             <div class="ModalEquipo-root dark fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300">
                 <!-- Backdrop Blur -->
-                <div class="absolute inset-0 bg-surface/20 backdrop-blur-md"></div>
+                <div class="absolute inset-0 bg-white/10 backdrop-blur-md"></div>
 
                 <div class="ModalEquipo-glass-panel w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl relative flex flex-col overflow-hidden animate-in fade-in zoom-in duration-500 z-10"
-                     style="background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.5); backdrop-filter: blur(20px);">
+                     style="background: rgba(255, 255, 255, 0.75); border: 1px solid rgba(255, 255, 255, 0.5); backdrop-filter: blur(25px);">
                     
                     <!-- Close Button -->
                     <button class="ModalEquipo-close absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/5 text-[#1a1c1e] hover:text-black transition-colors z-20">
@@ -82,7 +82,7 @@ export class ModalEquipo {
                     <!-- Header -->
                     <div class="p-8 pb-4">
                         <h2 class="text-primary font-display text-2xl md:text-3xl font-bold tracking-[0.15em] mb-1 uppercase">${t.title}</h2>
-                        <p class="font-bold text-xs md:text-sm text-[#1a1c1e]/70">${t.subtitle}</p>
+                        <p class="text-xs md:text-sm text-[#1a1c1e]/70 font-normal tracking-wide">${t.subtitle}</p>
                     </div>
 
                     <!-- Content -->
@@ -96,45 +96,45 @@ export class ModalEquipo {
                             
                             <div class="flex items-center gap-3 pt-2">
                                 <span class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color: var(--color-primary); opacity: 0.65;">${t.estado}</span>
-                                <span class="flex items-center gap-2 px-3 py-1 bg-green-500/10 text-green-400 rounded-full text-xs font-bold border border-green-500/20">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                                <span class="flex items-center gap-2 px-3 py-1 bg-green-500/10 text-green-600 rounded-full text-xs font-bold border border-green-500/20">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
                                     ${this.data.status}
                                 </span>
                             </div>
                         </div>
                         <!-- Right Section (Maintenance/History) -->
-                        <div class="bg-white/5 rounded-lg p-5 md:p-6 border border-white/5 space-y-6">
-                            <h3 class="text-xs font-bold text-primary uppercase tracking-[0.15em] mb-4 border-b border-white/10 pb-2">
+                        <div class="bg-black/5 rounded-2xl p-5 md:p-6 border border-black/5 space-y-6">
+                            <h3 class="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-4 border-b border-black/5 pb-2">
                                 ${t.mantenimiento}</h3>
                             <div class="space-y-4">
                                 ${this.renderHistoryItem(t.ultima, this.data.lastInspection)}
                                 ${this.renderHistoryItem(t.proxima, this.data.nextService)}
-                                ${this.renderHistoryItem(t.componentes, t.ok, 'text-green-400')}
+                                ${this.renderHistoryItem(t.componentes, t.ok, 'text-green-600')}
                             </div>
                             <!-- Symbolic Bar Chart -->
                             <div class="pt-4">
                                 <div class="flex justify-between items-end mb-2">
-                                    <span class="text-[10px] uppercase tracking-wider text-[#1a1c1e]/60 font-bold">${t.desgaste}</span>
-                                    <span class="text-xs text-[#1a1c1e] font-bold">${this.data.wear}</span>
+                                    <span class="text-[10px] uppercase tracking-wider text-[#1a1c1e]/50 font-bold">${t.desgaste}</span>
+                                    <span class="text-xs text-[#1a1c1e]/80 font-bold">${this.data.wear}</span>
                                 </div>
                                 <div class="flex items-end gap-1.5 h-16">
-                                    <div class="w-full h-[20%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.4);"></div>
-                                    <div class="w-full h-[35%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.4);"></div>
-                                    <div class="w-full h-[25%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.4);"></div>
-                                    <div class="w-full h-[45%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.4);"></div>
-                                    <div class="w-full h-[30%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.4);"></div>
+                                    <div class="w-full h-[20%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.3);"></div>
+                                    <div class="w-full h-[35%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.3);"></div>
+                                    <div class="w-full h-[25%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.3);"></div>
+                                    <div class="w-full h-[45%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.3);"></div>
+                                    <div class="w-full h-[30%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.3);"></div>
                                     <div class="w-full h-[15%] rounded-t-sm" style="background-color: var(--color-primary); box-shadow: 0 0 10px var(--glow-primary);"></div>
-                                    <div class="w-full h-[20%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.4);"></div>
-                                    <div class="w-full h-[40%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.4);"></div>
+                                    <div class="w-full h-[20%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.3);"></div>
+                                    <div class="w-full h-[40%] rounded-t-sm" style="background-color: rgba(var(--color-primary-rgb), 0.3);"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- Footer / Bottom Section -->
                     <div class="p-4 md:p-8 pt-0 md:pt-4 flex justify-center flex-shrink-0">
-                        <button class="w-full px-6 py-2.5 md:py-4 bg-primary text-on-primary font-bold rounded-xl md:rounded-2xl hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-lg text-[11px] md:text-base uppercase tracking-[0.15em] md:tracking-wider group">
+                        <button class="w-full px-6 py-3 md:py-4 bg-primary text-on-primary font-bold rounded-full hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-lg text-sm md:text-base uppercase tracking-wider group">
                             <span class="text-center">${t.ficha}</span>
-                            <span class="hidden md:block material-symbols-outlined text-xl transition-transform group-hover:translate-x-1">arrow_forward</span>
+                            <span class="material-symbols-outlined text-xl transition-transform group-hover:translate-x-1">arrow_forward</span>
                         </button>
                     </div>
                 </div>
@@ -143,6 +143,16 @@ export class ModalEquipo {
                 .ModalEquipo-root.visible {
                     opacity: 1;
                     pointer-events: auto;
+                }
+                .ModalEquipo-custom-scrollbar::-webkit-scrollbar {
+                    width: 4px;
+                }
+                .ModalEquipo-custom-scrollbar::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+                .ModalEquipo-custom-scrollbar::-webkit-scrollbar-thumb {
+                    background: rgba(var(--color-primary-rgb), 0.2);
+                    border-radius: 10px;
                 }
             </style>
         `;

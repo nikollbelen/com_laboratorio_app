@@ -112,6 +112,26 @@ El servidor expone los siguientes endpoints para facilitar la integración con e
 5. **Siempre usa `build:dry` antes de entregar**: Confirma qué archivos irán al cliente antes de hacer el build definitivo.
 
 ---
+
+## 📸 Herramientas de Depuración de Cámara
+
+Para facilitar la configuración de las coordenadas de la cámara en el `info.json`, el motor incluye un sistema de depuración que permite la traslación manual (no solo órbita) y el monitoreo en tiempo real.
+
+### Comandos de Consola (F12)
+
+| Función | Descripción |
+|---|---|
+| `enableCameraDebug()` | Activa el panel de control manual (flechas en pantalla) y habilita los logs de coordenadas en la consola. |
+| `disableCameraDebug()` | Oculta el panel de depuración y deshabilita los logs de cámara. |
+
+### Características del Debugger
+
+- **Traslación Pura:** A diferencia del control de órbita estándar (zoom), los botones **F** (Adelante) y **B** (Atrás) mueven físicamente la cámara y su punto de enfoque por el espacio, permitiendo encuadres precisos.
+- **Monitoreo en Tiempo Real:** El panel muestra las coordenadas exactas de **Posición** (POS) y **Objetivo** (TAR).
+- **Logs Copiables:** Cada movimiento imprime en la consola una línea con el formato exacto que espera el Editor: `[Camera Log] Pos: [...] Target: [...]`.
+- **Sensibilidad:** El sistema está calibrado con saltos de 50 unidades para un ajuste fino y profesional.
+
+---
 *Desarrollado con estándares de ingeniería senior para máxima escalabilidad.*
 
 ---

@@ -54,6 +54,10 @@ export class V3DEngine {
         this.instance = iframeWindow.v3d.apps[0];
         
         this.camera = new CameraController(this.instance);
+        // Exponer funciones globales para la consola
+        window.enableCameraDebug = () => this.camera.enableDebug();
+        window.disableCameraDebug = () => this.camera.disableDebug();
+
         this.visibility = new VisibilityManager(this.instance);
         this.highlights = new HighlightManager(this.instance, iframeWindow);
         this.animations = new AnimationPlayer(this.instance, iframeWindow);
@@ -61,7 +65,9 @@ export class V3DEngine {
         this.audio = new AudioManager();
         
         this.ready = true;
-        console.log('[V3DEngine] Motor 3D modular inicializado y conectado.');
+        console.log('[V3DEngine] Motor 3D modular inicializado.');
+        console.log('%c[Debug Tip] %cEscribe %cenableCameraDebug()%c para activar el control manual y logs de cámara.', 
+            'color: #ff00ff; font-weight: bold;', 'color: white;', 'color: #00ff00; font-family: monospace;', 'color: white;');
     }
 
     resetScene(inicioConfig) {
