@@ -1,0 +1,1924 @@
+{
+  "laboratorio": "Molino SAG",
+  "verge3dUrl": "./verge3d_assets/CHINALCO_MOLINO_SAG.html",
+  "imageUrl": "./images/fondo.png",
+  "logoUrl": "./images/logo_chinalco.png",
+  "menuIconImage": "./images/icon1.png",
+  "themeColor": "#3874ff",
+  "inicioEstado": {
+    "camara": "Cam_Pos_01",
+    "camaraDireccion": "Cam_Dir_01",
+    "ocultarObjetos": [
+      "flechas01_mesh"
+    ],
+    "animacionInicio": null
+  },
+  "menu": [
+    {
+      "id": "paso1",
+      "icon": "./images/icon3.png",
+      "ESdescription": "Vista libre",
+      "ENdescription": "Free view",
+      "camara": "Cam_Pos_01",
+      "camaraDireccion": "Cam_Dir_01",
+      "animaciones": [],
+      "objetos_ocultar": [
+        "flechas01_mesh"
+      ],
+      "objeto_resaltar": [],
+      "detener_animaciones": true
+    },
+    {
+      "id": "paso2",
+      "icon": "./images/icon4.png",
+      "ESdescription": "Partes",
+      "ENdescription": "Parts",
+      "camara": "Cam_Pos_2",
+      "camaraDireccion": "Cam_Dir_2",
+      "animaciones": [],
+      "objetos_ocultar": [
+        "flechas01_mesh",
+        "mineral02_mesh",
+        "mineral03_mesh",
+        "materialLiquido_mesh",
+        "plano_mesh",
+        "ballExtra_02_mesh",
+        "ball_02_mesh",
+        "ball_03_mesh",
+        "ball_04_mesh",
+        "ball_05_mesh",
+        "ball_06_mesh",
+        "ball_07_mesh",
+        "ball_01_mesh",
+        "ball_08_mesh",
+        "ball_09_mesh",
+        "ball_10_mesh",
+        "ball_11_mesh",
+        "ball_12_mesh",
+        "ball_15_mesh",
+        "ballExtra_01_mesh",
+        "ball_13_mesh",
+        "ball_14_mesh"
+      ],
+      "objeto_resaltar": [],
+      "detener_animaciones": true,
+      "children": [
+        {
+          "id": "paso2_1",
+          "ESdescription": "Cajón de alimentación",
+          "ENdescription": "Feed Box",
+          "etiqueta": "cajon_alimentacion01_etiqueta_lc",
+          "flecha": "cajon_alimentacion01_lc",
+          "camara": "Cam_Pos_3x",
+          "camaraDireccion": "Cam_Dir_3x",
+          "objeto_resaltar": [
+            "cajon_de_alimentación_mesh",
+            "carro_movil_mesh",
+            "Cajon_estabilizador_mesh",
+            "Conducto_de_alimentación_mesh"
+          ],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ]
+        },
+        {
+          "id": "paso2_2",
+          "ESdescription": "Cojinete lado alimentación",
+          "ENdescription": "Feed Side Bearing",
+          "etiqueta": "cojinete_alimentacionn_etiqueta_lc",
+          "flecha": "cojinete_alimentacionn_lc",
+          "camara": "Cam_Pos_4x",
+          "camaraDireccion": "Cam_Dir_4x",
+          "objeto_resaltar": [
+            "A_base_pad_hidrostático_mesh",
+            "A_carcasa_mesh1",
+            "trunion_alimentación_mesh"
+          ],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ]
+        },
+        {
+          "id": "paso2_3",
+          "ESdescription": "Accionamiento del molino",
+          "ENdescription": "Mill Drive System",
+          "etiqueta": "accionamiento_etiqueta_lc",
+          "flecha": "accionamiento_lc",
+          "camara": "Cam_Pos_5x",
+          "camaraDireccion": "Cam_Dir_5x",
+          "objeto_resaltar": [
+            "motor_gearless_mesh",
+            "TUBO_PARED1",
+            "estator04_mesh",
+            "estator02_mesh",
+            "estator03_mesh"
+          ],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ]
+        },
+        {
+          "id": "paso2_4",
+          "ESdescription": "Coraza del molino",
+          "ENdescription": "Mill Shell Liners",
+          "etiqueta": "corasa_molino_etiqueta_lc",
+          "flecha": "corasa_molino_lc",
+          "camara": "Cam_Pos_6x",
+          "camaraDireccion": "Cam_Dir_6x",
+          "objeto_resaltar": [
+            "tapa_de_descarga_mesh",
+            "trunion_alimentación_mesh",
+            "shell_mesh",
+            "trunion_descarga_mesh",
+            "tapa_de_alimentación_mesh"
+          ],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ]
+        },
+        {
+          "id": "paso2_5",
+          "ESdescription": "Sistema de freno",
+          "ENdescription": "Braking System",
+          "etiqueta": "Sistema_de_freno_etiqueta_lc",
+          "flecha": "Sistema_de_freno_lc",
+          "camara": "Cam_Pos_8x",
+          "camaraDireccion": "Cam_Dir_8x",
+          "objeto_resaltar": [
+            "CONJUNTO_DE_FRENO1_mesh",
+            "sistema_de_freno_mesh"
+          ],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ]
+        },
+        {
+          "id": "paso2_6",
+          "ESdescription": "Cojinete lado descarga",
+          "ENdescription": "Discharge Side Bearing",
+          "etiqueta": "D_N_cojinete_descarga_etiqueta_lc",
+          "flecha": "D_N_cojinete_descarga_lc",
+          "camara": "Cam_Pos_7x",
+          "camaraDireccion": "Cam_Dir_7x",
+          "objeto_resaltar": [
+            "A_carcasa_mesh2",
+            "D_base_pad_hidrostático_mesh"
+          ],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ]
+        },
+        {
+          "id": "paso2_7",
+          "ESdescription": "Trommel",
+          "ENdescription": "Trommel Screen",
+          "etiqueta": "trommel_etiqueta_lc",
+          "flecha": "trommel_lc",
+          "camara": "Cam_Pos_9x",
+          "camaraDireccion": "Cam_Dir_9x",
+          "objeto_resaltar": [
+            "adicional_trommel_mesh_2",
+            "adicional_trommel_mesh"
+          ],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paso3",
+      "icon": "./images/icon5.png",
+      "ESdescription": "Explosión",
+      "ENdescription": "Explosion",
+      "camara": "Cam_Pos_11x",
+      "camaraDireccion": "Cam_Dir_11x",
+      "explosion": true,
+      "animaciones": [
+        {
+          "nombre": "CHUTE_DE_DESCARGA_lc2",
+          "frame": [
+            1100,
+            1193
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "CHUTE_DE_ALIMENTACIÓN_grp",
+          "frame": [
+            1163,
+            1193
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "TROMMEL_lc",
+          "frame": [
+            1193,
+            1253
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "BASE_PAD",
+          "frame": [
+            1233,
+            1263
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "COJINETE_DESCARGA_lc",
+          "frame": [
+            1233,
+            1263
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "Cojinete_alimentación_carcasa_grp",
+          "frame": [
+            1263,
+            1283
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "Cojinete_descarga_carcasa_lc",
+          "frame": [
+            1263,
+            1283
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "TRUNION_DESCARGA_lc",
+          "frame": [
+            1283,
+            1313
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "TRUNION_ALIMENTACIÓN_lc",
+          "frame": [
+            1283,
+            1313
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "CILINDRO_EXTERNO_LATERAL_I_lc",
+          "frame": [
+            1303,
+            1333
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "CILINDRO_EXTERNO_LATERAL_D_lc",
+          "frame": [
+            1303,
+            1333
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "CONCRETO_A_01_lc",
+          "frame": [
+            1323,
+            1383
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "CONCRETO_A_02_lc",
+          "frame": [
+            1323,
+            1383
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "CONCRETO_B_01_lc",
+          "frame": [
+            1323,
+            1383
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "CONCRETO_B_05_lc",
+          "frame": [
+            1323,
+            1383
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "MOTOR_GEARLESS_GMD_lc",
+          "frame": [
+            1383,
+            1413
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "REVESTIMIENTO",
+          "frame": [
+            1413,
+            1443
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "REVESTIMIENTO_EXTRACCIÓN",
+          "frame": [
+            1443,
+            1470
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "LINERS2_lc",
+          "frame": [
+            1463,
+            1483
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "LINERS_lc",
+          "frame": [
+            1463,
+            1483
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "LINERS_3_lc",
+          "frame": [
+            1483,
+            1513
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "LINERS_2_lc",
+          "frame": [
+            1483,
+            1513
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "LINERS_1_lc",
+          "frame": [
+            1483,
+            1513
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "division_1_trommel_lc",
+          "frame": [
+            1193,
+            1283
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "malla_ranurada_trl_grp",
+          "frame": [
+            1193,
+            1303
+          ],
+          "modo": "LoopOnce"
+        },
+        {
+          "nombre": "COJINETE_ALIMENTACIoN_grpp",
+          "frame": [
+            1233,
+            1283
+          ],
+          "modo": "LoopOnce"
+        }
+      ],
+      "detener_animaciones": true,
+      "objetos_ocultar": [
+        "flechas01_mesh",
+        "mineral02_mesh",
+        "mineral03_mesh",
+        "materialLiquido_mesh",
+        "plano_mesh",
+        "ballExtra_02_mesh",
+        "ball_02_mesh",
+        "ball_03_mesh",
+        "ball_04_mesh",
+        "ball_05_mesh",
+        "ball_06_mesh",
+        "ball_07_mesh",
+        "ball_01_mesh",
+        "ball_08_mesh",
+        "ball_09_mesh",
+        "ball_10_mesh",
+        "ball_11_mesh",
+        "ball_12_mesh",
+        "ball_15_mesh",
+        "ballExtra_01_mesh",
+        "ball_13_mesh",
+        "ball_14_mesh"
+      ],
+      "objeto_resaltar": [],
+      "children": [
+        {
+          "id": "paso3_1",
+          "ESdescription": "Chute de alimentación",
+          "ENdescription": "Feed Chute",
+          "etiqueta": "cajon_alimentacion01_etiqueta_lc",
+          "flecha": "cajon_alimentacion01_lc",
+          "camara": "Cam_Pos_3x",
+          "camaraDireccion": "Cam_Dir_3x",
+          "objeto_resaltar": [
+            "cajon_de_alimentación_mesh",
+            "carro_movil_mesh",
+            "Cajon_estabilizador_mesh",
+            "Conducto_de_alimentación_mesh"
+          ],
+          "children": [
+            {
+              "id": "paso3_1_1",
+              "ESdescription": "Carro de traslación",
+              "ENdescription": "Translation Car",
+              "etiqueta": "Carro_movil_etiqueta_lc",
+              "flecha": "Carro_movil_lc",
+              "camara": "Cam_Pos_3x",
+              "camaraDireccion": "Cam_Dir_3x",
+              "objeto_resaltar": [
+                "carro_movil_mesh"
+              ],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ]
+            },
+            {
+              "id": "paso3_1_2",
+              "ESdescription": "Tubería descarga",
+              "ENdescription": "Discharge Piping",
+              "etiqueta": "Conducto_de_alimentación_etiqueta_lc",
+              "flecha": "Conducto_de_alimentación_lc",
+              "camara": "Cam_Pos_3x",
+              "camaraDireccion": "Cam_Dir_3x",
+              "objeto_resaltar": [
+                "Conducto_de_alimentación_mesh"
+              ],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ]
+            }
+          ],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ]
+        },
+        {
+          "id": "paso3_2",
+          "ESdescription": "Cojinete lado alimentación",
+          "ENdescription": "Feed Side Bearing",
+          "etiqueta": "cojinete_alimentacionn_etiqueta_lc",
+          "flecha": "cojinete_alimentacionn_lc",
+          "camara": "Cam_Pos_4x",
+          "camaraDireccion": "Cam_Dir_4x",
+          "objeto_resaltar": [
+            "A_base_pad_hidrostático_mesh",
+            "A_carcasa_mesh1"
+          ],
+          "animaciones": [],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ],
+          "detener_animaciones": false,
+          "children": [
+            {
+              "id": "paso3_2_1",
+              "ESdescription": "Sistema de lubricación",
+              "ENdescription": "Lubrication System",
+              "etiqueta": "A_Sistema_de_lubricación_etiqueta_lc",
+              "flecha": "A_Sistema_de_lubricación_lc",
+              "camara": "Cam_Pos_4x",
+              "camaraDireccion": "Cam_Dir_4x",
+              "objeto_resaltar": [
+                "sistema_lubricacion_mesh"
+              ],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ]
+            },
+            {
+              "id": "paso3_2_2",
+              "ESdescription": "Lift pad esclavo",
+              "ENdescription": "Slave Lift Pad",
+              "etiqueta": "lif_pad_esclavo_lc",
+              "flecha": "lif_pad_esclavo_etiqueta_lc",
+              "camara": "Cam_Pos_4x",
+              "camaraDireccion": "Cam_Dir_4x",
+              "objeto_resaltar": [
+                "lif_pad_esclavo_mesh"
+              ],
+              "animaciones": [],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ],
+              "detener_animaciones": false
+            },
+            {
+              "id": "paso3_2_3",
+              "ESdescription": "Thrust pad",
+              "ENdescription": "Thrust Pad",
+              "etiqueta": "A_pad_hidrostatico_axial_etiqueta_lc",
+              "flecha": "A_pad_hidrostatico_axial_lc",
+              "camara": "Cam_Pos_4x",
+              "camaraDireccion": "Cam_Dir_4x",
+              "objeto_resaltar": [
+                "pad_axial_mesh"
+              ],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ]
+            },
+            {
+              "id": "paso3_2_4",
+              "ESdescription": "Lift pad maestro",
+              "ENdescription": "Master Lift Pad",
+              "etiqueta": "lif_pad_maestro_lc",
+              "flecha": "lif_pad_maestro_etiqueta_lc",
+              "camara": "Cam_Pos_4x",
+              "camaraDireccion": "Cam_Dir_4x",
+              "objeto_resaltar": [
+                "lif_pad_maestro_mesh"
+              ],
+              "animaciones": [],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ],
+              "detener_animaciones": false
+            }
+          ]
+        },
+        {
+          "id": "paso3_3",
+          "ESdescription": "Motor gearless",
+          "ENdescription": "Gearless Motor",
+          "etiqueta": "accionamiento_etiqueta_lc",
+          "flecha": "accionamiento_lc",
+          "camara": "Cam_Pos_5x",
+          "camaraDireccion": "Cam_Dir_5x",
+          "objeto_resaltar": [
+            "motor_gearless_mesh",
+            "TUBO_PARED1",
+            "estator04_mesh",
+            "estator02_mesh",
+            "estator03_mesh"
+          ],
+          "children": [
+            {
+              "id": "paso3_3_1",
+              "ESdescription": "Estator del motor",
+              "ENdescription": "Motor Stator",
+              "etiqueta": "accionamiento_etiqueta_lc",
+              "flecha": "accionamiento_lc",
+              "camara": "Cam_Pos_5x",
+              "camaraDireccion": "Cam_Dir_5x",
+              "objeto_resaltar": [
+                "motor_gearless_mesh"
+              ],
+              "animaciones": [],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ],
+              "detener_animaciones": false
+            }
+          ],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ]
+        },
+        {
+          "id": "paso3_4",
+          "ESdescription": "Coraza del molino",
+          "ENdescription": "Mill Shell",
+          "etiqueta": "corasa_molino_etiqueta_lc",
+          "flecha": "corasa_molino_lc",
+          "camara": "Cam_Pos_6x",
+          "camaraDireccion": "Cam_Dir_6x",
+          "objeto_resaltar": [
+            "tapa_de_descarga_mesh",
+            "trunion_alimentación_mesh",
+            "shell_mesh",
+            "trunion_descarga_mesh",
+            "tapa_de_alimentación_mesh"
+          ],
+          "animaciones": [],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ],
+          "detener_animaciones": false,
+          "children": [
+            {
+              "id": "paso3_4_1",
+              "ESdescription": "Trunnion alimentación",
+              "ENdescription": "Feed Trunnion",
+              "etiqueta": "N_trunion_de_alimentación_etiqueta_lc",
+              "flecha": "N_trunion_de_alimentación_lc",
+              "camara": "Cam_Pos_14x",
+              "camaraDireccion": "Cam_Dir_14x",
+              "objeto_resaltar": [
+                "trunion_alimentación_mesh"
+              ],
+              "animaciones": [],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ],
+              "detener_animaciones": false
+            },
+            {
+              "id": "paso3_4_2",
+              "ESdescription": "Casco del molino",
+              "ENdescription": "Mill Shell / Body",
+              "etiqueta": "N_tapa_de_descarga_etiqueta_lc",
+              "flecha": "N_tapa_de_descarga_lc",
+              "camara": "Cam_Pos_16x",
+              "camaraDireccion": "Cam_Dir_16x",
+              "objeto_resaltar": [
+                "tapa_de_descarga_mesh"
+              ],
+              "animaciones": [],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ],
+              "detener_animaciones": false
+            },
+            {
+              "id": "paso3_4_3",
+              "ESdescription": "Trunnion descarga",
+              "ENdescription": "Discharge Trunnion",
+              "etiqueta": "N_trunion_de_descarga_etiqueta_lc",
+              "flecha": "N_trunion_de_descarga_lc",
+              "camara": "Cam_Pos_15x",
+              "camaraDireccion": "Cam_Dir_15x",
+              "objeto_resaltar": [
+                "trunion_descarga_mesh"
+              ],
+              "animaciones": [],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ],
+              "detener_animaciones": false
+            }
+          ]
+        },
+        {
+          "id": "paso3_5",
+          "ESdescription": "Sistema de freno",
+          "ENdescription": "Braking System",
+          "etiqueta": "Sistema_de_freno_etiqueta_lc",
+          "flecha": "Sistema_de_freno_lc",
+          "camara": "Cam_Pos_8x",
+          "camaraDireccion": "Cam_Dir_8x",
+          "objeto_resaltar": [
+            "CONJUNTO_DE_FRENO1_mesh",
+            "sistema_de_freno_mesh"
+          ],
+          "children": [
+            {
+              "id": "paso3_5_1",
+              "ESdescription": "Disco de freno",
+              "ENdescription": "Brake Disc",
+              "etiqueta": "Freno_etiqueta_lc",
+              "flecha": "Freno_lc",
+              "camara": "Cam_Pos_8x",
+              "camaraDireccion": "Cam_Dir_8x",
+              "objeto_resaltar": [
+                "freno_mesh1"
+              ],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ]
+            },
+            {
+              "id": "paso3_5_2",
+              "ESdescription": "Soporte de freno",
+              "ENdescription": "Brake Support / Frame",
+              "etiqueta": "Bastidor_etiqueta_lc",
+              "flecha": "Bastidor_lc",
+              "camara": "Cam_Pos_8x",
+              "camaraDireccion": "Cam_Dir_8x",
+              "objeto_resaltar": [
+                "bastidor_mesh"
+              ],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ]
+            }
+          ],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ]
+        },
+        {
+          "id": "paso3_6",
+          "ESdescription": "Cojinete lado descarga",
+          "ENdescription": "Discharge Side Bearing",
+          "etiqueta": "D_N_cojinete_descarga_etiqueta_lc",
+          "flecha": "D_N_cojinete_descarga_lc",
+          "camara": "Cam_Pos_7x",
+          "camaraDireccion": "Cam_Dir_7x",
+          "objeto_resaltar": [
+            "A_carcasa_mesh2",
+            "D_base_pad_hidrostático_mesh"
+          ],
+          "children": [
+            {
+              "id": "paso3_6_1",
+              "ESdescription": "Carcasa",
+              "ENdescription": "Housing",
+              "etiqueta": "D_carcasa_etiqueta_lc",
+              "flecha": "D_carcasa_lc",
+              "camara": "Cam_Pos_7x",
+              "camaraDireccion": "Cam_Dir_7x",
+              "objeto_resaltar": [
+                "A_carcasa_mesh2",
+                "D_base_pad_hidrostático_mesh"
+              ],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ]
+            },
+            {
+              "id": "paso3_6_2",
+              "ESdescription": "Pad hidrostático descarga",
+              "ENdescription": "Discharge Hydrostatic Pad",
+              "etiqueta": "Pad_hidrostático_descarga_etiqueta_lc",
+              "flecha": "Pad_hidrostático_descarga_lc",
+              "camara": "Cam_Pos_7x",
+              "camaraDireccion": "Cam_Dir_7x",
+              "objeto_resaltar": [
+                "D_pad_hidrostático_mesh"
+              ],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ]
+            },
+            {
+              "id": "paso3_6_3",
+              "ESdescription": "Sistema de lubricación de alta presión",
+              "ENdescription": "High Pressure Lubrication System",
+              "etiqueta": "D_sistema_de_lubricacion_de_alta_presión_etiqueta_lc",
+              "flecha": "D_sistema_de_lubricacion_de_alta_presión_lc",
+              "camara": "Cam_Pos_7x",
+              "camaraDireccion": "Cam_Dir_7x",
+              "objeto_resaltar": [
+                "D_Sistema_de_lubricación_Alta_presión_mesh"
+              ],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ]
+            }
+          ],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ]
+        },
+        {
+          "id": "paso3_7",
+          "ESdescription": "Trommel",
+          "ENdescription": "Trommel Screen",
+          "etiqueta": "trommel_etiqueta_lc",
+          "flecha": "trommel_lc",
+          "camara": "Cam_Pos_9x",
+          "camaraDireccion": "Cam_Dir_9x",
+          "objeto_resaltar": [
+            "adicional_trommel_mesh_2",
+            "adicional_trommel_mesh"
+          ],
+          "children": [
+            {
+              "id": "paso3_7_1",
+              "ESdescription": "Mallas de trommel",
+              "ENdescription": "Trommel Meshes",
+              "etiqueta": "malla_ranurada_etiqueta_lc",
+              "flecha": "malla_ranurada_lc",
+              "camara": "Cam_Pos_9x",
+              "camaraDireccion": "Cam_Dir_9x",
+              "objeto_resaltar": [
+                "malla_ranurada_mesh"
+              ],
+              "objetos_ocultar": [
+                "flechas01_mesh",
+                "mineral02_mesh",
+                "mineral03_mesh",
+                "materialLiquido_mesh",
+                "plano_mesh",
+                "ballExtra_02_mesh",
+                "ball_02_mesh",
+                "ball_03_mesh",
+                "ball_04_mesh",
+                "ball_05_mesh",
+                "ball_06_mesh",
+                "ball_07_mesh",
+                "ball_01_mesh",
+                "ball_08_mesh",
+                "ball_09_mesh",
+                "ball_10_mesh",
+                "ball_11_mesh",
+                "ball_12_mesh",
+                "ball_15_mesh",
+                "ballExtra_01_mesh",
+                "ball_13_mesh",
+                "ball_14_mesh"
+              ]
+            }
+          ],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ]
+        },
+        {
+          "id": "paso3_8",
+          "ESdescription": "Trunnion de alimentación",
+          "ENdescription": "Feed Trunnion",
+          "etiqueta": "N_trunion_de_alimentación_etiqueta_lc",
+          "flecha": "N_trunion_de_alimentación_lc",
+          "camara": "Cam_Pos_14x",
+          "camaraDireccion": "Cam_Dir_14x",
+          "objeto_resaltar": [
+            "trunion_alimentación_mesh"
+          ],
+          "animaciones": [],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ],
+          "detener_animaciones": false
+        },
+        {
+          "id": "paso3_9",
+          "ESdescription": "Cuerpo del molino",
+          "ENdescription": "Mill Shell",
+          "etiqueta": "N_shell_etiqueta_lc",
+          "flecha": "N_shell_lc",
+          "camara": "Cam_Pos_6x",
+          "camaraDireccion": "Cam_Dir_6x",
+          "objeto_resaltar": [
+            "revestimiento_muestra_mesh",
+            "liners_D_mesh",
+            "liners_mesh_I",
+            "revestimiento_mesh"
+          ],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ]
+        },
+        {
+          "id": "paso3_10",
+          "ESdescription": "Chute de descarga",
+          "ENdescription": "Discharge Chute",
+          "etiqueta": "Chute_de_descarga_etiqueta_lc",
+          "flecha": "Chute_de_descarga_lc",
+          "camara": "Cam_Pos_10x",
+          "camaraDireccion": "Cam_Dir_10x",
+          "objeto_resaltar": [
+            "chute_de_descarga_mesh2"
+          ],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ]
+        },
+        {
+          "id": "paso3_11",
+          "ESdescription": "Trunnion lado descarga",
+          "ENdescription": "Discharge Side Trunnion",
+          "etiqueta": "N_trunion_de_descarga_etiqueta_lc",
+          "flecha": "N_trunion_de_descarga_lc",
+          "camara": "Cam_Pos_15x",
+          "camaraDireccion": "Cam_Dir_15x",
+          "objeto_resaltar": [
+            "trunion_descarga_mesh"
+          ],
+          "animaciones": [],
+          "objetos_ocultar": [
+            "flechas01_mesh",
+            "mineral02_mesh",
+            "mineral03_mesh",
+            "materialLiquido_mesh",
+            "plano_mesh",
+            "ballExtra_02_mesh",
+            "ball_02_mesh",
+            "ball_03_mesh",
+            "ball_04_mesh",
+            "ball_05_mesh",
+            "ball_06_mesh",
+            "ball_07_mesh",
+            "ball_01_mesh",
+            "ball_08_mesh",
+            "ball_09_mesh",
+            "ball_10_mesh",
+            "ball_11_mesh",
+            "ball_12_mesh",
+            "ball_15_mesh",
+            "ballExtra_01_mesh",
+            "ball_13_mesh",
+            "ball_14_mesh"
+          ],
+          "detener_animaciones": false
+        }
+      ]
+    },
+    {
+      "id": "paso4",
+      "icon": "./images/icon2.png",
+      "ESdescription": "Funcionamiento",
+      "ENdescription": "Operation",
+      "camara": "Cam_Pos_13x",
+      "camaraDireccion": "Cam_Dir_13x",
+      "animaciones": [
+        {
+          "nombre": "L_GIRO_n",
+          "frame": [
+            1,
+            750
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_main_jnt",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt13",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt2",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt6",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt3",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt8",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt11",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt10",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt12",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt7",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt4",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt9",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt5",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt14",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt15",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "material_jnt16",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bolasExtra02_lc",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola02_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola03_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola04_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola05_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola06_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola07_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola01_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola08_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola09_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola10_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola11_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola12_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola15_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola13_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bola14_lc",
+          "frame": [
+            0,
+            150
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "bolasExtra01_lc",
+          "frame": [
+            0,
+            100
+          ],
+          "modo": "LoopRepeat"
+        },
+        {
+          "nombre": "mineral03_mesh",
+          "frame": [
+            0,
+            300
+          ],
+          "modo": "LoopRepeat"
+        }
+      ],
+      "objetos_ocultar": [
+        "tuercas_tornillos_mesh1",
+        "liners_2_mesh",
+        "liners_3_mesh",
+        "tuercas_tornillos_mesh3",
+        "tuercas_tornillos_mesh2",
+        "tuercas_tornillos_mesh",
+        "liners_1_mesh",
+        "liners_D_mesh",
+        "chute_de_descarga_mesh2",
+        "tapa_de_descarga_mesh",
+        "tornillos_arancelas_mesh_D"
+      ],
+      "objeto_resaltar": [],
+      "detener_animaciones": true
+    }
+  ],
+  "ayudas": {
+    "tieneBotonAyuda": true,
+    "tieneBotonObjetivos": false,
+    "tieneBotonEquipo": false,
+    "tieneBotonSonido": true,
+    "tieneBotonLang": false
+  },
+  "backgroundColor": "#00c26e",
+  "backgroundType": "image",
+  "laboratorioEN": "SAG Mill"
+}
