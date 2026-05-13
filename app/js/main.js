@@ -5,7 +5,7 @@
 import { SoundManager }   from './utils/SoundManager.js';
 import { MenuLateral }    from './components/MenuLateral/MenuLateral.js';
 import { AyudasViewer }   from './components/AyudasViewer/AyudasViewer.js';
-import { PreloaderLight }      from './components/Preloader/PreloaderLight.js';
+import { Preloader }      from './components/Preloader/Preloader.js';
 import { BotonRetroceso } from './components/BotonRetroceso/BotonRetroceso.js';
 import { PantallaMobile } from './components/PantallaMobile/PantallaMobile.js';
 import { ModalAyuda }     from './components/ModalAyuda/ModalAyuda.js';
@@ -36,7 +36,7 @@ async function init() {
     }
     Lab.config = config;
 
-    // Configuración dinámica del iframe (Permite cambiar el modelo 3D sin tocar HTML)
+    // Configuración dinámica del iframe (permite cambiar el modelo 3D sin tocar HTML)
     const iframe = document.getElementById('v3d-container');
     if (config.verge3dUrl) {
         iframe.src = config.verge3dUrl;
@@ -50,18 +50,42 @@ async function init() {
         const r = parseInt(hex.substring(0, 2), 16);
         const g = parseInt(hex.substring(2, 4), 16);
         const b = parseInt(hex.substring(4, 6), 16);
-        
-        document.documentElement.style.setProperty('--theme-color', config.themeColor);
-        document.documentElement.style.setProperty('--theme-color-80', `rgba(${r}, ${g}, ${b}, 0.8)`);
+        const rgb = `${r}, ${g}, ${b}`;
+
+        // Variables legacy (compatibilidad con componentes anteriores)
+        document.documentElement.style.setProperty('--theme-color',             config.themeColor);
+        document.documentElement.style.setProperty('--theme-color-80',          `rgba(${r}, ${g}, ${b}, 0.8)`);
         document.documentElement.style.setProperty('--theme-color-transparent', `rgba(${r}, ${g}, ${b}, 0.6)`);
-        document.documentElement.style.setProperty('--theme-color-shadow', `rgba(${r}, ${g}, ${b}, 0.4)`);
+        document.documentElement.style.setProperty('--theme-color-shadow',      `rgba(${r}, ${g}, ${b}, 0.4)`);
+
+        // Variables nuevas del sistema Blue Core (para Preloader y UI moderna)
+        document.documentElement.style.setProperty('--color-primary',           config.themeColor);
+        document.documentElement.style.setProperty('--color-primary-rgb',       rgb);
+        document.documentElement.style.setProperty('--color-primary-light',     `rgb(${Math.min(255,r+60)}, ${Math.min(255,g+60)}, ${Math.min(255,b+60)})`);
+        document.documentElement.style.setProperty('--color-primary-container', `rgb(${Math.max(0,r-60)}, ${Math.max(0,g-60)}, ${Math.max(0,b-60)})`);
+        document.documentElement.style.setProperty('--glow-primary',            `rgba(${r}, ${g}, ${b}, 0.45)`);
+        document.documentElement.style.setProperty('--glow-primary-strong',     `rgba(${r}, ${g}, ${b}, 0.75)`);
+        document.documentElement.style.setProperty('--gradient-primary',        `linear-gradient(135deg, ${config.themeColor} 0%, rgb(${Math.max(0,r-60)},${Math.max(0,g-60)},${Math.max(0,b-60)}) 100%)`);
     }
 
-    // Inicializamos el Preloader
-    const preloader = new PreloaderLight('preloader-container', {
+    // Inicializamos el nuevo Preloader
+    const preloader = new Preloader('preloader-container', {
         labNameES: config.laboratorio,
         labNameEN: config.laboratorioEN || config.laboratorio,
         logoUrl:   config.logoUrl
+    });
+
+    // Conectar el botón "INICIAR EXPERIENCIA" con el arranque de la UI
+    const preloaderEl = document.getElementById('preloader-container');
+    preloaderEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-preloader-btn]');
+        if (btn && !btn.disabled) {
+            preloader.hide();
+            setTimeout(() => {
+                document.getElementById('ayudas-container').style.display = 'flex';
+                document.getElementById('menu-container').style.display   = 'flex';
+            }, 400);
+        }
     });
 
     new PantallaMobile('mobile-container');
@@ -88,7 +112,7 @@ async function init() {
     window.addEventListener('v3d:navegar', (e) => onNavegacionInterna(e.detail?.id));
     window.addEventListener('v3d:playAudio', (e) => Lab.engine.playStepAudio(e.detail.id));
 
-    // Sincronizar idioma con el iframe (para que .en/.es de las anotaciones respeten el idioma)
+    // Sincronizar idioma con el iframe
     window.addEventListener('lang:change', (e) => {
         const iframe = document.getElementById('v3d-container');
         if (!iframe || !iframe.contentDocument) return;
@@ -104,20 +128,13 @@ async function init() {
     
     // Esperamos a que el motor esté listo
     Lab.engine.waitForReady().then(() => {
-        // Simulamos el progreso del preloader ya que ahora cargamos distinto
+        // Actualizar el elemento oculto que el MutationObserver del Preloader observa
         const pctEl = document.getElementById('loading_percentage');
-        if(pctEl) pctEl.innerHTML = '100%';
-        
-        const preloadEl = document.getElementById('preloader-container');
-        if(preloadEl) {
-            preloadEl.style.opacity = '0';
-            setTimeout(() => {
-                preloadEl.style.display = 'none';
-                document.getElementById('ayudas-container').style.display = 'flex';
-                document.getElementById('menu-container').style.display = 'flex';
-            }, 800);
-        }
-        
+        if (pctEl) pctEl.innerHTML = '100%';
+
+        // Forzar habilitación del botón (por si el observer no lo detectó)
+        preloader.setProgress(100);
+
         onVerge3DReady();
     });
 }
@@ -170,7 +187,6 @@ function ejecutarPaso(pasoId, skipAudio = false) {
     if (!skipAudio) {
         Lab.engine.playStepAudio(pasoId);
     } else {
-        // Si retrocedemos, nos aseguramos de detener lo que esté sonando
         if (Lab.engine.audio) Lab.engine.audio.stop();
     }
 
@@ -183,7 +199,7 @@ function ejecutarPaso(pasoId, skipAudio = false) {
         Lab.engine.highlights.enable(Lab.engine.currentStepSelection);
     }
 
-    // 2. Camara
+    // 2. Cámara
     if (pasoConfig.camara) {
         Lab.engine.camera.tween(pasoConfig.camara, pasoConfig.camaraDireccion, 1.2);
     }
@@ -203,7 +219,7 @@ function ejecutarPaso(pasoId, skipAudio = false) {
         });
     }
 
-    // 4. Navegacion Jerárquica y Etiquetas
+    // 4. Navegación Jerárquica y Etiquetas
     const hijos = pasoConfig.children && pasoConfig.children.length > 0;
     if (hijos) {
         pasoConfig.children.forEach(child => {
@@ -249,7 +265,6 @@ function onMenuReset() {
     Lab.engine.resetScene(Lab.config.inicioEstado);
     Lab.engine.ejecutarInicioEstado(Lab.config.inicioEstado, 1.2);
     
-    // Detener cualquier audio al resetear
     if (Lab.engine.audio) Lab.engine.audio.stop();
     
     console.log('[Lab] → Reset: Cámara a Inicio');
@@ -264,7 +279,6 @@ function onRetroceso() {
     Lab.historial.pop();
     const idAnterior = Lab.historial[Lab.historial.length - 1];
     
-    // Detener audio explícitamente antes de ejecutar el paso anterior
     if (Lab.engine.audio) Lab.engine.audio.stop();
     
     ejecutarPaso(idAnterior, true);

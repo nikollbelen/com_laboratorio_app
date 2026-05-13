@@ -1,0 +1,390 @@
+@font-face {
+    font-family: 'Swiss 721 SWA';
+    src: url('Helvetica-Oblique.eot');
+    src: local('Swiss 721 Oblique SWA'), local('Helvetica-Oblique'),
+        url('Helvetica-Oblique.eot?#iefix') format('embedded-opentype'),
+        url('Helvetica-Oblique.woff2') format('woff2'),
+        url('Helvetica-Oblique.woff') format('woff'),
+        url('Helvetica-Oblique.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Hv BT';
+    src: url('Swiss721BT-HeavyItalic.eot');
+    src: local('Swiss 721 Heavy Italic BT'), local('Swiss721BT-HeavyItalic'),
+        url('Swiss721BT-HeavyItalic.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-HeavyItalic.woff2') format('woff2'),
+        url('Swiss721BT-HeavyItalic.woff') format('woff'),
+        url('Swiss721BT-HeavyItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Lt BT';
+    src: url('Swiss721BT-Light.eot');
+    src: local('Swiss 721 Light BT'), local('Swiss721BT-Light'),
+        url('Swiss721BT-Light.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-Light.woff2') format('woff2'),
+        url('Swiss721BT-Light.woff') format('woff'),
+        url('Swiss721BT-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Win95BT';
+    src: url('Swiss721BT-BoldItalic.eot');
+    src: local('Swiss 721 Bold Italic Win95BT'), local('Swiss721BT-BoldItalic'),
+        url('Swiss721BT-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-BoldItalic.woff2') format('woff2'),
+        url('Swiss721BT-BoldItalic.woff') format('woff'),
+        url('Swiss721BT-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 BlkRnd BT';
+    src: url('Swiss721BT-BlackRounded.eot');
+    src: local('Swiss 721 Black Rounded BT'), local('Swiss721BT-BlackRounded'),
+        url('Swiss721BT-BlackRounded.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-BlackRounded.woff2') format('woff2'),
+        url('Swiss721BT-BlackRounded.woff') format('woff'),
+        url('Swiss721BT-BlackRounded.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Th BT';
+    src: url('Swiss721BT-Thin.eot');
+    src: local('Swiss 721 Thin BT'), local('Swiss721BT-Thin'),
+        url('Swiss721BT-Thin.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-Thin.woff2') format('woff2'),
+        url('Swiss721BT-Thin.woff') format('woff'),
+        url('Swiss721BT-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Blk BT';
+    src: url('Swiss721BT-BlackItalic.eot');
+    src: local('Swiss 721 Black Italic BT'), local('Swiss721BT-BlackItalic'),
+        url('Swiss721BT-BlackItalic.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-BlackItalic.woff2') format('woff2'),
+        url('Swiss721BT-BlackItalic.woff') format('woff'),
+        url('Swiss721BT-BlackItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 BT';
+    src: url('Swiss721BT-Bold.eot');
+    src: local('Swiss 721 Bold BT'), local('Swiss721BT-Bold'),
+        url('Swiss721BT-Bold.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-Bold.woff2') format('woff2'),
+        url('Swiss721BT-Bold.woff') format('woff'),
+        url('Swiss721BT-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swiss 721 SWA';
+    src: url('Helvetica-Bold.eot');
+    src: local('Swiss 721 Bold SWA'), local('Helvetica-Bold'),
+        url('Helvetica-Bold.eot?#iefix') format('embedded-opentype'),
+        url('Helvetica-Bold.woff2') format('woff2'),
+        url('Helvetica-Bold.woff') format('woff'),
+        url('Helvetica-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Md BT';
+    src: url('Swiss721BT-MediumItalic.eot');
+    src: local('Swiss 721 Medium Italic BT'), local('Swiss721BT-MediumItalic'),
+        url('Swiss721BT-MediumItalic.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-MediumItalic.woff2') format('woff2'),
+        url('Swiss721BT-MediumItalic.woff') format('woff'),
+        url('Swiss721BT-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Win95BT';
+    src: url('Swiss721BT-Bold_1.eot');
+    src: local('Swiss 721 Bold Win95BT'), local('Swiss721BT-Bold'),
+        url('Swiss721BT-Bold_1.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-Bold_1.woff2') format('woff2'),
+        url('Swiss721BT-Bold_1.woff') format('woff'),
+        url('Swiss721BT-Bold_1.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Blk BT';
+    src: url('Swiss721BT-Black.eot');
+    src: local('Swiss 721 Black BT'), local('Swiss721BT-Black'),
+        url('Swiss721BT-Black.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-Black.woff2') format('woff2'),
+        url('Swiss721BT-Black.woff') format('woff'),
+        url('Swiss721BT-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 BT';
+    src: url('Swiss721BT-BoldItalic_1.eot');
+    src: local('Swiss 721 Bold Italic BT'), local('Swiss721BT-BoldItalic'),
+        url('Swiss721BT-BoldItalic_1.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-BoldItalic_1.woff2') format('woff2'),
+        url('Swiss721BT-BoldItalic_1.woff') format('woff'),
+        url('Swiss721BT-BoldItalic_1.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 BlkEx BT';
+    src: url('Swiss721BT-BlackExtended.eot');
+    src: local('Swiss 721 Black Extended BT'), local('Swiss721BT-BlackExtended'),
+        url('Swiss721BT-BlackExtended.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-BlackExtended.woff2') format('woff2'),
+        url('Swiss721BT-BlackExtended.woff') format('woff'),
+        url('Swiss721BT-BlackExtended.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Th BT';
+    src: url('Swiss721BT-ThinItalic.eot');
+    src: local('Swiss 721 Thin Italic BT'), local('Swiss721BT-ThinItalic'),
+        url('Swiss721BT-ThinItalic.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-ThinItalic.woff2') format('woff2'),
+        url('Swiss721BT-ThinItalic.woff') format('woff'),
+        url('Swiss721BT-ThinItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Md BT';
+    src: url('Swiss721BT-Medium.eot');
+    src: local('Swiss 721 Medium BT'), local('Swiss721BT-Medium'),
+        url('Swiss721BT-Medium.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-Medium.woff2') format('woff2'),
+        url('Swiss721BT-Medium.woff') format('woff'),
+        url('Swiss721BT-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 BdRnd BT';
+    src: url('Swiss721BT-BoldRounded.eot');
+    src: local('Swiss 721 Bold Rounded BT'), local('Swiss721BT-BoldRounded'),
+        url('Swiss721BT-BoldRounded.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-BoldRounded.woff2') format('woff2'),
+        url('Swiss721BT-BoldRounded.woff') format('woff'),
+        url('Swiss721BT-BoldRounded.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 BT';
+    src: url('Swiss721BT-Italic.eot');
+    src: local('Swiss 721 Italic BT'), local('Swiss721BT-Italic'),
+        url('Swiss721BT-Italic.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-Italic.woff2') format('woff2'),
+        url('Swiss721BT-Italic.woff') format('woff'),
+        url('Swiss721BT-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 BdOul BT';
+    src: url('Swiss721BT-BoldOutline.eot');
+    src: local('Swiss 721 Bold Outline BT'), local('Swiss721BT-BoldOutline'),
+        url('Swiss721BT-BoldOutline.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-BoldOutline.woff2') format('woff2'),
+        url('Swiss721BT-BoldOutline.woff') format('woff'),
+        url('Swiss721BT-BoldOutline.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Win95BT';
+    src: url('Swiss721BT-Italic_1.eot');
+    src: local('Swiss 721 Italic Win95BT'), local('Swiss721BT-Italic'),
+        url('Swiss721BT-Italic_1.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-Italic_1.woff2') format('woff2'),
+        url('Swiss721BT-Italic_1.woff') format('woff'),
+        url('Swiss721BT-Italic_1.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Blk2 BT';
+    src: url('Swiss721BT-BlackNo2.eot');
+    src: local('Swiss 721 Black No.2 BT'), local('Swiss721BT-BlackNo2'),
+        url('Swiss721BT-BlackNo2.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-BlackNo2.woff2') format('woff2'),
+        url('Swiss721BT-BlackNo2.woff') format('woff'),
+        url('Swiss721BT-BlackNo2.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swiss 721 SWA';
+    src: url('Helvetica-BoldOblique.eot');
+    src: local('Swiss 721 Bold Oblique SWA'), local('Helvetica-BoldOblique'),
+        url('Helvetica-BoldOblique.eot?#iefix') format('embedded-opentype'),
+        url('Helvetica-BoldOblique.woff2') format('woff2'),
+        url('Helvetica-BoldOblique.woff') format('woff'),
+        url('Helvetica-BoldOblique.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 LtEx BT';
+    src: url('Swiss721BT-LightExtended.eot');
+    src: local('Swiss 721 Light Extended BT'), local('Swiss721BT-LightExtended'),
+        url('Swiss721BT-LightExtended.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-LightExtended.woff2') format('woff2'),
+        url('Swiss721BT-LightExtended.woff') format('woff'),
+        url('Swiss721BT-LightExtended.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Hv BT';
+    src: url('Swiss721BT-Heavy.eot');
+    src: local('Swiss 721 Heavy BT'), local('Swiss721BT-Heavy'),
+        url('Swiss721BT-Heavy.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-Heavy.woff2') format('woff2'),
+        url('Swiss721BT-Heavy.woff') format('woff'),
+        url('Swiss721BT-Heavy.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 BT';
+    src: url('Swiss721BT-Roman.eot');
+    src: local('Swiss 721 BT'), local('Swiss721BT-Roman'),
+        url('Swiss721BT-Roman.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-Roman.woff2') format('woff2'),
+        url('Swiss721BT-Roman.woff') format('woff'),
+        url('Swiss721BT-Roman.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Lt BT';
+    src: url('Swiss721BT-LightItalic.eot');
+    src: local('Swiss 721 Light Italic BT'), local('Swiss721BT-LightItalic'),
+        url('Swiss721BT-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-LightItalic.woff2') format('woff2'),
+        url('Swiss721BT-LightItalic.woff') format('woff'),
+        url('Swiss721BT-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 BlkOul BT';
+    src: url('Swiss721BT-BlackOutline.eot');
+    src: local('Swiss 721 Black Outline BT'), local('Swiss721BT-BlackOutline'),
+        url('Swiss721BT-BlackOutline.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-BlackOutline.woff2') format('woff2'),
+        url('Swiss721BT-BlackOutline.woff') format('woff'),
+        url('Swiss721BT-BlackOutline.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swiss 721 SWA';
+    src: url('Helvetica.eot');
+    src: local('Swiss 721 SWA'), local('Helvetica'),
+        url('Helvetica.eot?#iefix') format('embedded-opentype'),
+        url('Helvetica.woff2') format('woff2'),
+        url('Helvetica.woff') format('woff'),
+        url('Helvetica.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Ex BT';
+    src: url('Swiss721BT-BoldExtended.eot');
+    src: local('Swiss 721 Bold Extended BT'), local('Swiss721BT-BoldExtended'),
+        url('Swiss721BT-BoldExtended.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-BoldExtended.woff2') format('woff2'),
+        url('Swiss721BT-BoldExtended.woff') format('woff'),
+        url('Swiss721BT-BoldExtended.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Swis721 Ex BT';
+    src: url('Swiss721BT-RomanExtended.eot');
+    src: local('Swiss 721 Extended BT'), local('Swiss721BT-RomanExtended'),
+        url('Swiss721BT-RomanExtended.eot?#iefix') format('embedded-opentype'),
+        url('Swiss721BT-RomanExtended.woff2') format('woff2'),
+        url('Swiss721BT-RomanExtended.woff') format('woff'),
+        url('Swiss721BT-RomanExtended.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+

@@ -1,0 +1,1279 @@
+[
+  {
+    "id": "visor_icon_componentes",
+    "id_boton_cerrar": "boton_visor_close_11_1",
+    "titulo": "COMPONENTES PRINCIPALES",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Los principales componentes que conforman el molino SAG (GMD) son los indicados a continuación:"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "El motor GMD proporciona la potencia necesaria para el accionamiento del molino, permitiendo el giro de toda la estructura.",
+          "El conjunto de freno se encarga de detener el molino de forma segura.",
+          "El cuerpo del molino constituye la carcasa cilíndrica donde se desarrolla la molienda, el cual está recubierto por revestimientos internos que protegen la estructura metálica y mejoran la eficiencia del proceso.",
+          "El cojinete de alimentación sostiene el extremo de entrada del molino, garantizando la correcta rotación, mientras que el cajón de alimentación dirige el mineral hacia el interior del equipo.",
+          "En la parte opuesta, el cojinete de descarga soporta el extremo de salida, facilitando la evacuación del mineral procesado."
+        ]
+      },
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Finalmente, el trommel actúa como un tamiz que separa el mineral procesado de elementos de gran tamaño, asegurando una descarga eficiente."
+      },
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Nota.- Las cantidades o medidas indicadas en algunos componentes son colocadas como referencia o a medida de ejemplo, pero estas podrían variar en función del molino seleccionado durante la etapa de diseño o según necesidades operativas específicas."
+      }
+    ],
+    "imagenesGenerales": [
+      {
+        "imagen": "img/nuevo/Componentes_General_-_Molino_SAG.png",
+        "titulo": ""
+      }
+    ]
+  },
+  {
+    "id": "visor_icon11",
+    "id_boton_cerrar": "boton_visor_close_11_1",
+    "titulo": "CAJÓN DE ALIMENTACIÓN",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Su función principal es recepcionar y direccionar el mineral, el agua de proceso, las bolas de acero y los reactivos al interior del molino. Está compuesto por:"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "01 tolva",
+          "01 conducto de alimentación",
+          "01 carro de alimentación (o carro móvil)",
+          "01 cajón estabilizador"
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "titulo",
+        "texto": "TOLVA"
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "La tolva es un contenedor de almacenamiento temporal ubicado antes del molino, está forrada internamente con liners de acero revestidos con caucho."
+      },
+      {
+        "slide": 3,
+        "tipo": "titulo",
+        "texto": "CONDUCTO DE ALIMENTACIÓN"
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "Es un conducto inclinado y robusto, generalmente revestido con liners de acero cromado o placas de desgaste (de acero o caucho) los cuales protegen contra el impacto y la abrasión del mineral grueso. Está diseñado para guiar la carga desde la tolva hacia la abertura de alimentación (trunnion) del molino."
+      },
+      {
+        "slide": 4,
+        "tipo": "titulo",
+        "texto": "CARRO DE ALIMENTACIÓN"
+      },
+      {
+        "slide": 4,
+        "tipo": "parrafo",
+        "texto": "El cajón de alimentación está montado sobre un carro de alimentación (o carro móvil), el cual se encarga de desplazarlo en caso se requiera realizar tareas de mantenimiento."
+      },
+      {
+        "slide": 5,
+        "tipo": "titulo",
+        "texto": "CAJÓN ESTABILIZADOR"
+      },
+      {
+        "slide": 5,
+        "tipo": "parrafo",
+        "texto": "Adicionalmente, el carro de alimentación cuenta con un cajón en su parte trasera, llamado «cajón estabilizador» donde se colocan placas de acero (que pueden estar alrededor de 7,400 kg) para proporcionar estabilidad."
+      }
+    ],
+    "imagenesGenerales": [
+      {
+        "imagen": "img/chute_alimentacion_sag.png",
+        "titulo": ""
+      }
+    ]
+  },
+  {
+    "id": "visor_icon12",
+    "id_boton_cerrar": "boton_visor_close_12_1",
+    "titulo": "COJINETE DE ALIMENTACIÓN O FIJO",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Su función principal es soportar el peso del extremo de alimentación del molino y su carga, permitiendo su giro suave mientras sirve como entrada para el mineral (a través del trunnion de alimentación). Está compuesto por:"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "01 carcasa",
+          "01 tapa del cojinete",
+          "04 pads hidrostáticos (pads radiales)",
+          "02 pads de empuje (rieles de empuje)"
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "titulo",
+        "texto": "CARCASA"
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "La carcasa es la estructura exterior fija y robusta que se monta sobre la cimentación de la planta concentradora, aloja los pads hidrostáticos y de empuje, los cuales están instalados en la base del cojinete fijo."
+      },
+      {
+        "slide": 3,
+        "tipo": "titulo",
+        "texto": "TAPA DEL COJINETE"
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "La tapa del cojinete es un elemento que sella la carcasa y asegura que todos los componentes internos, especialmente el sistema de lubricación, permanezcan limpios y protegidos de la contaminación del ambiente minero (polvo, agua, pulpa)."
+      },
+      {
+        "slide": 4,
+        "tipo": "titulo",
+        "texto": "PADS HIDROSTÁTICOS"
+      },
+      {
+        "slide": 4,
+        "tipo": "parrafo",
+        "texto": "Son segmentos curvos y ajustables, generalmente de bronce o metal blanco/babbitt que no hacen contacto directo metal-metal con la superficie giratoria del trunnion. Los pads hidrostáticos presentan conductos y ranuras por donde ingresa el aceite, permitiendo soportar el peso del molino y absorber las fuerzas de impacto ocasionadas por el mineral en el interior del molino."
+      },
+      {
+        "slide": 5,
+        "tipo": "titulo",
+        "texto": "PADS DE EMPUJE"
+      },
+      {
+        "slide": 5,
+        "tipo": "parrafo",
+        "texto": "Son componentes similares a los pads hidrostáticos, pero están orientados verticalmente o en ángulo, no debajo del trunnion. Están instalados en los extremos de la carcasa, a lo largo del eje longitudinal del molino. Los pads de empuje (o rieles de empuje) evitan el desplazamiento axial del molino. Absorben y estabilizan las fuerzas de empuje causadas por la inclinación del molino, la carga de mineral y otros desequilibrios operativos, manteniendo el molino centrado en su posición correcta dentro de la planta concentradora."
+      }
+    ],
+    "imagenesGenerales": [
+      {
+        "imagen": "img/cojinete_alimentacion.png",
+        "titulo": ""
+      }
+    ]
+  },
+  {
+    "id": "visor_icon13",
+    "id_boton_cerrar": "boton_visor_close_13_1",
+    "titulo": "SISTEMA DE ACCIONAMIENTO",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "El sistema de accionamiento del molino SAG tiene como función principal proporcionar la energía mecánica necesaria para generar el giro del molino, permitiendo así la molienda del mineral. Este sistema, de tipo gearless (sin engranajes), se caracteriza por su alta eficiencia, bajo mantenimiento mecánico y capacidad para operar con grandes potencias."
+      },
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Está conformado por los siguientes componentes:"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "Motor GMD (Gearless Mill Drive)",
+          "Cicloconvertidor",
+          "Sistema de excitación",
+          "Escobillas y anillos rozantes"
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "titulo",
+        "texto": "MOTOR GMD (GEARLESS MILL DRIVE)"
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "Es un motor síncrono de tipo anillo, en el cual el rotor está directamente acoplado al cuerpo del molino, convirtiéndose este último en el propio rotor del sistema. El estator se encuentra fijo al suelo y rodea al rotor sin contacto físico, generando un campo magnético que induce el movimiento rotatorio del molino. Este diseño elimina la necesidad de reductores o engranajes, reduciendo las pérdidas mecánicas y aumentando la confiabilidad del sistema."
+      },
+      {
+        "slide": 3,
+        "tipo": "titulo",
+        "texto": "CICLOCONVERTIDOR"
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "Encargado de convertir la corriente alterna (AC) de alta frecuencia proveniente de tres transformadores multifase en corriente alterna de baja frecuencia apta para alimentar el estator del motor GMD."
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "La conversión se realiza mediante seis puentes de tiristores, lo cual permite un control preciso de la frecuencia y tensión de salida, ajustando así la velocidad de rotación del molino según los requerimientos operativos."
+      },
+      {
+        "slide": 4,
+        "tipo": "titulo",
+        "texto": "SISTEMA DE EXCITACIÓN"
+      },
+      {
+        "slide": 4,
+        "tipo": "parrafo",
+        "texto": "Proporciona corriente continua (DC) al rotor para su excitación electromagnética. Esta corriente se obtiene a través de la rectificación de la corriente alterna proveniente de un transformador adicional, mediante un puente de diodos trifásico."
+      },
+      {
+        "slide": 4,
+        "tipo": "parrafo",
+        "texto": "La correcta excitación del rotor es esencial para la generación del campo magnético necesario para el acoplamiento con el estator y, por ende, para el giro del molino."
+      },
+      {
+        "slide": 5,
+        "tipo": "titulo",
+        "texto": "ESCOBILLAS Y ANILLOS ROZANTES"
+      },
+      {
+        "slide": 5,
+        "tipo": "parrafo",
+        "texto": "La corriente continua de excitación es transferida al rotor mediante un sistema de escobillas y anillos rozantes."
+      },
+      {
+        "slide": 5,
+        "tipo": "parrafo",
+        "texto": "Este mecanismo permite la transmisión de energía eléctrica a una parte giratoria, garantizando la interacción entre los campos magnéticos del estator y rotor, y generando el torque necesario para la operación del molino."
+      }
+    ],
+    "imagenesGenerales": [
+      {
+        "imagen": "img/sis_acci.jpg",
+        "titulo": ""
+      }
+    ]
+  },
+  {
+    "id": "visor_icon14",
+    "id_boton_cerrar": "boton_visor_close_14_1",
+    "titulo": "CUERPO DEL MOLINO",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "El cuerpo del molino constituye la estructura donde se realiza la molienda del mineral, producto de la rotación del equipo. En su interior se aloja la carga de bolas, el mineral, el agua de proceso y los reactivos. Tiene como función contener y girar la carga de mineral y bolas, creando la acción de impacto y abrasión necesaria para triturar rocas grandes en partículas más finas."
+      },
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Está conformado por:"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "01 carcasa (shell lado alimentación y shell lado de descarga)",
+          "02 trunnions (alimentación y descarga)",
+          "02 tapas del molino (alimentación y descarga)"
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "titulo",
+        "texto": "CARCASA (SHELL LADO ALIMENTACIÓN Y DESCARGA)"
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "La carcasa, cuya longitud puede variar entre 6 a 12 metros, está diseñada para alojar la carga de molienda y transmitir el movimiento de rotación."
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "En conjunto, estos componentes aseguran la resistencia estructural del molino y la correcta interacción entre la carga de mineral y los medios de molienda."
+      },
+      {
+        "slide": 3,
+        "tipo": "titulo",
+        "texto": "TRUNNION DE ALIMENTACIÓN Y DESCARGA"
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "Los trunnions son estructuras cilíndricas de entre 3,700 a 3,900 mm de diámetro y 2,000 a 2,200 mm de longitud, fabricados en hierro dúctil y recubiertos internamente con forros de caucho de entre 35 a 40 mm de espesor para protegerlos del desgaste."
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "Los trunnions (muñones) de alimentación y descarga en un molino SAG sirven como eje de rotación y conducto de material. El trunnion de alimentación guía la carga fresca al interior, mientras que el de descarga permite la salida de la pulpa procesada, soportando ambos el peso del molino."
+      },
+      {
+        "slide": 4,
+        "tipo": "titulo",
+        "texto": "TAPAS DE ALIMENTACIÓN Y DESCARGA"
+      },
+      {
+        "slide": 4,
+        "tipo": "parrafo",
+        "texto": "Construidas en hierro dúctil y compuestas por segmentos empernados. La tapa de alimentación se une al shell y presenta una extensión para el montaje de los polos del motor. La tapa de descarga incorpora un disco que permite la acción del sistema de frenado."
+      }
+    ],
+    "imagenesGenerales": [
+      {
+        "imagen": "img/cuerpo_molino_2.jpg",
+        "titulo": ""
+      }
+    ]
+  },
+  {
+    "id": "visor_icon15",
+    "id_boton_cerrar": "boton_visor_close_15_1",
+    "titulo": "COJINETE DE DESCARGA O MÓVIL",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Su función principal es soportar al molino por su extremo de descarga, permitiendo que el cuerpo del molino gire de manera suave y controlada. Está compuesto por:"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "01 carcasa",
+          "01 tapa del cojinete",
+          "04 pads hidrostáticos (pads radiales)"
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "titulo",
+        "texto": "CARCASA"
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "La carcasa, es la estructura de soporte principal que se fija a la fundación de concreto. Generalmente es de acero fundido o fabricado, diseñada para ser extremadamente robusta y rígida. Aloja a los pads hidrostáticos y al sistema de sellado."
+      },
+      {
+        "slide": 3,
+        "tipo": "titulo",
+        "texto": "TAPA DEL COJINETE"
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "La tapa del cojinete comúnmente fabricada de acero sella por la parte superior al cojinete, protegiendo los componentes internos."
+      },
+      {
+        "slide": 4,
+        "tipo": "titulo",
+        "texto": "PADS HIDROSTÁTICOS"
+      },
+      {
+        "slide": 4,
+        "tipo": "parrafo",
+        "texto": "Llamados también pads radiales soportan el peso del molino y crean una película de aceite a presión para que el trunnion \"flote\", evitando el contacto metal-metal. A diferencia del cojinete fijo, no cuenta con pads de empuje, ya que el trunnion de descarga debe poder desplazarse axialmente a lo largo del eje. Esta característica permite compensar los pequeños movimientos estructurales del molino ocasionados por los impactos del mineral durante la operación."
+      },
+      {
+        "slide": 5,
+        "tipo": "titulo",
+        "texto": "INFORMACIÓN ADICIONAL"
+      },
+      {
+        "slide": 5,
+        "tipo": "parrafo",
+        "texto": "También se cuenta con sellos de goma o laberínticos que evitan la fuga de aceite y la entrada de pulpa o polvo contaminante al área crítica del cojinete."
+      }
+    ],
+    "imagenesGenerales": [
+      {
+        "imagen": "img/cogiente_desarga_2.jpg",
+        "titulo": ""
+      }
+    ]
+  },
+  {
+    "id": "visor_icon16",
+    "id_boton_cerrar": "boton_visor_close_16_1",
+    "titulo": "TROMMEL",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Su función principal es clasificar la pulpa descargada por el molino durante su operación. Su diámetro puede variar de los 3 metros hasta 5 metros y su longitud de los 3 metros hasta los 6 metros. Se encuentra empernado al trunnion de descarga del molino. Está compuesto por:"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "01 marco de acero",
+          "01 espiral"
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "titulo",
+        "texto": "MARCO DE ACERO"
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "El marco de acero es la estructura cilíndrica principal del trommel, suele recubrirse con goma. Está diseñado para ser muy robusto, capaz de soportar el peso de los paneles de cribado, el material que pasa por él y las fuerzas dinámicas de la rotación del molino. El marco de acero es donde se instalan y fijan los paneles de cribado (mallas), que son los elementos que realmente clasifican el mineral."
+      },
+      {
+        "slide": 3,
+        "tipo": "titulo",
+        "texto": "ESPIRAL"
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "Se encuentra dentro del cilindro del trommel. El espiral no solo dirige el flujo de material, sino que también ayuda a mover el material de gran tamaño (los pebbles) a lo largo del tambor y hacia su punto de descarga, usualmente hacia un chute específico para su recirculación. A medida que el trommel gira con el molino, la acción de la espiral, combinada con el flujo de pulpa, fuerza el material hacia adelante."
+      }
+    ],
+    "imagenesGenerales": [
+      {
+        "imagen": "img/trommel.png",
+        "titulo": ""
+      }
+    ]
+  },
+  {
+    "id": "visor_icon17",
+    "id_boton_cerrar": "boton_visor_close_17_1",
+    "titulo": "REVESTIMIENTOS DEL MOLINO",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Su función principal es proteger las partes internas del molino contra las fuerzas de impacto y abrasión ocasionadas por el mineral. Están compuestos por:"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "Revestimientos de las tapas (alimentación y descarga)",
+          "Revestimientos del shell (lado alimentación y lado descarga)",
+          "Revestimientos de los trunnions (lado alimentación y lado descarga)"
+        ]
+      },
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Nota: Antes de instalar los revestimientos, se debe colocar un refuerzo de caucho que asegure la adecuada adherencia de los liners."
+      },
+      {
+        "slide": 2,
+        "tipo": "titulo",
+        "texto": "REVESTIMIENTOS DE LAS TAPAS"
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "La tapa de alimentación, de forma referencial, está compuesta por:"
+      },
+      {
+        "slide": 2,
+        "tipo": "lista",
+        "items": [
+          "08 liners deflectores",
+          "16 liners internos",
+          "16 liners intermedios",
+          "32 liners externos"
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "La tapa de descarga está compuesta por:"
+      },
+      {
+        "slide": 2,
+        "tipo": "lista",
+        "items": [
+          "16 liners internos",
+          "16 liners intermedios",
+          "32 rejillas de descarga (encargadas de la clasificación del mineral reducido)",
+          "16 lifters internos",
+          "16 lifters intermedios",
+          "32 lifters externos"
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "Los lifters, además de proteger la tapa de descarga, tienen la función de levantar periódicamente el mineral conforme el molino gira, facilitando su movimiento y molienda."
+      },
+      {
+        "slide": 3,
+        "tipo": "titulo",
+        "texto": "REVESTIMIENTOS DEL SHELL"
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "Como referencia, están compuestos por:"
+      },
+      {
+        "slide": 3,
+        "tipo": "lista",
+        "items": [
+          "60 liners del lado de alimentación",
+          "60 liners del lado de descarga"
+        ]
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "Estos revestimientos están empernados en toda la circunferencia del Shell. Esta sección del molino es la más crítica, ya que está en constante exposición a impactos y abrasión, por lo cual se inspecciona de manera continua para garantizar su integridad y funcionamiento adecuado."
+      },
+      {
+        "slide": 4,
+        "tipo": "titulo",
+        "texto": "REVESTIMIENTOS DE LOS TRUNNIONS"
+      },
+      {
+        "slide": 4,
+        "tipo": "parrafo",
+        "texto": "Generalmente se utilizan revestimientos de caucho en los trunnions de alimentación y descarga, ya que la función principal es proteger la superficie del trunnion del desgaste por la pulpa y el mineral, sin estar expuestos a los impactos directos de la molienda principal."
+      }
+    ],
+    "imagenesGenerales": [
+      {
+        "imagen": "img/revestimiento_shell.png",
+        "titulo": ""
+      }
+    ]
+  },
+  {
+    "id": "visor_icon18",
+    "id_boton_cerrar": "boton_visor_close_18_1",
+    "titulo": "MOTOR GMD",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Su función principal es generar el movimiento giratorio del molino durante la operación y el mantenimiento. Está compuesto por:"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "01 rotor",
+          "01 estator"
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "titulo",
+        "texto": "ROTOR"
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "El rotor es el propio cuerpo o carcasa del molino SAG, el cual actúa como el componente rotativo de un motor síncrono gigante."
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "Los polos del rotor se atornillan o fijan directamente a la brida o contorno de la carcasa del molino, comportándose este último como el rotor del sistema."
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "El rotor consiste en polos magnéticos distribuidos alrededor del cilindro, alimentados por anillos deslizantes para generar un campo magnético de alta potencia que gira a bajas velocidades."
+      },
+      {
+        "slide": 3,
+        "tipo": "titulo",
+        "texto": "ESTATOR"
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "El estator del molino está conformado por 04 segmentos, los cuales están instalados alrededor del cuerpo del molino, formando un entrehierro uniforme."
+      },
+      {
+        "slide": 4,
+        "tipo": "titulo",
+        "texto": "INFORMACIÓN ADICIONAL"
+      },
+      {
+        "slide": 4,
+        "tipo": "parrafo",
+        "texto": "Su funcionamiento se basa en los principios de atracción y repulsión electromagnéticas entre el estator y el rotor (cuerpo del molino), en el cual circula una corriente eléctrica capaz de excitar los bobinados del estator, generando un campo magnético que produce el movimiento giratorio del molino."
+      }
+    ],
+    "imagenesGenerales": [
+      {
+        "imagen": "img/motorgmd.jpg",
+        "titulo": ""
+      }
+    ]
+  },
+  {
+    "id": "visor_icon19",
+    "id_boton_cerrar": "boton_visor_close_19_1",
+    "titulo": "CONJUNTO DE FRENO",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "El conjunto de freno de un molino SAG con sistema GMD (Gearless Mill Drive) es un sistema de seguridad y control de tipo hidráulico diseñado para detener el molino de forma controlada o mantenerlo bloqueado durante tareas de mantenimiento. El molino SAG (GMD) cuenta con dos frenos, uno a cada lado del molino. Cada freno está conformado por:"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "01 actuador del freno",
+          "02 pastillas freno (superior e inferior)",
+          "02 pasadores principales",
+          "02 mordazas",
+          "02 pasadores inferiores",
+          "01 base del cáliper",
+          "01 pasador conector actuador",
+          "02 pasadores de brazos de mordazas",
+          "02 brazos de mordazas",
+          "01 filtro"
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "titulo",
+        "texto": "Actuador del freno"
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "Es el dispositivo que genera la fuerza necesaria para el frenado. Generalmente funciona con resortes internos para aplicar el freno (por seguridad) y presión hidráulica para liberarlo."
+      },
+      {
+        "slide": 3,
+        "tipo": "titulo",
+        "texto": "Pastillas de freno (superior e inferior)"
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "Son los elementos de fricción que entran en contacto directo con el disco del molino para detener su rotación."
+      },
+      {
+        "slide": 4,
+        "tipo": "titulo",
+        "texto": "Conjunto de Pasadores"
+      },
+      {
+        "slide": 4,
+        "tipo": "lista",
+        "items": [
+          "Pasadores principales, inferiores y de brazos: Permiten el movimiento pivotante de las mordazas.",
+          "Pasador conector actuador: Vincula mecánicamente el actuador con los brazos del freno."
+        ]
+      },
+      {
+        "slide": 5,
+        "tipo": "titulo",
+        "texto": "Mordazas y Brazos de mordazas"
+      },
+      {
+        "slide": 5,
+        "tipo": "parrafo",
+        "texto": "Forman la estructura tipo \"pinza\". Los brazos pivotan sobre los pasadores para presionar las pastillas contra el disco cuando el actuador se expande o contrae."
+      },
+      {
+        "slide": 6,
+        "tipo": "titulo",
+        "texto": "Base del cáliper"
+      },
+      {
+        "slide": 6,
+        "tipo": "parrafo",
+        "texto": "Es el soporte estructural robusto que fija todo el conjunto al pedestal o cimentación del molino, soportando el torque generado durante el frenado."
+      },
+      {
+        "slide": 7,
+        "tipo": "titulo",
+        "texto": "Filtro"
+      },
+      {
+        "slide": 7,
+        "tipo": "parrafo",
+        "texto": "Crucial para mantener la limpieza del fluido hidráulico que opera el actuador, evitando fallas por contaminación en las válvulas del sistema."
+      },
+      {
+        "slide": 8,
+        "tipo": "titulo",
+        "texto": "INFORMACIÓN ADICIONAL"
+      },
+      {
+        "slide": 8,
+        "tipo": "parrafo",
+        "texto": "El funcionamiento se basa en el control preciso de la presión hidráulica. Durante el funcionamiento del molino en operación normal, el sistema hidráulico mantiene las pastillas abiertas (retraídas) mediante presión constante, permitiendo que el molino gire libremente."
+      },
+      {
+        "slide": 8,
+        "tipo": "parrafo",
+        "texto": "Cuando se requiere detener el molino, el sistema libera o regula la presión hidráulica para que las pastillas aprisionen la brida del molino. La fricción generada convierte la energía cinética en calor, deteniendo la rotación."
+      }
+    ],
+    "imagenesGenerales": [
+      {
+        "imagen": "img/nuevo/Freno_-_Molino_SAG.png",
+        "titulo": ""
+      }
+    ]
+  },
+  {
+    "id": "visor_icon_sistemas",
+    "id_boton_cerrar": "boton_visor_close_11_1",
+    "titulo": "SISTEMAS",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "El Molino SAG (GMD) cuenta con sistemas esenciales para su funcionamiento."
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "El sistema de accionamiento es el encargado de transmitir la potencia necesaria para la rotación del molino, asegurando un funcionamiento estable y eficiente del proceso de molienda."
+        ]
+      },
+      {
+        "slide": 1,
+        "tipo": "imagen",
+        "src": "img/nuevo/Sistema de Accionamiento 1.png"
+      },
+      {
+        "slide": 1,
+        "tipo": "imagen",
+        "src": "img/nuevo/Sistema de Accionamiento 2.png"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "El sistema de freno permite detener el molino de forma segura, otorgando control total durante las labores de mantenimiento o en caso de una emergencia operacional."
+        ]
+      },
+      {
+        "slide": 1,
+        "tipo": "imagen",
+        "src": "img/nuevo/Sistema de Freno.png"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "El sistema de lubricación suministra aceite a los cojinetes y componentes críticos, reduciendo la fricción y el desgaste, evitando el sobrecalentamiento y garantizando la continuidad operativa del equipo."
+        ]
+      },
+      {
+        "slide": 1,
+        "tipo": "imagen",
+        "src": "img/nuevo/Sistema de Lubricacio╠ün Molino SAG.png"
+      },
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Nota.- Las cantidades o medidas indicadas en algunos componentes son colocadas como referencia o a medida de ejemplo, pero estas podrían variar en función del molino seleccionado durante la etapa de diseño o según necesidades operativas específicas."
+      }
+    ],
+    "imagenesGenerales": []
+  },
+  {
+    "id": "visor_btn2",
+    "id_boton_cerrar": "",
+    "titulo": "SISTEMA DE ACCIONAMIENTO",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "El sistema de accionamiento del molino SAG (GMD) tiene como función principal proporcionar la energía mecánica necesaria para generar el giro del molino, permitiendo así la molienda del mineral. Este sistema, de tipo gearless (sin engranajes), se caracteriza por su alta eficiencia, bajo mantenimiento mecánico y capacidad para operar con grandes potencias."
+      },
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Está conformado por los siguientes componentes:"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "Motor GMD (Gearless Mill Drive)",
+          "Cicloconvertidor",
+          "Sistema de enfriamiento del cicloconvertidor",
+          "Sistema de excitación",
+          "Escobillas y anillos rozantes"
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "titulo",
+        "texto": "MOTOR GMD (GEARLESS MILL DRIVE)"
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "Es un motor síncrono de tipo anillo, en el cual el rotor está directamente acoplado al cuerpo del molino, convirtiéndose este último en el propio rotor del sistema. El estator se encuentra fijo al suelo y rodea al rotor sin contacto físico, generando un campo magnético que induce el movimiento rotatorio del molino. Este diseño elimina la necesidad de reductores o engranajes, reduciendo las pérdidas mecánicas y aumentando la confiabilidad del sistema."
+      },
+      {
+        "slide": 3,
+        "tipo": "titulo",
+        "texto": "CICLOCONVERTIDOR"
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "Encargado de convertir la corriente alterna (AC) de alta frecuencia proveniente de tres transformadores multifase en corriente alterna de baja frecuencia apta para alimentar el estator del motor GMD."
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "La conversión se realiza mediante seis puentes de tiristores, lo cual permite un control preciso de la frecuencia y tensión de salida, ajustando así la velocidad de rotación del molino según los requerimientos operativos."
+      },
+      {
+        "slide": 4,
+        "tipo": "titulo",
+        "texto": "SISTEMA DE ENFRIAMIENTO DEL CICLOCONVERTIDOR"
+      },
+      {
+        "slide": 4,
+        "tipo": "parrafo",
+        "texto": "Es un circuito crítico diseñado para disipar el calor generado por los componentes electrónicos de potencia, principalmente los tiristores. En molinos de alta potencia (10 a 25 MW), este sistema utiliza agua desionizada como refrigerante debido a su baja conductividad eléctrica."
+      },
+      {
+        "slide": 5,
+        "tipo": "titulo",
+        "texto": "Circuito Interno (Agua Pura/Desionizada)"
+      },
+      {
+        "slide": 5,
+        "tipo": "parrafo",
+        "texto": "El agua desionizada circula directamente a través de los disipadores de calor montados en los módulos de los tiristores."
+      },
+      {
+        "slide": 5,
+        "tipo": "parrafo",
+        "texto": "Al ser un fluido no conductor, permite el enfriamiento de componentes bajo alta tensión sin riesgo de cortocircuitos o corrientes de fuga."
+      },
+      {
+        "slide": 5,
+        "tipo": "parrafo",
+        "texto": "Este circuito es cerrado para mantener la pureza del agua y evitar la entrada de contaminantes que podrían aumentar su conductividad."
+      },
+      {
+        "slide": 6,
+        "tipo": "titulo",
+        "texto": "Intercambio de Calor"
+      },
+      {
+        "slide": 6,
+        "tipo": "parrafo",
+        "texto": "El agua desionizada caliente se dirige a un intercambiador de calor (normalmente de placas)."
+      },
+      {
+        "slide": 6,
+        "tipo": "parrafo",
+        "texto": "En este punto, el calor se transfiere a un circuito externo de agua industrial o mediante un sistema de aire forzado, dependiendo de la ubicación de la planta."
+      },
+      {
+        "slide": 7,
+        "tipo": "titulo",
+        "texto": "Monitoreo y Control"
+      },
+      {
+        "slide": 7,
+        "tipo": "parrafo",
+        "texto": "El sistema incluye sensores de temperatura, flujo y conductividad."
+      },
+      {
+        "slide": 7,
+        "tipo": "parrafo",
+        "texto": "Si la conductividad del agua desionizada supera un umbral seguro, el sistema de control activa alarmas o detiene el equipo para proteger los componentes electrónicos."
+      },
+      {
+        "slide": 8,
+        "tipo": "titulo",
+        "texto": "SISTEMA DE EXCITACIÓN"
+      },
+      {
+        "slide": 8,
+        "tipo": "parrafo",
+        "texto": "Proporciona corriente continua (DC) al rotor para su excitación electromagnética. Esta corriente se obtiene a través de la rectificación de la corriente alterna proveniente de un transformador adicional, mediante un puente de diodos trifásico."
+      },
+      {
+        "slide": 8,
+        "tipo": "parrafo",
+        "texto": "La correcta excitación del rotor es esencial para la generación del campo magnético necesario para el acoplamiento con el estator y, por ende, para el giro del molino."
+      },
+      {
+        "slide": 9,
+        "tipo": "titulo",
+        "texto": "ESCOBILLAS Y ANILLOS ROZANTES"
+      },
+      {
+        "slide": 9,
+        "tipo": "parrafo",
+        "texto": "La corriente continua de excitación es transferida al rotor mediante un sistema de escobillas y anillos rozantes."
+      },
+      {
+        "slide": 9,
+        "tipo": "parrafo",
+        "texto": "Este mecanismo permite la transmisión de energía eléctrica a una parte giratoria, garantizando la interacción entre los campos magnéticos del estator y rotor, y generando el torque necesario para la operación del molino."
+      }
+    ],
+    "imagenesGenerales": [
+      {
+        "imagen": "img/sis_acci.jpg",
+        "titulo": ""
+      },
+      {
+        "imagen": "img/sis_acci_1.png",
+        "titulo": ""
+      }
+    ]
+  },
+  {
+    "id": "visor_btn3",
+    "id_boton_cerrar": "boton_visor_close_3_1",
+    "titulo": "SISTEMA DE LUBRICACIÓN",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "El sistema de lubricación del molino SAG (GMD – Gearless Mill Drive) tiene como objetivo principal proteger los cojinetes del trunnion y garantizar que el molino opere sobre una película de aceite a presión, evitando el contacto metal–metal, reduciendo la fricción y disipando el calor generado durante la operación."
+      },
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Este sistema está compuesto por:"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "Lubricación de cojinetes del trunnion",
+          "Pads hidrostáticos y pads de empuje",
+          "Depósito de aceite",
+          "Bombas de baja presión",
+          "Bombas de alta presión",
+          "Filtros e intercambiadores de calor",
+          "Conjunto de acumuladores",
+          "Circuito de retorno",
+          "Instrumentación y control",
+          "Aislamiento eléctrico"
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "titulo",
+        "texto": "LUBRICACIÓN DE COJINETES DEL TRUNNION"
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "El aceite es impulsado hacia los cojinetes de alimentación y descarga, donde forma una película lubricante que soporta el peso del molino y su carga, evitando desgaste y sobrecalentamiento."
+      },
+      {
+        "slide": 3,
+        "tipo": "titulo",
+        "texto": "PADS HIDROSTÁTICOS Y PADS DE EMPUJE"
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "En los cojinetes, el aceite a alta presión alimenta los pads hidrostáticos y los pads de empuje, asegurando tanto la suspensión del molino como el control de los esfuerzos axiales."
+      },
+      {
+        "slide": 4,
+        "tipo": "titulo",
+        "texto": "DEPÓSITO DE ACEITE"
+      },
+      {
+        "slide": 4,
+        "tipo": "parrafo",
+        "texto": "Dividido en compartimientos que separan el aceite sucio del aceite limpio. En él se almacenan, acondicionan y distribuyen los volúmenes de lubricante requeridos para el sistema."
+      },
+      {
+        "slide": 4,
+        "tipo": "parrafo",
+        "texto": "El depósito de aceite cuenta con tres compartimientos:"
+      },
+      {
+        "slide": 4,
+        "tipo": "lista",
+        "items": [
+          "Compartimiento de retorno: recibe el aceite caliente y con posibles partículas que regresa desde los descansos (cojinetes) del molino. Su diseño permite que el flujo pierda turbulencia, iniciando la separación inicial de aire y contaminantes pesados antes de pasar a la siguiente etapa.",
+          "Compartimiento de Reposo: proporciona el \"tiempo de residencia\" necesario para el acondicionamiento pasivo del lubricante. En esta zona, el aceite se mantiene en calma para facilitar la desaireación (escape de burbujas de aire) y la decantación de partículas finas o agua que no se eliminaron en el retorno. Es una zona de transición fundamental para evitar que el aire llegue a las bombas.",
+          "Compartimiento de aceite acondicionado: almacena el aceite que ya ha sido filtrado y enfriado externamente, dejándolo listo para su recirculación. Desde aquí, las bombas de alta presión succionan el aceite optimizado. Este compartimiento cuenta con los calentadores eléctricos para mantener la viscosidad adecuada y los sensores de nivel que garantizan un suministro seguro al molino."
+        ]
+      },
+      {
+        "slide": 5,
+        "tipo": "titulo",
+        "texto": "BOMBAS DE BAJA PRESIÓN"
+      },
+      {
+        "slide": 5,
+        "tipo": "parrafo",
+        "texto": "Encargadas del acondicionamiento del aceite, esto se logra recirculando el aceite por filtros e intercambiadores de calor con el fin de garantizar un flujo correcto de aceite hacia los cojinetes del molino."
+      },
+      {
+        "slide": 6,
+        "tipo": "titulo",
+        "texto": "BOMBAS DE ALTA PRESIÓN"
+      },
+      {
+        "slide": 6,
+        "tipo": "parrafo",
+        "texto": "Conducen el aceite hacia los diferentes puntos de lubricación del molino, lado alimentación, lado descarga y pads de empuje."
+      },
+      {
+        "slide": 7,
+        "tipo": "titulo",
+        "texto": "FILTROS E INTERCAMBIADORES DE CALOR"
+      },
+      {
+        "slide": 7,
+        "tipo": "parrafo",
+        "texto": "Eliminan impurezas y regulan la temperatura del aceite mediante enfriadores aceite–agua, preservando sus propiedades lubricantes."
+      },
+      {
+        "slide": 8,
+        "tipo": "titulo",
+        "texto": "CONJUNTO DE ACUMULADORES"
+      },
+      {
+        "slide": 8,
+        "tipo": "parrafo",
+        "texto": "Almacena aceite a presión como respaldo en caso de cortes eléctricos o pérdida de presión, permitiendo mantener la lubricación el tiempo suficiente hasta que el molino sea detenido con seguridad."
+      },
+      {
+        "slide": 9,
+        "tipo": "titulo",
+        "texto": "CIRCUITO DE RETORNO"
+      },
+      {
+        "slide": 9,
+        "tipo": "parrafo",
+        "texto": "Recoge el aceite utilizado en los cojinetes y lo devuelve al tanque, donde es filtrado, enfriado y acondicionado antes de volver a ingresar al ciclo."
+      },
+      {
+        "slide": 10,
+        "tipo": "titulo",
+        "texto": "INSTRUMENTACIÓN Y CONTROL"
+      },
+      {
+        "slide": 10,
+        "tipo": "parrafo",
+        "texto": "Sensores de presión, temperatura y flujo monitorean el sistema en tiempo real. Un PLC (Controlador Lógico Programable) gestiona las secuencias de arranque/parada y activa alarmas o paros de emergencia si los parámetros se desvían de los valores seguros."
+      },
+      {
+        "slide": 11,
+        "tipo": "titulo",
+        "texto": "AISLAMIENTO ELÉCTRICO"
+      },
+      {
+        "slide": 11,
+        "tipo": "parrafo",
+        "texto": "Componentes críticos del cojinete, como los soportes de los pads, incluyen aislamiento eléctrico (como baquelita) para prevenir daños por corrientes parásitas que podrían fluir a través del eje del molino debido al potente motor GMD."
+      },
+      {
+        "slide": 12,
+        "tipo": "titulo",
+        "texto": "Fases de Funcionamiento"
+      },
+      {
+        "slide": 12,
+        "tipo": "titulo",
+        "texto": "Arranque y Parada (Lubricación Hidrostática de Alta Presión)"
+      },
+      {
+        "slide": 12,
+        "tipo": "parrafo",
+        "texto": "Antes de arrancar el molino, un conjunto de bombas de alta presión (jacking pumps) inyectan aceite lubricante entre la superficie inferior del muñón (eje) y las zapatas de los cojinetes. Esta inyección de aceite genera una película presurizada que levanta físicamente el enorme peso del molino y su carga, asegurando que no haya contacto metálico durante el arranque. Esto minimiza el torque de arranque y previene el desgaste."
+      },
+      {
+        "slide": 12,
+        "tipo": "titulo",
+        "texto": "Operación Normal (Lubricación Hidrodinámica de Baja Presión)"
+      },
+      {
+        "slide": 12,
+        "tipo": "parrafo",
+        "texto": "Una vez que el molino alcanza una velocidad de operación estable (normalmente alrededor de 10 RPM en molinos GMD), el movimiento de rotación del muñón por sí mismo es suficiente para arrastrar el aceite y mantener la película lubricante mediante acción hidrodinámica."
+      }
+    ],
+    "imagenesGenerales": [
+      {
+        "imagen": "img/lub_sag.jpg",
+        "titulo": ""
+      },
+      {
+        "imagen": "img/sis_lub_2.png",
+        "titulo": ""
+      },
+      {
+        "imagen": "img/sis_lub_3.png",
+        "titulo": ""
+      },
+      {
+        "imagen": "img/sis_lub_4.png",
+        "titulo": ""
+      }
+    ]
+  },
+  {
+    "id": "visor_btn4",
+    "id_boton_cerrar": "boton_visor_close_4_1",
+    "titulo": "SISTEMA DE FRENO",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "El sistema de freno tiene como función principal detener el molino de manera segura en diferentes condiciones: ante un corte de energía eléctrica, una falla en el sistema de lubricación de los cojinetes del trunnion, o durante paradas de emergencia y mantenimientos programados."
+      },
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "Está compuesto por dos elementos principales:"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "Unidad Hidráulica",
+          "Conjunto de Freno"
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "titulo",
+        "texto": "UNIDAD HIDRÁULICA"
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "Su función es suministrar aceite a presión al circuito hidráulico, garantizando el accionamiento adecuado de las pinzas de freno. Está conformada por:"
+      },
+      {
+        "slide": 2,
+        "tipo": "lista",
+        "items": [
+          "Un motor eléctrico de potencia media (entre 5 y 10 kW).",
+          "Una bomba de engranajes con caudal en el rango de 10 a 20 litros por minuto.",
+          "Filtros de alta eficiencia para retención de partículas finas.",
+          "Un acumulador de aceite para mantener la presión en el sistema.",
+          "Válvulas hidráulicas de control y distribución del fluido."
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "El funcionamiento se basa en impulsar aceite desde el depósito mediante la bomba hidráulica. El fluido pasa por un filtro de presión, se acumula y presuriza, y luego es dirigido a través de válvulas direccionales hacia el conjunto de freno, permitiendo la activación del sistema."
+      },
+      {
+        "slide": 3,
+        "tipo": "titulo",
+        "texto": "CONJUNTO DE FRENO"
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "Su función es presionar el disco de freno ubicado en la tapa de descarga del molino hasta lograr su detención total. Está conformado por:"
+      },
+      {
+        "slide": 3,
+        "tipo": "lista",
+        "items": [
+          "01 actuador del freno",
+          "02 pastillas freno (superior e inferior)",
+          "02 pasadores principales",
+          "02 mordazas",
+          "02 pasadores inferiores",
+          "01 base del cáliper",
+          "01 pasador conector actuador",
+          "02 pasadores de brazos de mordazas",
+          "02 brazos de mordazas",
+          "01 filtro"
+        ]
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "Durante la operación, el aceite a presión ingresa al actuador, comprime el resorte interno y, al liberarse bajo presión, provoca el cierre de las mordazas sobre el disco de freno. Este proceso genera una frenada controlada y eficiente, logrando la detención del molino en un tiempo estimado de segundos a decenas de segundos, dependiendo de las condiciones de operación."
+      }
+    ],
+    "imagenesGenerales": [
+      {
+        "imagen": "img/nuevo/Sistema de Freno.png",
+        "titulo": ""
+      }
+    ]
+  },
+  {
+    "id": "visor_icon61",
+    "id_boton_cerrar": "visor_btn_5",
+    "titulo": "PRINCIPIO DE FUNCIONAMIENTO",
+    "contenido": [
+      {
+        "slide": 1,
+        "tipo": "parrafo",
+        "texto": "El proceso inicia con el ingreso del mineral, el agua de proceso, las bolas de acero y los reactivos al interior del molino, por medio del cajón de alimentación. El mineral, al hacer contacto con los liners, sufre una elevación a causa de las ondulaciones existentes en estos, de tal modo que cae e impacta contra otras partículas, describiendo dos tipos de movimiento:"
+      },
+      {
+        "slide": 1,
+        "tipo": "lista",
+        "items": [
+          "El primer movimiento es en \"cascada\", donde parte de la carga se desliza continuamente, generando fuerzas de abrasión entre el mineral y las bolas de acero.",
+          "El segundo movimiento es en \"catarata\", donde parte de la carga alcanza una mayor elevación e impacta contra el mineral que se desliza y contra los liners, fragmentándolo. Luego, el ciclo se repite con cada giro del molino."
+        ]
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "El giro del molino se produce gracias a la generación de fuerzas electromagnéticas entre el estator y los polos instalados en la periferia de la carcasa del molino (Sistema GMD)."
+      },
+      {
+        "slide": 2,
+        "tipo": "parrafo",
+        "texto": "El mineral triturado rebosa por el trunnion de descarga y pasa al trommel, donde se realiza un proceso de clasificación:"
+      },
+      {
+        "slide": 2,
+        "tipo": "lista",
+        "items": [
+          "El mineral de tamaño más pequeño atraviesa las mallas del trommel y se dirige a los nidos de hidrociclones.",
+          "El mineral más grueso es descargado hacia las zarandas para su reclasificación."
+        ]
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "Para mantener el molino alineado, se emplea un sistema de lubricación de los cojinetes de los trunnion, que desplaza el molino mediante una película de aceite, evitando el contacto directo entre los trunnion y los pads."
+      },
+      {
+        "slide": 3,
+        "tipo": "parrafo",
+        "texto": "Además, el molino cuenta con un sistema de frenado, encargado de detener el molino en caso de emergencia o durante tareas de mantenimiento."
+      }
+    ],
+    "imagenesGenerales": [
+      {
+        "imagen": "img/principio_funcionamiento_sag.png",
+        "titulo": ""
+      }
+    ]
+  }
+]

@@ -1,0 +1,1135 @@
+/* __V3D_TEMPLATE__ - template-based file; delete this line to prevent this file from being updated */
+
+:root {
+    --confipetrol-naranja: rgb(241, 135, 0);
+    --confipetrol-naranja-claro: rgb(255, 160, 39);
+    --confipetrol-naranja-claro2: rgb(255, 181, 84);
+    --confipetrol-azul: blue;
+    --confipetrol-celeste: rgb(45, 101, 208);
+    --color-blanco: #fff;
+    --color-negro: #000;
+
+    --font-8: clamp(0.5208rem, 0.3681rem + 0.7638vw, 0.96rem);
+    --font-7: clamp(0.625rem, 0.425rem + 1vw, 1.2rem);
+    --font-6: clamp(0.75rem, 0.4891rem + 1.3043vw, 1.5rem);
+    --font-5: clamp(0.9rem, 0.5609rem + 1.6957vw, 1.875rem);
+    --font-4: clamp(1.08rem, 0.6404rem + 2.1978vw, 2.3438rem);
+    --font-3: clamp(1.296rem, 0.7278rem + 2.8412vw, 2.9297rem);
+    --font-2: clamp(1.5552rem, 0.8224rem + 3.6642vw, 3.6621rem);
+    --font-1: clamp(1.8662rem, 0.9231rem + 4.7155vw, 4.5776rem);
+}
+/* Contenedor de pantalla completa */
+#fullscreen-img {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    display: none; /* oculto por defecto */
+  }
+  
+  .image-container {
+    position: relative;
+    max-width: 70vw;
+    max-height: 70vh;
+  }
+  
+  .image-container img {
+    max-width: 70vw;
+  max-height: 70vh;
+  object-fit: contain;
+  position: relative;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 0px;
+    right: -53px;
+    background: var(--confipetrol-naranja);
+    border: none;
+    color: white;
+    font-weight: bold;
+    width: 2rem;
+    height: 2rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+    cursor: pointer;
+    padding: 4px 10px;
+  }
+/*/////////////////////////////////////////////////////////////////////////////////*/
+/* Fuente */
+
+@font-face {
+    font-family: "Swiss721BT";
+    src: url("font/Swiss721BT-Bold.woff") format("woff"),
+        url("font/Swiss721BT-Bold.woff2") format("woff2"),
+        url("font/Swiss721BT-Bold.ttf") format("truetype"),
+        url("font/Swiss721BT-Bold.eot");
+
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Swiss721BT";
+    src: url("font/Swiss721BT-Medium.woff") format("woff"),
+        url("font/Swiss721BT-Medium.woff2") format("woff2"),
+        url("font/Swiss721BT-Medium.ttf") format("truetype"),
+        url("font/Swiss721BT-Medium.eot");
+
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: "Swiss721BT", Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+
+
+body {
+    margin: 0px;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-start;
+    /* Fuente moderna */
+    align-items: center;
+}
+
+.v3d-container {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.fullscreen-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    background-size: 100% 100%;
+    display: none;
+    z-index: 1;
+}
+
+.fullscreen-open {
+    background-image: url("media/fullscreen_open.svg");
+}
+
+.fullscreen-close {
+    background-image: url("media/fullscreen_close.svg");
+}
+
+#preloader_screen {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    /* Eliminar márgenes */
+    padding: 0;
+    /* Eliminar relleno */
+    background-image: url("img/background.png");
+    /* Ruta de tu imagen */
+    background-size: cover;
+    /* Abarca toda la pantalla */
+    background-position: center;
+    /* Centra la imagen */
+    background-repeat: no-repeat;
+    /* Evita que se repita */
+    height: 100vh;
+    /* Altura completa de la ventana */
+    width: 100vw;
+    /* Ancho completo de la ventana */
+    z-index: 1;
+}
+
+.skill {
+    width: 160px;
+    height: 160px;
+    position: relative;
+}
+
+.outer {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.15),
+        -6px -6px 10px -1px rgba(255, 255, 255, 0.7);
+}
+
+.inner {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    box-shadow: inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2),
+        inset 4px 4px 6px -1px rgba(255, 255, 255, 0.7),
+        -0.5px -0.5px 0px rgba(255, 255, 255, 1),
+        0.5px 0.5px 0px rgba(255, 255, 255, 0.15),
+        0px 12px 10px -10px rgba(0, 0, 0, 0.05);
+}
+
+.outer,
+.inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#percentage {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.preloader_circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#circle {
+    fill: none;
+    stroke: url(#GradientColor);
+    stroke-width: 20px;
+    stroke-dasharray: 472;
+    stroke-dashoffset: 472;
+    transition: stroke-dashoffset 0.1s linear;
+}
+
+/* removes tap blinking on ios devices */
+* {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/* Background imagen */
+
+.pantalla-completa {
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    /* Eliminar márgenes */
+    padding: 0;
+    /* Eliminar relleno */
+    background-image: url("img/background.png");
+    /* Ruta de tu imagen */
+    background-size: cover;
+    /* Abarca toda la pantalla */
+    background-position: center;
+    /* Centra la imagen */
+    background-repeat: no-repeat;
+    /* Evita que se repita */
+    height: 100vh;
+    /* Altura completa de la ventana */
+    width: 100vw;
+    /* Ancho completo de la ventana */
+    z-index: 1;
+}
+
+.logo {
+    z-index: 999;
+    position: absolute;
+    top: 1.7rem;
+    right: 5em;
+    width: 11rem;
+    height: auto;
+}
+
+.boton-palpitante {
+    font-weight: bold;
+    padding: 1.8rem 3.5rem;
+    height: fit-content;
+    font-size: 3rem;
+    color: #ffffff;
+    background-color:  rgb(0, 57, 166);
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px #000;
+    outline: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease,
+        background-color 1s ease;
+    animation: palpitacion 1.5s infinite ease-in-out;
+}
+
+.boton-palpitante:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+    background-color:  rgb(0, 57, 166);
+}
+
+.boton-palpitante:active {
+    transform: scale(0.95);
+}
+
+/* Contenedor de los botones */
+.button-container {
+    z-index: 999;
+    display: flex;
+    pointer-events: auto;
+    /* top: 7rem;
+    left: 2rem;
+    display: flex;
+    gap: 10px; */
+}
+
+.menu_principal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: fit-content;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    place-content: center;
+    height: 100%;
+    padding: 1rem;
+    pointer-events: none;
+}
+
+.logo2 {
+    opacity: 0;
+    z-index: 999;
+    width: 11rem;
+}
+
+#sub_menu {
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Estilo de los botones */
+.icon-button {
+    height: 2.5rem;
+    aspect-ratio: 1/1;
+    background-color: var(--confipetrol-naranja);
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 1);
+    transition: all 0.3s ease-in-out;
+    font-size: 1em;
+    color: white;
+}
+
+/* Efecto hover */
+.icon-button:hover,
+.icon-button:active {
+    background-color: var(--confipetrol-naranja-claro);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 1);
+    transform: scale(0.9);
+}
+
+.back-button {
+    position: fixed;
+    max-width: 7vh;
+    max-height: 7vh;
+    bottom: 4vh;
+    right: 19rem;
+    background-color: var(--confipetrol-naranja);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+#saltar_audio {
+    right: 1rem;
+    bottom: 1rem;
+}
+
+
+.back-button:hover {
+    background-color: #3700b3;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.back-button i {
+    font-size: 24px;
+}
+
+/* .button-container-secundario {
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 2rem;
+    top: 12rem;
+} */
+
+
+/* Estilo adicional para la lista de puntos secundarios */
+.secondary-points ul {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin: 0;
+    padding: 0.5rem 0.4rem;
+}
+
+.text_title {
+    padding: 1rem;
+    background: #f18700;
+    font-size: 1.3rem;
+}
+
+.text_text {
+    line-height: 1.6;
+    margin: 1rem;
+    max-height: 12rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 1rem
+}
+
+.text_btn {
+    cursor: pointer;
+    border: none;
+    margin: 1rem;
+    color: white;
+    background: #f18700;
+    width: 88%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem;
+    border-radius: .5rem;
+    color: #fff;
+}
+
+/* Barra de desplazamiento delgada */
+.text_text::-webkit-scrollbar {
+    width: 6px;
+    /* Ancho reducido para la barra de desplazamiento */
+}
+
+/* Fondo de la pista (donde se mueve la barra) */
+.text_text::-webkit-scrollbar-track {
+    background: transparent;
+    /* Fondo transparente para la pista */
+    border-radius: 10px;
+    /* Bordes redondeados */
+}
+
+/* Parte que se mueve (thumb) */
+.text_text::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+    /* Azul Material UI */
+    border-radius: 10px;
+    /* Bordes redondeados */
+    border: 2px solid #ffffff;
+    /* Borde blanco delgado para darle un toque Material */
+}
+
+.secondary-points ul li {
+    font-size: var(--font-7);
+    color: #FFF;
+    padding: 0.5rem 1rem;
+    /* max-width: 100%; */
+    /* aspect-ratio: 1/1; */
+    /* width: fit-content; */
+    border-radius: 5rem;
+
+    /* display: flex; */
+    /* justify-content: left; */
+    /* align-items: center; */
+    overflow: hidden;
+    width: fit-content;
+    display: grid;
+    grid-template-columns: auto 0fr;
+    place-content: center;
+    gap: 0;
+    pointer-events: auto;
+
+    background-color: var(--confipetrol-naranja);
+
+    transition: 300ms ease-in-out;
+
+    /* transition: transform 0.5s ease, box-shadow 0.3s ease,
+        background-color 1s ease; */
+
+    svg {
+        height: 2rem;
+        width: 2rem;
+        aspect-ratio: 1/1;
+        flex-shrink: 0;
+    }
+}
+
+.secondary-points ul li span {
+    display: flex;
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    white-space: nowrap;
+    transition:
+        width 1s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.8s ease,
+        padding 1s ease;
+}
+
+.secondary-points ul li:hover {
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem;
+    border-radius: 3rem;
+
+    background-color: var(--confipetrol-naranja-claro);
+    box-shadow: 0px 1px 2px #000;
+    cursor: pointer;
+    width: auto;
+}
+
+.secondary-points ul li:hover span {
+    display: flex;
+    opacity: 1;
+}
+
+.secondary-points ul.show li {
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem;
+    border-radius: 3rem;
+
+    background-color: var(--confipetrol-naranja-claro);
+    /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 1); */
+    cursor: pointer;
+
+    width: auto;
+}
+
+.secondary-points ul.show li span {
+    display: flex;
+    opacity: 1;
+    justify-content: flex-start;
+}
+
+
+
+.close-btn:hover {
+    scale: 0.98;
+    background: var(--confipetrol-azul);
+}
+
+/* Contenedor de la tabla */
+.table-container {
+    position: fixed;
+    max-width: 70%;
+    max-height: 50%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 8px;
+    box-shadow: 2px 2px 12px rgb(0 0 0 / 41%), -1px -1px 8px rgb(0 0 0 / 19%);
+}
+
+
+/* Barra de desplazamiento delgada */
+.table-container::-webkit-scrollbar {
+    width: 6px;
+    /* Ancho reducido para la barra de desplazamiento */
+}
+
+/* Fondo de la pista (donde se mueve la barra) */
+.table-container::-webkit-scrollbar-track {
+    background: transparent;
+    /* Fondo transparente para la pista */
+    border-radius: 10px;
+    /* Bordes redondeados */
+}
+
+/* Parte que se mueve (thumb) */
+.table-container::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+    /* Azul Material UI */
+    border-radius: 10px;
+    /* Bordes redondeados */
+    border: 2px solid #ffffff;
+    /* Borde blanco delgado para darle un toque Material */
+}
+
+:root {
+    --color-principal: #F18700;
+    --color-blanco: #FFF;
+    --color-azul: #0039A6;
+}
+
+
+
+.section h2 {
+    text-transform: uppercase !important;
+    margin-top: 25px;
+    color: var(--confipetrol-naranja);
+    font-size: var(--font-6);
+    text-align: left;
+}
+
+.section h4 {
+    text-transform: uppercase !important;
+    margin-top: 30px;
+}
+
+.section p,
+.section li {
+   margin-top: 0;
+    color: var(--confipetrol-azul);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: #757574;
+}
+
+
+audio {
+    position: fixed;
+    
+    bottom: 4vh;
+    max-height: 10%;
+
+    right: 1rem;
+    z-index: 1000;
+    max-width: 17rem;
+
+    background: linear-gradient(135deg, var(--color-principal), var(--confipetrol-naranja), var(--confipetrol-celeste), var(--confipetrol-azul));
+    backdrop-filter: blur(10px);
+    border-radius: 2em;
+    padding: 0.3rem 0.3rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background 0.5s ease-in-out;
+    
+    animation: pulseGlow 2s infinite alternate;
+}
+
+audio:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, var(--confipetrol-azul), var(--confipetrol-celeste), var(--confipetrol-naranja), var(--color-principal));
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Animación de brillo pulsante */
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* Personalización de controles */
+audio::-webkit-media-controls-panel {
+    background: transparent;
+    color: var(--quellaveco-azul);
+}
+
+audio::-webkit-media-controls-play-button,
+audio::-webkit-media-controls-volume-slider {
+
+    transition: transform 0.3s ease-in-out;
+}
+
+audio::-webkit-media-controls-play-button:hover,
+audio::-webkit-media-controls-volume-slider:hover {
+    transform: scale(1.2);
+}
+
+/* Ocultar el tiempo transcurrido y la duración */
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display {
+    display: none;
+}
+.section img {
+    margin-bottom: 20px !important;
+    display: block;
+    max-width: 80%;
+    max-height: 80%;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+}
+
+/* Estilo de la tabla */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: white;
+}
+
+th,
+td {
+    text-align: center;
+    padding: 15px 25px;
+    position: relative;
+    line-height: normal;
+    border-bottom: 0.1em solid var(--color-blanco);
+}
+
+th {
+    width: 30%;
+    font-weight: 700;
+}
+
+td {
+    width: 70%;
+    font-weight: 500;
+}
+
+tr {
+    background-color: #282828c4;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+tr:hover {
+    transform: scale(1.02);
+    background-color: var(--color-azul);
+    border-bottom: 0px;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.5), -1px -1px 8px rgba(0, 0, 0, 0.5);
+}
+
+
+@media only screen and (max-width: 768px) {
+    table {
+        width: 90%;
+    }
+}
+
+tr:hover th,
+tr:hover td {
+    border-bottom: none;
+}
+
+/* Definir anchos especÃ­ficos */
+th:nth-child(1),
+td:nth-child(1) {
+    width: 15%;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+    width: 30%;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    width: 30%;
+}
+
+th:nth-child(4),
+td:nth-child(4) {
+    width: 25%;
+}
+
+.pantalla_secundaria {
+    z-index: 9999;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000ad;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.titulo {
+    z-index: 999;
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    font-size: 2rem;
+    /* Tamaño de fuente base */
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.contenedor-imagen {
+    max-width: 75%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imagen {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.texto {
+    position: absolute;
+    z-index: 9;
+    top: 6rem;
+    right: 2rem;
+    width: 20rem;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 0.4rem;
+    text-align: justify;
+}
+
+.v3d-annotation {
+    cursor: pointer;
+    box-sizing: content-box;
+}
+
+body {
+    font-size: 1.2rem;
+}
+
+.carrusel {
+    position: relative;
+    width: 60%;
+    /* Ajusta el tamaño del carrusel */
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.imagen,
+video {
+    width: 100%;
+    height: auto;
+    max-height: 70vh;
+    object-fit: contain;
+    display: block;
+}
+
+.flecha {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 2rem;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.izquierda {
+    left: 10px;
+}
+
+.derecha {
+    right: 10px;
+}
+
+.boton-anotacion-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+}
+
+.boton-anotacion {
+    width: 40px;
+    height: 40px;
+    background-color: #007bff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: background 0.3s;
+}
+
+.boton-anotacion:hover {
+    background-color: #0056b3;
+}
+
+.anotacion {
+    opacity: 0;
+    transform: translateX(-10px);
+    background: #007bff;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    position: absolute;
+    left: 50px;
+    transition: opacity 0.3s, transform 0.3s;
+    white-space: nowrap;
+}
+
+.boton-anotacion-container:hover .anotacion {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.icono {
+    transition: transform 0.3s ease-in-out;
+}
+
+.activo .icono {
+    transform: rotate(180deg);
+}
+
+/* visores */
+.visor {
+    cursor: auto;
+    position: absolute;
+    z-index: 1000;
+    top: 3.2em;
+    right: 0;
+
+    padding-bottom: 1rem;
+    width: 25rem;
+    max-height: 60%;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    background-color: #FFF;
+    border-radius: 0.4rem;
+    text-align: justify;
+    scrollbar-color: var(--color-principal) #fff;
+
+    box-shadow: 0 4px 8px #000;
+}
+
+.visor.hide {
+    width: 2.6rem;
+    background-color: transparent;
+    overflow: hidden;
+    color: rgb(0, 0, 0);
+    height: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.visor.hide .visor_btn {
+    width: 2.6rem;
+    overflow-y: hidden;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+}
+
+.visor.hide .visor_btn svg {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    rotate: 180deg;
+    scale: 1;
+}
+
+.visor.hide .section {
+    display: none;
+}
+
+.visor_btn {
+    background-color: transparent;
+    border: none;
+    /* padding: .1rem; */
+}
+
+.visor_btn svg {
+    scale: 1.4;
+    cursor: pointer;
+    fill: var(--confipetrol-naranja);
+}
+
+.visor_btn svg:hover {
+    scale: 0.95;
+    fill: var(--confipetrol-azul);
+}
+
+.section {
+    margin: 0 0 1rem 0;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    pointer-events: auto;
+    overflow-x: hidden;
+    text-align: justify;
+
+
+    width: 95%;
+    margin: auto;
+
+    font-size: var(--font-7);
+}
+
+
+.section h2 {
+    margin-top: 25px;
+    color: var(--confipetrol-naranja);
+    font-size: var(--font-6);
+    text-align: center;
+}
+
+.section h4 {
+    margin-top: 30px;
+    color: var(--confipetrol-naranja);
+    font-size: var(--font-7);
+    padding-bottom: 0.5rem;
+    text-align: center;
+}
+
+.section ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    list-style-position: inside;
+}
+
+.section ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    list-style: none;
+    padding-left: 0;
+}
+
+.section ul li {
+    position: relative;
+    padding-left: 20px;
+}
+
+.section ul li::before {
+    content: "•";
+    color: var(--confipetrol-naranja);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    font-size: 1.2em;
+}
+
+.section p,
+.section li {
+    margin-bottom: 0.5rem;
+    color: #757574;
+}
+
+.section img {
+    margin-bottom: 20px !important;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    margin: auto;
+    max-width: 80%;
+    max-height: 80%;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+    box-shadow: 0 1px 2px #000;
+}
+
+#fullscreen-img {
+    cursor: auto;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .titulo {
+        font-size: 1.5rem;
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo {
+        font-size: 1.2rem;
+        padding: 6px 10px;
+    }
+}
+
+
+@keyframes palpitacion {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+
+    .logo {
+        position: absolute;
+        top: 1rem;
+        width: 9rem;
+        height: auto;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .logo2 {
+        width: 6rem;
+    }
+
+    .secondary-points ul {
+        padding-left: 0;
+    }
+
+    .secondary-points ul li {
+        font-size: var(--font-6);
+    }
+
+    .secondary-points ul li.show span,
+    .secondary-points ul li:hover span {
+        width: auto;
+    }
+
+    .visor {
+        width: 100%;
+        max-height: 100dvh;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    .secondary-points ul li svg {
+        height: 1.2rem;
+    }
+
+    .visor {
+        width: 40%;
+        height: 80%;
+    }
+}

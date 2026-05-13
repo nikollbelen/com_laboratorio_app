@@ -1,28 +1,44 @@
 import { Preloader } from './Preloader.js';
-import '../../../css/components/Componentes.css';
 
-export default { title: 'Componentes/Preloader' };
-
-const Template = (args) => {
-  const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'width:100vw; height:100vh; position:relative; overflow:hidden;';
-  const mount = document.createElement('div');
-  mount.id = 'sb-preloader-mount';
-  wrapper.appendChild(mount);
-  setTimeout(() => {
-    const p = new Preloader('sb-preloader-mount', { labName: args.labName, imageUrl: args.imageUrl, logoUrl: args.logoUrl });
-    if (args.simularCarga) {
-      let pct = 0;
-      const iv = setInterval(() => { pct += 5; p.setProgress(pct); if (pct >= 100) clearInterval(iv); }, 200);
-    }
-  }, 50);
-  return wrapper;
+export default {
+  title: 'Componentes/Preloader',
+  parameters: {
+    layout: 'fullscreen',
+    backgrounds: { default: 'oscuro' },
+  },
+  argTypes: {
+    progress: { control: { type: 'range', min: 0, max: 100, step: 1 } },
+    title: { control: 'text' },
+    subtitle: { control: 'text' },
+  },
 };
 
-export const PorDefecto = Template.bind({});
-PorDefecto.storyName = 'Pantalla de carga';
-PorDefecto.args = { labName: 'Molino SAG', imageUrl: '/images/fondo.png', logoUrl: '/images/logo-tecsup.png', simularCarga: false };
+const Template = (args) => {
+  const container = document.createElement('div');
+  container.id = 'preloader-mount';
+  
+  setTimeout(() => {
+    new Preloader('preloader-mount', args);
+  }, 0);
+  
+  return container;
+};
 
-export const ConCargaSimulada = Template.bind({});
-ConCargaSimulada.storyName = 'Con carga simulada (0→100%)';
-ConCargaSimulada.args = { labName: 'Molino SAG', imageUrl: '/images/fondo.png', logoUrl: '/images/logo-tecsup.png', simularCarga: true };
+export const Escritorio = Template.bind({});
+Escritorio.storyName = 'Diseño de Escritorio';
+Escritorio.args = {
+  progress: 84,
+  title: 'AetherLab',
+  subtitle: 'ADVANCED SIMULATION SYSTEM',
+};
+
+export const Movil = Template.bind({});
+Movil.storyName = 'Diseño Móvil';
+Movil.parameters = {
+  viewport: {
+    defaultViewport: 'mobile1',
+  },
+};
+Movil.args = {
+  ...Escritorio.args,
+};

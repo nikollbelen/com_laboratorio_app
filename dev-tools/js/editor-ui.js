@@ -290,17 +290,31 @@ window.openModal = function (nodeData) {
         rootFields.style.display = 'block'; stepFields.style.display = 'none';
         document.getElementById('inpLabName').value = nodeData.name || '';
         document.getElementById('inpLabNameEN').value = nodeData.nameEN || '';
-        document.getElementById('inpImageUrl').value = nodeData.imageUrl || '';
-        document.getElementById('inpLogoUrl').value = nodeData.logoUrl || '';
-        document.getElementById('inpBgColor').value = nodeData.backgroundColor || '#0f172a';
-        document.getElementById('inpThemeColor').value = nodeData.themeColor || '#08a7ff';
-        document.getElementById('inpBgType').value = nodeData.backgroundType || 'image';
-        const toggleBg = () => {
-            const type = document.getElementById('inpBgType').value;
-            document.getElementById('group-bg-image').style.display = (type === 'image') ? 'block' : 'none';
-            document.getElementById('group-bg-color').style.display = (type === 'color') ? 'block' : 'none';
+        // Mapear themeColor a la paleta correcta
+        const PALETTE_MAP = {
+            '#0066ff': 'blue-core',
+            '#00d4ff': 'cyan-plasma',
+            '#8b5cf6': 'violet-forge',
+            '#f59e0b': 'amber-fusion',
+            '#10b981': 'emerald-core'
         };
-        document.getElementById('inpBgType').onchange = toggleBg; toggleBg();
+        const savedColor = (nodeData.themeColor || '#0066ff').toLowerCase();
+        const paletteName = PALETTE_MAP[savedColor] || 'blue-core';
+        const radio = document.querySelector(`input[name="palette"][value="${paletteName}"]`);
+        if (radio) radio.checked = true;
+        document.getElementById('inpThemeColor').value = savedColor;
+
+        // Listener: cuando cambie la paleta, actualizar el hidden input
+        document.querySelectorAll('input[name="palette"]').forEach(r => {
+            r.onchange = () => {
+                const REVERSE_MAP = {
+                    'blue-core': '#0066ff', 'cyan-plasma': '#00d4ff', 'violet-forge': '#8b5cf6',
+                    'amber-fusion': '#f59e0b', 'emerald-core': '#10b981'
+                };
+                document.getElementById('inpThemeColor').value = REVERSE_MAP[r.value] || '#0066ff';
+            };
+        });
+
         const ini = nodeData.inicioEstado || {};
         if (ini.animacionInicio) {
             const anims = Array.isArray(ini.animacionInicio) ? ini.animacionInicio : [ini.animacionInicio];
@@ -316,6 +330,7 @@ window.openModal = function (nodeData) {
         document.getElementById('inpEquipo').checked = ayud.tieneBotonEquipo !== false;
         document.getElementById('inpSonido').checked = ayud.tieneBotonSonido !== false;
         document.getElementById('inpLang').checked = ayud.tieneBotonLang !== false;
+        document.getElementById('inpGuardar').checked = ayud.tieneBotonGuardar !== false;
         if (nodeData.objetivos) nodeData.objetivos.forEach(o => window.addRow('objetivo', o));
         if (nodeData.epp) nodeData.epp.forEach(e => window.addRow('epp', e));
         document.getElementById('inpObjetivos').onchange = window.toggleHelpVisibility;
@@ -359,7 +374,6 @@ window.openModal = function (nodeData) {
         if (el) window.validateMeshInput(el);
     });
 
-    updatePreview('inpImageUrl', 'preview-image'); updatePreview('inpLogoUrl', 'preview-logo');
     renderChildrenList(); document.getElementById('editModalOverlay').style.display = 'flex';
 };
 
@@ -368,11 +382,7 @@ window.saveNodeChanges = async function () {
     if (selectedNode.isRoot) {
         selectedNode.name = document.getElementById('inpLabName').value;
         selectedNode.nameEN = document.getElementById('inpLabNameEN').value;
-        selectedNode.imageUrl = document.getElementById('inpImageUrl').value;
-        selectedNode.logoUrl = document.getElementById('inpLogoUrl').value;
-        selectedNode.backgroundColor = document.getElementById('inpBgColor').value;
         selectedNode.themeColor = document.getElementById('inpThemeColor').value;
-        selectedNode.backgroundType = document.getElementById('inpBgType').value;
         selectedNode.inicioEstado = selectedNode.inicioEstado || {};
         selectedNode.inicioEstado.camara = document.getElementById('inpInitCam').value;
         selectedNode.inicioEstado.camaraDireccion = document.getElementById('inpInitDir').value;
@@ -381,7 +391,8 @@ window.saveNodeChanges = async function () {
         selectedNode.inicioEstado.animacionInicio = animRoot.length > 1 ? animRoot : (animRoot[0] || null);
         selectedNode.ayudas = {
             tieneBotonAyuda: document.getElementById('inpAyuda').checked, tieneBotonObjetivos: document.getElementById('inpObjetivos').checked,
-            tieneBotonEquipo: document.getElementById('inpEquipo').checked, tieneBotonSonido: document.getElementById('inpSonido').checked, tieneBotonLang: document.getElementById('inpLang').checked
+            tieneBotonEquipo: document.getElementById('inpEquipo').checked, tieneBotonSonido: document.getElementById('inpSonido').checked, tieneBotonLang: document.getElementById('inpLang').checked,
+            tieneBotonGuardar: document.getElementById('inpGuardar').checked
         };
         if (selectedNode.ayudas.tieneBotonObjetivos) selectedNode.objetivos = Array.from(document.querySelectorAll('#list-objetivos .row-objetivo')).map(row => ({ ESdescription: row.querySelector('.obj-es').value, ENdescription: row.querySelector('.obj-en').value }));
         else delete selectedNode.objetivos;
@@ -416,8 +427,6 @@ window.saveNodeChanges = async function () {
     } catch (e) { console.error("Error al guardar."); }
 };
 
-document.getElementById('inpImageUrl').oninput = () => updatePreview('inpImageUrl', 'preview-image');
-document.getElementById('inpLogoUrl').oninput = () => updatePreview('inpLogoUrl', 'preview-logo');
 
 function renderChildrenList() {
     const container = document.getElementById('childrenListContainer');
