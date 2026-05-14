@@ -4,6 +4,28 @@ export class CameraController {
         // v3d vive en el window del iframe
         this.iframeWin = appInstance.container.ownerDocument.defaultView;
         this.v3d = this.iframeWin.v3d;
+
+        // Configurar límites de zoom y visibilidad solicitados
+        this.setCameraLimits({
+            maxDistance: 15000,
+            far: 100000
+        });
+    }
+
+    /**
+     * Ajusta los límites de la cámara y controles.
+     */
+    setCameraLimits({ maxDistance, far }) {
+        if (!this.appInstance) return;
+
+        if (this.appInstance.controls && maxDistance !== undefined) {
+            this.appInstance.controls.maxDistance = maxDistance;
+        }
+
+        if (this.appInstance.camera && far !== undefined) {
+            this.appInstance.camera.far = far;
+            this.appInstance.camera.updateProjectionMatrix();
+        }
     }
 
     getObjectByName(name) {
