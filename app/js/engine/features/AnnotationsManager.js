@@ -16,7 +16,7 @@ export class AnnotationsManager {
     }
 
     _updateBtnIcon(id, iconName) {
-        const doc = window.document;
+        const doc = this.iframeWindow.document;
         // Buscamos el span dentro del botón del panel específico
         const iconSpan = doc.querySelector(`#ant_${id}_panel .Etiqueta-v3d-btn span`);
         if (iconSpan) {

@@ -28,7 +28,7 @@ export class Preloader {
 
     render() {
         this.container.innerHTML = `
-            <div class="Preloader-root dark font-body-md text-on-surface overflow-hidden h-screen w-screen relative">
+            <div class="Preloader-root dark font-body-md text-on-surface overflow-hidden fixed inset-0 z-[9999] w-full h-full">
                 
                 <!-- DESKTOP DESIGN -->
                 <div id="desktop-preloader" class="hidden md:flex flex-col items-center justify-center h-screen w-screen relative bg-surface overflow-hidden">
@@ -91,7 +91,7 @@ export class Preloader {
                 </div>
 
                 <!-- MOBILE DESIGN -->
-                <div id="mobile-preloader" class="flex md:hidden flex-col items-center justify-between min-h-screen w-screen relative overflow-hidden Preloader-mesh-gradient">
+                <div id="mobile-preloader" class="flex md:hidden flex-col items-center justify-between h-full w-full relative overflow-hidden Preloader-mesh-gradient">
                     <div class="absolute inset-0 z-0 pointer-events-none">
                         <div class="absolute top-[-10%] right-[-20%] w-[150%] h-[150%] opacity-40">
                             <img alt="" class="w-full h-full object-cover mix-blend-screen rotate-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXukgie107Xo1akjIuLFldQG8AFC164G7OcDwlLU506PHRV2vOjvJ_CQV92PWRx31iCVouatMkLS8j-JG4SbPXBJ-gbNnyNgYoFidvFiB2bvFUPM2lSOlfsR-heu1F1RqSBFNnx0_yvvmLUh6SydVR5T8zvl9Jhx145SX-A0KEErWfWjMw3Po9TS97IvLeY3IOJzzrzWQ8plxUM-huNTzqywgXaiEyieN-4gLO5f-vYZN4MyGfY17xesRLtyFr3PwNPOaMNwL30cnm"/>
