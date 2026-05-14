@@ -357,14 +357,26 @@ function ejecutarPaso(pasoId, skipAudio = false, useGlobalHighlight = false) {
         Lab.engine.visibility.showAll(pasoConfig.objetos_mostrar);
     }
     
-    // 1. Resaltado
-    if (useGlobalHighlight && Lab.engine.allMeshes.length) {
+    // 1. Efecto Visual
+    Lab.engine._restoreOriginalMaterials(); // Limpiamos efecto glass previo
+    Lab.engine.highlights.disable(); // Limpiamos resaltados previos
+    
+    if (useGlobalHighlight) {
+        // Efecto Cristal para navegación desde etiquetas (sin panel de debug)
+        // Los objetos a resaltar de la etiqueta mantienen su material original
+        const objetosProtegidos = pasoConfig.objeto_resaltar || [];
+        Lab.engine._applyGlassEffect({
+            color: '#949494',
+            opacity: 0.55,
+            roughness: 0.05,
+            thickness: 2,
+            transmission: 1
+        }, false, objetosProtegidos);
         Lab.engine.currentStepSelection = Lab.engine.allMeshes;
-        Lab.engine.highlights.enable(Lab.engine.allMeshes, true, '#cccccc'); // Estático + Gris Claro
     } else {
         Lab.engine.currentStepSelection = pasoConfig.objeto_resaltar || [];
         if (Lab.engine.currentStepSelection.length) {
-            Lab.engine.highlights.enable(Lab.engine.currentStepSelection, true, '#cccccc'); // Estático + Gris Claro
+            Lab.engine.highlights.enable(Lab.engine.currentStepSelection, true, '#cccccc');
         }
     }
 
@@ -431,6 +443,7 @@ function onMenuReset() {
     Lab.historial = [];
     Lab.retroceso?.ocultar();
     
+    Lab.engine._restoreOriginalMaterials(); // Restaurar materiales originales
     Lab.engine.resetScene(Lab.config.inicioEstado);
     Lab.engine.ejecutarInicioEstado(Lab.config.inicioEstado, 1.2);
     
@@ -449,6 +462,7 @@ function onRetroceso() {
     const idAnterior = Lab.historial[Lab.historial.length - 1];
     
     if (Lab.engine.audio) Lab.engine.audio.stop();
+    Lab.engine._restoreOriginalMaterials(); // Restaurar materiales al retroceder
     
     ejecutarPaso(idAnterior, true);
     

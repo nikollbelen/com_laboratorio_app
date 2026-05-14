@@ -12,6 +12,7 @@ export class V3DEngine {
         this.themeColor = themeColor;
         this.allMeshes = allMeshes;
         this.ready = false;
+        this._materialBackup = new Map(); // Backup de materiales originales para restaurar
         
         // Estado global interno del motor (selección manual de etiquetas)
         this.currentGlobalSelection = { obj: null };
@@ -64,6 +65,7 @@ export class V3DEngine {
         window.disableCameraDebug = () => this.camera.disableDebug();
         window.debugHighlightUI = () => this._createHighlightDebugUI();
         window.enableGlassMode = (opts) => this._applyGlassEffect(opts);
+        window.disableGlassMode = () => this._restoreOriginalMaterials();
         this.animations = new AnimationPlayer(this.instance, iframeWindow);
         this.annotations = new AnnotationsManager(this.instance, iframeWindow, this.highlights, this.allMeshes);
         this.audio = new AudioManager();
@@ -130,7 +132,7 @@ export class V3DEngine {
         update();
     }
 
-    _applyGlassEffect(options = {}) {
+    _applyGlassEffect(options = {}, showUI = true, excludeNames = []) {
         const iframeWin = this.iframe.contentWindow;
         const THREE = iframeWin.v3d || iframeWin.THREE;
         const scene = this.instance.scene;
@@ -149,12 +151,18 @@ export class V3DEngine {
             ...options
         };
 
-        // Aplicar efecto cristal a todos los meshes (excepto fondos)
+        // Aplicar efecto cristal a todos los meshes (excepto fondos y objetos excluidos)
         const glassMeshes = [];
         const skipNames = ['fondo01', 'aiSkyDomeLight2'];
         scene.traverse(obj => {
-            if (obj.isMesh && !obj.userData.isOutline && !skipNames.includes(obj.name)) {
+            if (obj.isMesh && !obj.userData.isOutline && !skipNames.includes(obj.name) && !excludeNames.includes(obj.name)) {
                 const oldMat = Array.isArray(obj.material) ? obj.material[0] : obj.material;
+                
+                // Guardar material original si no lo tenemos ya
+                if (!this._materialBackup.has(obj.uuid)) {
+                    this._materialBackup.set(obj.uuid, { mesh: obj, material: obj.material });
+                }
+                
                 const glassMat = new THREE.MeshPhysicalMaterial({
                     color: new THREE.Color(settings.color),
                     transmission: settings.transmission,
@@ -174,6 +182,9 @@ export class V3DEngine {
 
         console.log('%c[Lab] Modo Cristal Activado: %c' + glassMeshes.length + ' objetos transformados.', 
             'color: #00ffff; font-weight: bold;', 'color: white;');
+
+        // Solo mostrar el panel de control si se solicita (desde consola)
+        if (!showUI) return;
 
         // --- Panel de Control ---
         const panelId = 'v3d-glass-debug-ui';
@@ -241,6 +252,27 @@ export class V3DEngine {
         thickIn.addEventListener('input', update);
         transIn.addEventListener('input', update);
         panel.querySelector('#glass-close').addEventListener('click', function() { panel.remove(); });
+    }
+
+    _restoreOriginalMaterials() {
+        if (this._materialBackup.size === 0) return;
+        
+        const iframeWin = this.iframe.contentWindow;
+        const THREE = iframeWin.v3d || iframeWin.THREE;
+        
+        this._materialBackup.forEach(entry => {
+            entry.mesh.material = entry.material;
+        });
+        this._materialBackup.clear();
+        
+        // Restaurar el fondo original (blanco que ya tenía tu escena)
+        this.instance.scene.background = new THREE.Color(0xffffff);
+        
+        // Cerrar panel de glass si está abierto
+        const panel = document.getElementById('v3d-glass-debug-ui');
+        if (panel) panel.remove();
+        
+        console.log('%c[Lab] Materiales originales restaurados.', 'color: #00ff00; font-weight: bold;');
     }
 
     resetScene(inicioConfig) {
