@@ -7,7 +7,7 @@ window.addEventListener('load', e => {
     createApp({
         containerId: 'v3d-container',
         fsButtonId: 'fullscreen-button',
-        sceneURL: params.load || 'Modulo3_Molino_SAG.gltf',
+        sceneURL: params.load || 'Modulo3_Molino_SAG.gltf.xz',
         logicURL: params.logic || 'visual_logic.js',
     });
 });
