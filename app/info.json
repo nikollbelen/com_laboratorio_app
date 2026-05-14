@@ -149,7 +149,12 @@
           "camaraDireccion": "cam_Dir06",
           "etiqueta": "chuteAlimentacion_etiqueta_lc",
           "flecha": "chuteAlimentacion_lc",
-          "objeto_resaltar": [],
+          "objeto_resaltar": [
+            "tolva_mesh",
+            "cajonEstabilizador_mesh",
+            "conducto_mesh",
+            "carroMovil_mesh"
+          ],
           "detener_animaciones": true,
           "audio_path": "audios/2_1.mp3",
           "subtitle": "Ubicación del cajón de alimentación.",
@@ -193,7 +198,12 @@
           "camaraDireccion": "cam_Dir07",
           "etiqueta": "cojineteFijoA_etiqueta_lc",
           "flecha": "cojineteFijoA_lc",
-          "objeto_resaltar": [],
+          "objeto_resaltar": [
+            "cojineteFront_P01_mesh",
+            "cojineteFront_P02_mesh",
+            "padHidro01_mesh",
+            "padEmpuje_mesh"
+          ],
           "detener_animaciones": true,
           "audio_path": "audios/2_2.mp3",
           "subtitle": "Visualización del cojinete de alimentación.",
@@ -237,7 +247,13 @@
           "camaraDireccion": "cam_Dir13",
           "etiqueta": "cuerpoMolino_etiqueta_lc",
           "flecha": "cuerpoMolino_lc",
-          "objeto_resaltar": [],
+          "objeto_resaltar": [
+            "shell_mesh",
+            "trunionA_mesh",
+            "tapaA_mesh",
+            "trunioD_mesh",
+            "tapaD_mesh"
+          ],
           "detener_animaciones": true,
           "audio_path": "audios/2_3.mp3",
           "subtitle": "Estructura principal del cuerpo molino.",
@@ -281,7 +297,10 @@
           "camaraDireccion": "cam_Dir18",
           "etiqueta": "cojineteD_etiqueta_lc",
           "flecha": "cojineteD_lc",
-          "objeto_resaltar": [],
+          "objeto_resaltar": [
+            "cojinetePost_P01_mesh",
+            "cojinetePost_P02_mesh"
+          ],
           "detener_animaciones": true,
           "audio_path": "audios/2_4.mp3",
           "subtitle": "Revisión del cojinete de descarga.",
@@ -325,7 +344,9 @@
           "camaraDireccion": "cam_Dir19",
           "etiqueta": "tromel_etiqueta_lc",
           "flecha": "tromel_lc",
-          "objeto_resaltar": [],
+          "objeto_resaltar": [
+            "tromel_mesh"
+          ],
           "detener_animaciones": true,
           "audio_path": "audios/2_5.mp3",
           "subtitle": "Inspección del componente Trommel.",

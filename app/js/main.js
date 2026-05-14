@@ -242,7 +242,7 @@ async function init() {
     window.addEventListener('modal:equipo:open', () => Lab.components.modalEquipo.open());
     window.addEventListener('v3d:mostrar_retroceso', () => Lab.retroceso?.mostrar());
     window.addEventListener('v3d:ocultar_retroceso',  () => Lab.retroceso?.ocultar());
-    window.addEventListener('v3d:navegar', (e) => onNavegacionInterna(e.detail?.id, e.detail?.skipAudio));
+    window.addEventListener('v3d:navegar', (e) => onNavegacionInterna(e.detail?.id, e.detail?.skipAudio, e.detail?.useGlobalHighlight));
     window.addEventListener('v3d:playAudio', (e) => Lab.engine.playStepAudio(e.detail.id));
 
     // Sincronizar idioma con el iframe y los componentes
@@ -267,8 +267,18 @@ async function init() {
         iframeBody.classList.add(`lang-${lang}`);
     });
 
+    // Cargamos la base de datos de activos (meshes)
+    let allMeshes = [];
+    try {
+        const assetsResp = await fetch('./assets_db.json');
+        const assetsData = await assetsResp.json();
+        allMeshes = assetsData.meshes || [];
+    } catch (e) {
+        console.warn('[Lab] No se pudo cargar assets_db.json, el resaltado global fallará.');
+    }
+
     // Inicializamos el motor 3D
-    Lab.engine = new V3DEngine('v3d-container');
+    Lab.engine = new V3DEngine('v3d-container', config.themeColor, allMeshes);
     
     // Esperamos a que el motor esté listo
     Lab.engine.waitForReady().then(() => {
@@ -315,8 +325,8 @@ function buscarNodoRecursivo(menu, id) {
  * @param {string} pasoId
  * @param {boolean} skipAudio - Si es true, no reproducirá la locución (útil en retroceso)
  */
-function ejecutarPaso(pasoId, skipAudio = false) {
-    console.log(`[Lab] → Ejecutando paso: ${pasoId}`);
+function ejecutarPaso(pasoId, skipAudio = false, useGlobalHighlight = false) {
+    console.log(`[Lab] → Ejecutando paso: ${pasoId}`, useGlobalHighlight ? '(Global Highlight)' : '');
     const pasoConfig = buscarNodoRecursivo(Lab.config.menu, pasoId);
     if (!pasoConfig) {
         console.error(`[Lab] No se encontró configuración para el paso: ${pasoId}`);
@@ -347,9 +357,15 @@ function ejecutarPaso(pasoId, skipAudio = false) {
         Lab.engine.visibility.showAll(pasoConfig.objetos_mostrar);
     }
     
-    Lab.engine.currentStepSelection = pasoConfig.objeto_resaltar || [];
-    if (Lab.engine.currentStepSelection.length) {
-        Lab.engine.highlights.enable(Lab.engine.currentStepSelection);
+    // 1. Resaltado
+    if (useGlobalHighlight && Lab.engine.allMeshes.length) {
+        Lab.engine.currentStepSelection = Lab.engine.allMeshes;
+        Lab.engine.highlights.enable(Lab.engine.allMeshes, true, '#cccccc'); // Estático + Gris Claro
+    } else {
+        Lab.engine.currentStepSelection = pasoConfig.objeto_resaltar || [];
+        if (Lab.engine.currentStepSelection.length) {
+            Lab.engine.highlights.enable(Lab.engine.currentStepSelection, true, '#cccccc'); // Estático + Gris Claro
+        }
     }
 
     // 2. Cámara
@@ -385,7 +401,7 @@ function ejecutarPaso(pasoId, skipAudio = false) {
     }
 }
 
-function onNavegacionInterna(id, skipAudio = false) {
+function onNavegacionInterna(id, skipAudio = false, useGlobalHighlight = false) {
     if (!id || !Lab.v3dReady) return;
     
     const idFinal = obtenerNodoFinal(id);
@@ -394,7 +410,7 @@ function onNavegacionInterna(id, skipAudio = false) {
         Lab.historial.push(idFinal);
     }
     
-    ejecutarPaso(idFinal, skipAudio);
+    ejecutarPaso(idFinal, skipAudio, useGlobalHighlight);
     if (Lab.historial.length > 0) Lab.retroceso?.mostrar();
 }
 

@@ -1,18 +1,49 @@
 export class AnnotationsManager {
-    constructor(appInstance, iframeWindow, highlightManager) {
+    constructor(appInstance, iframeWindow, highlightManager, allMeshes = []) {
         this.appInstance = appInstance;
         this.iframeWindow = iframeWindow;
         this.v3d = iframeWindow ? iframeWindow.v3d : null;
         this.highlightManager = highlightManager;
+        this.allMeshes = allMeshes; // Guardamos todos los meshes para resaltado global
         this.activeAnnotations = []; // Para seguimiento inteligente
+        this.annotationConfigs = new Map(); // Guardar configs para cambios de idioma
         this._injectPremiumStyles();
         this._startSmartLoop();
-        this._setupAudioSync();
+        this._setupEvents();
     }
 
-    _setupAudioSync() {
+    _setupEvents() {
+        // Sincronización de Play/Pause
         window.addEventListener('v3d:audioStarted', (e) => this._updateBtnIcon(e.detail.id, 'pause'));
         window.addEventListener('v3d:audioEnded', (e) => this._updateBtnIcon(e.detail.id, 'play_arrow'));
+        
+        // Sincronización de Idioma
+        window.addEventListener('lang:change', (e) => this._updateLanguage(e.detail.lang));
+    }
+
+    _updateLanguage(lang) {
+        const isEn = lang === 'en';
+        const doc = this.iframeWindow.document;
+        
+        // 1. Sincronizar clase en el iframe
+        doc.body.classList.toggle('lang-en', isEn);
+        
+        // 2. Actualizar textos de etiquetas activas
+        this.activeAnnotations.forEach(id => {
+            const config = this.annotationConfigs.get(id);
+            if (config) {
+                const panel = doc.getElementById(id + '_panel');
+                if (panel) {
+                    const titleEl = panel.querySelector('.Etiqueta-v3d-title');
+                    const subtitleEl = panel.querySelector('.Etiqueta-v3d-subtitle');
+                    const statusEl = panel.querySelector('.Etiqueta-v3d-status');
+
+                    if (titleEl) titleEl.textContent = (isEn ? config.ENdescription : config.ESdescription) || config.name;
+                    if (subtitleEl) subtitleEl.textContent = (isEn ? config.subtitleEN : config.subtitle) || (isEn ? 'Component detail' : 'Detalle del componente');
+                    if (statusEl) statusEl.textContent = (isEn ? config.statusEN : config.status) || (isEn ? 'ACTIVE' : 'ACTIVO');
+                }
+            }
+        });
     }
 
     _updateBtnIcon(id, iconName) {
@@ -271,6 +302,7 @@ export class AnnotationsManager {
 
     createLabel(nodeConfig, isNavigable, currentStepSelection = [], currentGlobalSelection = { obj: null }) {
         const id = 'ant_' + nodeConfig.id;
+        this.annotationConfigs.set(id, nodeConfig); // Guardamos la config para el cambio de idioma
         const customHTML = this._getHTMLContent(nodeConfig);
 
         // 1. Crear punto visual
@@ -294,9 +326,14 @@ export class AnnotationsManager {
             const panel = container.querySelector('.Etiqueta-v3d-panel');
             if (panel) panel.style.pointerEvents = 'auto';
 
-            // Highlights al pasar el mouse
+            // Highlights al pasar el mouse (Solo si no está ya seleccionado)
             container.addEventListener('mouseenter', () => {
-                if (res.length) this.highlightManager.enable(res);
+                let isProtected = false;
+                res.forEach((n) => {
+                    if (n === currentGlobalSelection.obj) isProtected = true;
+                    if (currentStepSelection.indexOf(n) !== -1) isProtected = true;
+                });
+                if (!isProtected && res.length) this.highlightManager.enable(res);
             });
 
             container.addEventListener('mouseleave', () => {
@@ -319,17 +356,21 @@ export class AnnotationsManager {
 
             // Click en el PANEL: NAVEGACIÓN + RESALTADO
             container.addEventListener('click', () => {
-                // 1. Resaltado visual
-                if (res.length) {
-                    if (currentGlobalSelection.obj && currentGlobalSelection.obj !== res[0]) {
-                        this.highlightManager.disable([currentGlobalSelection.obj]);
-                    }
-                    currentGlobalSelection.obj = res[0];
-                    this.highlightManager.enable(res);
+                // 1. Resaltado Global (Todos los meshes del modelado)
+                if (this.allMeshes.length) {
+                    this.highlightManager.disable(); // Limpiar previos
+                    this.highlightManager.enable(this.allMeshes);
+                    currentGlobalSelection.obj = "GLOBAL_HIGHLIGHT"; // Marca especial
                 }
 
                 // 2. Navegación Silenciosa (Cámara, visibilidad, etc.)
-                window.dispatchEvent(new CustomEvent('v3d:navegar', { detail: { id: nodeConfig.id, skipAudio: true } }));
+                window.dispatchEvent(new CustomEvent('v3d:navegar', { 
+                    detail: { 
+                        id: nodeConfig.id, 
+                        skipAudio: true,
+                        useGlobalHighlight: true 
+                    } 
+                }));
             });
         }, 100);
     }
@@ -338,6 +379,7 @@ export class AnnotationsManager {
         this.handleAnnot(false, 'ALL_OBJECTS');
         this.operateLineObjectHTML('ALL_OBJECTS', '', 'REMOVE');
         this.activeAnnotations = [];
+        this.annotationConfigs.clear();
         const annots = this.iframeWindow.document.querySelectorAll('[class*="Etiqueta-v3d-"]');
         annots.forEach(el => el.remove());
     }

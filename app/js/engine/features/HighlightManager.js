@@ -1,17 +1,18 @@
 export class HighlightManager {
-    constructor(appInstance, iframeWindow) {
+    constructor(appInstance, iframeWindow, primaryColor = 'cyan') {
         this.appInstance = appInstance;
         this.iframeWindow = iframeWindow;
+        this.primaryColor = primaryColor;
+        this.activeOutlines = new Map();
         this._injectHighlightLogic();
     }
 
     _injectHighlightLogic() {
         if (!this.iframeWindow || this.iframeWindow.resaltar) return;
 
+        const self = this;
         const THREE = this.iframeWindow.v3d || this.iframeWindow.THREE;
         if (!THREE) return;
-
-        const contornosActivos = new Map();
         const paletaColores = {
             "rojo": 0xFF0000,
             "azul": 0x0044FF,
@@ -90,19 +91,19 @@ export class HighlightManager {
         };
 
         const limpiarContornosDeObjeto = (child) => {
-            if (contornosActivos.has(child)) {
-                const capas = contornosActivos.get(child);
+            if (self.activeOutlines.has(child)) {
+                const capas = self.activeOutlines.get(child);
                 capas.forEach(capa => {
                     if (capa.parent) capa.parent.remove(capa);
                     else getApp()?.scene?.remove(capa);
                     capa.geometry?.dispose();
                     capa.material?.dispose();
                 });
-                contornosActivos.delete(child);
+                self.activeOutlines.delete(child);
             }
         };
 
-        this.iframeWindow.resaltar = (id, color = "cyan", xray = false, xrayColor = "gris") => {
+        this.iframeWindow.resaltar = (id, color = "cyan", xray = false, xrayColor = "gris", isStatic = false) => {
             const app = getApp();
             if (!app) return;
             const items = Array.isArray(id) ? id : [id];
@@ -145,13 +146,14 @@ export class HighlightManager {
                         app.scene.add(capaXray);
                         glowGroup.push(capaXray);
                     }
-                    contornosActivos.set(child, glowGroup);
+                    glowGroup.forEach(capa => capa.userData.isStatic = isStatic);
+                    self.activeOutlines.set(child, glowGroup);
                 });
             });
         };
 
         this.iframeWindow.quitarResaltado = () => {
-            contornosActivos.forEach((capas, originalMesh) => {
+            self.activeOutlines.forEach((capas, originalMesh) => {
                 capas.forEach(capa => {
                     if (capa.parent) capa.parent.remove(capa);
                     else getApp()?.scene?.remove(capa);
@@ -159,14 +161,14 @@ export class HighlightManager {
                     capa.material?.dispose();
                 });
             });
-            contornosActivos.clear();
+            self.activeOutlines.clear();
         };
 
         let last = performance.now();
         const loop = (now) => {
             const delta = (now - last) / 1000;
             last = now;
-            contornosActivos.forEach((capas, originalMesh) => {
+            self.activeOutlines.forEach((capas, originalMesh) => {
                 if (!originalMesh.parent) {
                     limpiarContornosDeObjeto(originalMesh);
                     return;
@@ -175,7 +177,11 @@ export class HighlightManager {
                 const world = originalMesh.matrixWorld;
                 capas.forEach(capa => {
                     capa.matrix.copy(world);
-                    animarContorno(capa, delta);
+                    if (capa.userData.isStatic) {
+                        capa.material.opacity = capa.userData.targetOpacity;
+                    } else {
+                        animarContorno(capa, delta);
+                    }
                 });
             });
             this.iframeWindow.requestAnimationFrame(loop);
@@ -183,10 +189,27 @@ export class HighlightManager {
         this.iframeWindow.requestAnimationFrame(loop);
     }
 
-    enable(namesArray) {
+    updateStyle(colorHex, opacityBase) {
+        const THREE = this.iframeWindow.v3d || this.iframeWindow.THREE;
+        this.activeOutlines.forEach((capas, originalMesh) => {
+            capas.forEach((capa, index) => {
+                if (colorHex !== null) {
+                    capa.material.color.setHex(colorHex);
+                }
+                if (opacityBase !== null) {
+                    // Mantenemos la relación 100% / 50% entre capas
+                    const ratio = (index === 0) ? 1 : 0.5;
+                    capa.userData.targetOpacity = opacityBase * ratio;
+                }
+            });
+        });
+    }
+
+    enable(namesArray, isStatic = false, customColor = null) {
         if (!namesArray || namesArray.length === 0) return;
         if (this.iframeWindow && typeof this.iframeWindow.resaltar === 'function') {
-            this.iframeWindow.resaltar(namesArray, 'rojo', true, 'rojo');
+            const color = customColor || this.primaryColor;
+            this.iframeWindow.resaltar(namesArray, color, true, color, isStatic);
         } else {
             console.warn('[Highlight] window.resaltar no está disponible en el iframe.');
         }
