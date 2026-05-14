@@ -56,22 +56,19 @@ function cleanJS() {
     let content = fs.readFileSync(JS_FILE, 'utf8');
 
     // 1. Remove License Log
-    // Pattern: console.log("Verge3D "+n+" "+Le()+" ("+(3483952072==ve(r)?"Trial":"License")+", "+(t?"WebGL 2.0":"WebGL 1.0")+")")
-    const logRegex = /console\.log\("Verge3D\s*"\s*\+\s*[a-zA-Z0-9_$]+\s*\+\s*"\s*"\s*\+\s*[a-zA-Z0-9_$]+\(\)\s*\+\s*"\s*\("\s*\+\s*\([^)]+\?\s*"Trial"\s*:\s*"License"\)[^)]+\)\)/;
+    // Pattern: console.log("Verge3D "+n+" "+Bn()+" ("+(3483952072==gn(Kt)?"Trial":"License")+", "+(t?"WebGL 2.0":"WebGL 1.0")+")")
+    const logRegex = /console\.log\("[^\"]*"\s*\+\s*[a-zA-Z0-9_$]+\s*\+\s*" "\s*\+\s*[a-zA-Z0-9_$]+\(\)\s*\+\s*" \("\s*\+\s*\([^)]+\?\s*"Trial"\s*:\s*"License"\)[^)]+\)\)/;
     if (logRegex.test(content)) {
         content = content.replace(logRegex, '/* console.log cleaned */');
         console.log('License log removed.');
     } else {
         console.warn('License log pattern not found, trying fallback...');
-        content = content.replace(/console\.log\("Verge3D[^)]+"Trial"[^)]+"License"[^)]+\)/, '/* console.log cleaned */');
+        content = content.replace(/console\.log\("[^\"]*\"[^)]+\"Trial\"[^)]+\"License\"[^)]+\)/, '/* console.log cleaned */');
     }
 
     // 2. Replace Banner
-    // Pattern: i.innerHTML=`<a ...>MADE WITH VERGE3D TRIAL</a>`,e.appendChild(i),setTimeout(function(){e.contains(i)&&890310108==ve(i.textContent)||t.dispose()},1e3)
-    // Note: Template literals or normal quotes might be used.
-    // In our case it was: i.innerHTML=`<a ...>MADE WITH VERGE3D TRIAL</a>`,e.appendChild(i),setTimeout(function(){e.contains(i)&&890310108==ve(i.textContent)||t.dispose()},1e3)
-    
-    const bannerRegex = /([a-zA-Z0-9_$]+)\.innerHTML\s*=\s*[`"'].*?MADE WITH VERGE3D TRIAL.*?[`"']\s*,\s*([a-zA-Z0-9_$]+)\.appendChild\(\1\)\s*,\s*setTimeout\(function\(\)\{.*?\1\.textContent\)\|\|([a-zA-Z0-9_$]+)\.dispose\(\)\},1e3\)/;
+    // Pattern: o.innerHTML=`<a ...>MADE WITH VERGE3D TRIAL</a>`,n.appendChild(o),setTimeout((function(){n.contains(o)&&890310108==gn(o.textContent)||e.dispose()}),1e3)
+    const bannerRegex = /([a-zA-Z0-9_$]+)\.innerHTML\s*=\s*[`"'].*?MADE WITH VERGE3D TRIAL.*?[`"']\s*,\s*([a-zA-Z0-9_$]+)\.appendChild\(\1\)\s*,\s*setTimeout\(\s*\(function\(\)\{.*?\1\.textContent\)\s*\|\|\s*([a-zA-Z0-9_$]+)\.dispose\(\)\}\s*\)\s*,1e3\)/;
     
     if (bannerRegex.test(content)) {
         content = content.replace(bannerRegex, (match, div, parent, app) => {
