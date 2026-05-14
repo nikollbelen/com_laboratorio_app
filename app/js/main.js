@@ -241,7 +241,7 @@ async function init() {
     window.addEventListener('modal:equipo:open', () => Lab.components.modalEquipo.open());
     window.addEventListener('v3d:mostrar_retroceso', () => Lab.retroceso?.mostrar());
     window.addEventListener('v3d:ocultar_retroceso',  () => Lab.retroceso?.ocultar());
-    window.addEventListener('v3d:navegar', (e) => onNavegacionInterna(e.detail?.id));
+    window.addEventListener('v3d:navegar', (e) => onNavegacionInterna(e.detail?.id, e.detail?.skipAudio));
     window.addEventListener('v3d:playAudio', (e) => Lab.engine.playStepAudio(e.detail.id));
 
     // Sincronizar idioma con el iframe y los componentes
@@ -292,14 +292,8 @@ function onVerge3DReady() {
  * Busca un nodo en el árbol del menú y aplica Auto-Forward si solo tiene un hijo
  */
 function obtenerNodoFinal(id) {
-    let nodo = buscarNodoRecursivo(Lab.config.menu, id);
-    if (!nodo) return id;
-
-    if (nodo.children && nodo.children.length === 1) {
-        console.log(`[Lab] Auto-Forward: ${id} -> ${nodo.children[0].id}`);
-        return obtenerNodoFinal(nodo.children[0].id);
-    }
-    
+    // Desactivamos el Auto-Forward para que se ejecuten los pasos intermedios
+    // y sus configuraciones de audio/visibilidad.
     return id;
 }
 
@@ -321,8 +315,13 @@ function buscarNodoRecursivo(menu, id) {
  * @param {boolean} skipAudio - Si es true, no reproducirá la locución (útil en retroceso)
  */
 function ejecutarPaso(pasoId, skipAudio = false) {
+    console.log(`[Lab] → Ejecutando paso: ${pasoId}`);
     const pasoConfig = buscarNodoRecursivo(Lab.config.menu, pasoId);
-    if (!pasoConfig) return;
+    if (!pasoConfig) {
+        console.error(`[Lab] No se encontró configuración para el paso: ${pasoId}`);
+        return;
+    }
+    console.log(`[Lab] Configuración cargada:`, pasoConfig);
 
     Lab.engine.resetScene(Lab.config.inicioEstado);
     
@@ -385,7 +384,7 @@ function ejecutarPaso(pasoId, skipAudio = false) {
     }
 }
 
-function onNavegacionInterna(id) {
+function onNavegacionInterna(id, skipAudio = false) {
     if (!id || !Lab.v3dReady) return;
     
     const idFinal = obtenerNodoFinal(id);
@@ -394,7 +393,7 @@ function onNavegacionInterna(id) {
         Lab.historial.push(idFinal);
     }
     
-    ejecutarPaso(idFinal);
+    ejecutarPaso(idFinal, skipAudio);
     if (Lab.historial.length > 0) Lab.retroceso?.mostrar();
 }
 

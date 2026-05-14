@@ -358,6 +358,13 @@ window.openModal = function (nodeData) {
         document.getElementById('chkEsEtiqueta').checked = hasEtiqueta;
         document.getElementById('inpEtiquetaObj').value = nodeData.etiqueta || '';
         document.getElementById('inpFlechaObj').value = nodeData.flecha || '';
+        
+        // Cargar nuevos campos de texto para la etiqueta
+        document.getElementById('inpSubtitleES').value = nodeData.subtitle || '';
+        document.getElementById('inpSubtitleEN').value = nodeData.subtitleEN || '';
+        document.getElementById('inpTagES').value = nodeData.status || '';
+        document.getElementById('inpTagEN').value = nodeData.statusEN || '';
+
         window.toggleEtiquetaSection();
 
         if (nodeData.animaciones && Array.isArray(nodeData.animaciones)) nodeData.animaciones.forEach(a => window.addAnimRow('step', a));
@@ -424,8 +431,19 @@ window.saveNodeChanges = async function () {
         if (document.getElementById('chkEsEtiqueta').checked) {
             selectedNode.etiqueta = document.getElementById('inpEtiquetaObj').value;
             selectedNode.flecha = document.getElementById('inpFlechaObj').value;
+            
+            // Guardar nuevos campos de texto
+            selectedNode.subtitle = document.getElementById('inpSubtitleES').value;
+            selectedNode.subtitleEN = document.getElementById('inpSubtitleEN').value;
+            selectedNode.status = document.getElementById('inpTagES').value;
+            selectedNode.statusEN = document.getElementById('inpTagEN').value;
         } else {
-            delete selectedNode.etiqueta; delete selectedNode.flecha;
+            delete selectedNode.etiqueta; 
+            delete selectedNode.flecha;
+            delete selectedNode.subtitle;
+            delete selectedNode.subtitleEN;
+            delete selectedNode.status;
+            delete selectedNode.statusEN;
         }
 
         const animStep = getAnimationsFromUI('step-anim-list');

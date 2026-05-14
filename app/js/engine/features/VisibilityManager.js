@@ -14,12 +14,21 @@ export class VisibilityManager {
         const namesArray = (typeof names === 'string') ? [names] : names;
         if (namesArray.length === 0) return;
 
-        // Para asegurar que encontramos TODOS los objetos con ese nombre (por si hay duplicados o clones)
+        console.log(`[Visibility] Cambiando visibilidad a ${bool} para:`, namesArray);
+
+        let count = 0;
         this.appInstance.scene.traverse((o) => {
             if (namesArray.includes(o.name)) {
                 o.visible = bool;
+                count++;
             }
         });
+
+        if (count === 0) {
+            console.warn(`[Visibility] No se encontraron objetos en la escena con los nombres proporcionados.`);
+        } else {
+            console.log(`[Visibility] Se actualizaron ${count} objetos.`);
+        }
     }
 
     hideAll(namesArray) {

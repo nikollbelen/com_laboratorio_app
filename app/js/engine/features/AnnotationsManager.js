@@ -1,27 +1,127 @@
 export class AnnotationsManager {
     constructor(appInstance, iframeWindow, highlightManager) {
         this.appInstance = appInstance;
-        this.iframeWindow = iframeWindow; // ¡Faltaba guardar esta referencia!
+        this.iframeWindow = iframeWindow;
         this.v3d = iframeWindow ? iframeWindow.v3d : null;
         this.highlightManager = highlightManager;
-        this._injectLangStyles();
+        this.activeAnnotations = []; // Para seguimiento inteligente
+        this._injectPremiumStyles();
+        this._startSmartLoop();
+        this._setupAudioSync();
     }
 
-    _injectLangStyles() {
-        if (!this.iframeWindow || !this.iframeWindow.document) return;
-        const doc = this.iframeWindow.document;
-        if (doc.getElementById('v3d-lang-styles')) return; // Ya inyectado
-        const style = doc.createElement('style');
-        style.id = 'v3d-lang-styles';
-        style.textContent = `
-            .en { display: none; }
-            .es { display: block; }
-            body.lang-en .es { display: none; }
-            body.lang-en .en { display: block; }
-            body.lang-es .en { display: none; }
-            body.lang-es .es { display: block; }
-        `;
-        doc.head.appendChild(style);
+    _setupAudioSync() {
+        window.addEventListener('v3d:audioStarted', (e) => this._updateBtnIcon(e.detail.id, 'pause'));
+        window.addEventListener('v3d:audioEnded', (e) => this._updateBtnIcon(e.detail.id, 'play_arrow'));
+    }
+
+    _updateBtnIcon(id, iconName) {
+        const doc = window.document;
+        // Buscamos el span dentro del botón del panel específico
+        const iconSpan = doc.querySelector(`#ant_${id}_panel .Etiqueta-v3d-btn span`);
+        if (iconSpan) {
+            iconSpan.textContent = iconName;
+        }
+    }
+
+    _startSmartLoop() {
+        const update = () => {
+            if (this.activeAnnotations.length > 0) {
+                const doc = window.document;
+                const activeData = [];
+                const camPos = this.appInstance.camera.position;
+
+                // 1. Recopilar datos estables (usando el contenedor raíz de Verge3D como base)
+                this.activeAnnotations.forEach(id => {
+                    const labelEl = doc.getElementById(id);
+                    const pointEl = doc.getElementById(id + '_punto');
+                    if (labelEl && pointEl) {
+                        const panel = labelEl.querySelector('.Etiqueta-v3d-panel');
+                        if (panel) {
+                            const objName = id.replace('ant_', '');
+                            const obj = this.getObjectByName(objName);
+                            const distance = obj ? camPos.distanceTo(obj.position) : 9999;
+
+                            // Usamos el contenedor raíz para la posición Y base (es más estable que el panel)
+                            const rootRect = labelEl.getBoundingClientRect();
+                            const panelRect = panel.getBoundingClientRect();
+                            const currentOffset = parseFloat(panel.style.getPropertyValue('--v-offset')) || 0;
+
+                            activeData.push({
+                                id, labelEl, pointEl, panel, distance,
+                                rootTop: rootRect.top,
+                                height: panelRect.height,
+                                currentOffset
+                            });
+                        }
+                    }
+                });
+
+                // 2. Depth Sorting (Z-Index basado en distancia)
+                [...activeData].sort((a, b) => b.distance - a.distance).forEach((data, i) => {
+                    data.labelEl.style.zIndex = 100 + i;
+                });
+
+                // 3. Orientación Inteligente
+                activeData.forEach(data => {
+                    const labelX = data.labelEl.getBoundingClientRect().left;
+                    const pointX = data.pointEl.getBoundingClientRect().left;
+                    if (labelX < pointX) {
+                        data.panel.classList.add('is-left');
+                        data.panel.classList.remove('is-right');
+                    } else {
+                        data.panel.classList.add('is-right');
+                        data.panel.classList.remove('is-left');
+                    }
+                });
+
+                // 4. Lógica Anti-Colisión (Stable Stacking)
+                activeData.sort((a, b) => a.rootTop - b.rootTop);
+
+                const MARGIN = 20;
+                activeData.forEach((current, i) => {
+                    let push = 0;
+                    for (let j = 0; j < i; j++) {
+                        const prev = activeData[j];
+                        // Detectar overlap horizontal simple
+                        const currentRect = current.panel.getBoundingClientRect();
+                        const prevRect = prev.panel.getBoundingClientRect();
+                        
+                        const overlapX = !(currentRect.right < prevRect.left || currentRect.left > prevRect.right);
+                        if (overlapX) {
+                            const prevBottom = prev.rootTop + (prev.push || 0) + (prev.height / 2);
+                            const currentTop = current.rootTop + push - (current.height / 2);
+
+                            if (currentTop < prevBottom + MARGIN) {
+                                push += (prevBottom + MARGIN) - currentTop;
+                            }
+                        }
+                    }
+                    current.push = push;
+                    
+                    // Suavizado (Lerp): solo aplicamos un porcentaje del movimiento por frame para evitar temblores
+                    const targetPush = push;
+                    const easedPush = current.currentOffset + (targetPush - current.currentOffset) * 0.1;
+
+                    if (Math.abs(current.currentOffset - easedPush) > 0.01) {
+                        current.panel.style.setProperty('--v-offset', `${easedPush}px`);
+                    }
+                });
+            }
+            requestAnimationFrame(update);
+        };
+        update();
+    }
+
+    _injectPremiumStyles() {
+        const parentDoc = window.document;
+        if (parentDoc.getElementById('v3d-premium-styles')) return;
+
+        const link = parentDoc.createElement('link');
+        link.id = 'v3d-premium-styles';
+        link.rel = 'stylesheet';
+        link.href = './css/components/Etiqueta.css';
+        parentDoc.head.appendChild(link);
     }
 
     getObjectByName(name) {
@@ -29,7 +129,7 @@ export class AnnotationsManager {
         return this.appInstance.scene.getObjectByName(name);
     }
 
-    handleAnnot(add, sel, annotText, contents, id) {
+    handleAnnot(add, sel, id, customHTML = null) {
         if (!this.appInstance || !this.v3d) return;
         
         if (sel === 'ALL_OBJECTS') {
@@ -49,6 +149,7 @@ export class AnnotationsManager {
         names.forEach((n) => {
             const o = this.getObjectByName(n);
             if (!o) return;
+
             for (let j = o.children.length - 1; j >= 0; j--) {
                 const child = o.children[j];
                 if (child.type === 'Annotation' || child.isAnnotation) {
@@ -56,10 +157,24 @@ export class AnnotationsManager {
                     o.remove(child);
                 }
             }
+
             if (add) {
-                const a = new this.v3d.Annotation(this.appInstance.container, annotText, contents);
-                a.fadeObscured = false; // Desactivar efecto de transparencia/fade cuando se oculta
-                if (id) a.annotation.id = id;
+                const container = window.document.body;
+                const a = new this.v3d.Annotation(container, '', '');
+                a.fadeObscured = false;
+                
+                if (id) {
+                    a.annotation.id = id;
+                    if (customHTML && customHTML.includes('Etiqueta-v3d-panel')) {
+                        this.activeAnnotations.push(id);
+                    }
+                }
+                if (customHTML) {
+                    a.annotation.innerHTML = customHTML;
+                    const isLabel = customHTML.includes('Etiqueta-v3d-panel');
+                    a.annotation.className = (isLabel ? 'Etiqueta-v3d-label-root' : 'Etiqueta-v3d-point-root') + ' v3d-annotation';
+                }
+                
                 o.add(a);
             }
         });
@@ -90,9 +205,10 @@ export class AnnotationsManager {
                 if (o.children[j].isLineHTML) o.remove(o.children[j]);
             }
             if (op === 'DRAW') {
-                const el = this.iframeWindow.document.getElementById(id);
+                const el = window.document.getElementById(id);
                 if (el) {
-                    const line = new this.v3d.LineHTML(new this.v3d.Color('#000000'), 3);
+                    const themeColor = getComputedStyle(window.document.documentElement).getPropertyValue('--color-primary').trim();
+                    const line = new this.v3d.LineHTML(new this.v3d.Color(themeColor || '#0066ff'), 2);
                     line.offset = 0;
                     line.elemHTML = el;
                     o.add(line);
@@ -101,89 +217,97 @@ export class AnnotationsManager {
         });
     }
 
-    createPoint(circleName, lineName, targetId) {
-        this.handleAnnot(true, circleName, '', '', targetId);
-        setTimeout(() => {
-            const el = this.iframeWindow.document.getElementById(targetId);
-            if (el) {
-                Object.assign(el.style, {
-                    width: '10px', minWidth: '0px', height: '10px', padding: '0px',
-                    border: '3px solid #000', borderRadius: '50%', cursor: 'pointer'
-                });
-            }
-        }, 50);
-        this.operateLineObjectHTML([lineName], targetId, 'DRAW');
+    createPoint(circleName, targetId) {
+        const pointHTML = `<div class="Etiqueta-v3d-point" id="${targetId}"></div>`;
+        this.handleAnnot(true, circleName, targetId, pointHTML);
+    }
+
+    _getHTMLContent(nodeConfig) {
+        const isEn = window.document.body.classList.contains('lang-en');
+        const title = (isEn ? nodeConfig.ENdescription : nodeConfig.ESdescription) || nodeConfig.name || 'Componente';
+        const subtitle = (isEn ? nodeConfig.subtitleEN : nodeConfig.subtitle) || (isEn ? 'Component detail' : 'Detalle del componente');
+        const status = (isEn ? nodeConfig.statusEN : nodeConfig.status) || (isEn ? 'ACTIVE' : 'ACTIVO');
+        const panelId = 'ant_' + nodeConfig.id + '_panel';
+        const anchorId = 'ant_' + nodeConfig.id + '_anchor';
+
+        return `
+            <div class="Etiqueta-v3d-panel" id="${panelId}">
+                <!-- Punto de anclaje para la línea -->
+                <div class="Etiqueta-v3d-anchor" id="${anchorId}"></div>
+                
+                <button class="Etiqueta-v3d-btn">
+                    <span class="material-symbols-outlined">play_arrow</span>
+                </button>
+                <div>
+                    <h4 class="Etiqueta-v3d-title">${title}</h4>
+                    <p class="Etiqueta-v3d-subtitle">${subtitle}</p>
+                    <span class="Etiqueta-v3d-status">${status}</span>
+                </div>
+            </div>
+        `;
     }
 
     createLabel(nodeConfig, isNavigable, currentStepSelection = [], currentGlobalSelection = { obj: null }) {
         const id = 'ant_' + nodeConfig.id;
-        this.handleAnnot(true, nodeConfig.etiqueta, '', '', id);
-        
-        const doc = this.iframeWindow.document;
-        const elEN = doc.createElement('div');
-        elEN.id = id + 'en';
-        elEN.className = 'en';
-        elEN.textContent = nodeConfig.ENdescription || '';
-        
-        const elES = doc.createElement('div');
-        elES.id = id + 'es';
-        elES.className = 'es';
-        elES.textContent = nodeConfig.ESdescription || '';
-        
-        // Esperar a que Verge cree el contenedor HTML de la anotación
-        setTimeout(() => {
-            const container = doc.getElementById(id);
-            if (container) {
-                container.appendChild(elEN);
-                container.appendChild(elES);
-            }
-        }, 50);
+        const customHTML = this._getHTMLContent(nodeConfig);
 
-        this.createPoint(nodeConfig.flecha, nodeConfig.etiqueta, id + '_punto');
+        // 1. Crear punto visual
+        this.createPoint(nodeConfig.flecha, id + '_punto');
+        
+        // 2. Crear etiqueta principal
+        this.handleAnnot(true, nodeConfig.etiqueta, id, customHTML);
+
+        // 3. Dibujar línea de conexión vinculada al ANCLA (para precisión milimétrica)
+        this.operateLineObjectHTML([nodeConfig.flecha], id + '_anchor', 'DRAW');
 
         const res = nodeConfig.objeto_resaltar || [];
-        
+
+        // 4. Configurar eventos en el documento PADRE
         setTimeout(() => {
-            const container = doc.getElementById(id);
+            const container = window.document.getElementById(id);
             if (!container) return;
 
+            // Bloquear eventos del root pero permitir los del panel
+            container.style.pointerEvents = 'none';
+            const panel = container.querySelector('.Etiqueta-v3d-panel');
+            if (panel) panel.style.pointerEvents = 'auto';
+
+            // Highlights al pasar el mouse
             container.addEventListener('mouseenter', () => {
-                container.style.fontSize = '18px';
-                container.style.padding = '4px 10px';
-                container.style.cursor = 'pointer';
                 if (res.length) this.highlightManager.enable(res);
             });
 
             container.addEventListener('mouseleave', () => {
-                container.style.fontSize = '16px';
-                container.style.padding = '2px 8px';
                 let isProtected = false;
-                res.forEach((n) => { 
-                    if (n === currentGlobalSelection.obj) isProtected = true; 
+                res.forEach((n) => {
+                    if (n === currentGlobalSelection.obj) isProtected = true;
                     if (currentStepSelection.indexOf(n) !== -1) isProtected = true;
                 });
-                
-                if (!isProtected && res.length) {
-                    this.highlightManager.disable(res);
-                }
+                if (!isProtected && res.length) this.highlightManager.disable(res);
             });
 
+            // Click en el botón de PLAY: Solo AUDIO
+            const playBtn = panel.querySelector('.Etiqueta-v3d-btn');
+            if (playBtn) {
+                playBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Evitamos disparar la navegación del panel
+                    window.dispatchEvent(new CustomEvent('v3d:playAudio', { detail: { id: nodeConfig.id } }));
+                });
+            }
+
+            // Click en el PANEL: NAVEGACIÓN + RESALTADO
             container.addEventListener('click', () => {
+                // 1. Resaltado visual
                 if (res.length) {
                     if (currentGlobalSelection.obj && currentGlobalSelection.obj !== res[0]) {
                         this.highlightManager.disable([currentGlobalSelection.obj]);
                     }
-                    currentGlobalSelection.obj = res[0]; 
+                    currentGlobalSelection.obj = res[0];
                     this.highlightManager.enable(res);
                 }
 
-                if (isNavigable) {
-                    // Enviar evento de navegación al parent window
-                    window.dispatchEvent(new CustomEvent('v3d:navegar', { detail: { id: nodeConfig.id } }));
-                } else {
-                    // Si no es navegable, igual reproducimos su audio al hacer click
-                    window.dispatchEvent(new CustomEvent('v3d:playAudio', { detail: { id: nodeConfig.id } }));
-                }
+                // 2. Navegación Silenciosa (Cámara, visibilidad, etc.)
+                window.dispatchEvent(new CustomEvent('v3d:navegar', { detail: { id: nodeConfig.id, skipAudio: true } }));
             });
         }, 100);
     }
@@ -191,9 +315,8 @@ export class AnnotationsManager {
     removeAll() {
         this.handleAnnot(false, 'ALL_OBJECTS');
         this.operateLineObjectHTML('ALL_OBJECTS', '', 'REMOVE');
-        
-        // Limpiar residuos manuales en el DOM del iframe
-        const annots = this.iframeWindow.document.querySelectorAll('.v3d-annotation, .v3d-annotation-dialog');
-        for (let i = 0; i < annots.length; i++) annots[i].remove();
+        this.activeAnnotations = [];
+        const annots = window.document.querySelectorAll('[class*="Etiqueta-v3d-"]');
+        annots.forEach(el => el.remove());
     }
 }

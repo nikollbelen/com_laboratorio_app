@@ -1,0 +1,150 @@
+/* Estilos para la Etiqueta Premium de Verge3D */
+
+/* Contenedor raíz para la ETIQUETA (Invisible, solo para anclaje de línea) */
+.Etiqueta-v3d-label-root {
+    position: absolute;
+    pointer-events: none;
+    z-index: 100;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* Contenedor raíz para el PUNTO (Debe tener tamaño para no aplastarse) */
+.Etiqueta-v3d-point-root {
+    position: absolute;
+    pointer-events: none;
+    z-index: 90;
+    width: 10px !important;
+    height: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Etiqueta-v3d-panel {
+    position: absolute;
+    top: 0;
+    transform: translateY(-50%);
+    pointer-events: auto;
+    backdrop-filter: blur(24px);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--color-primary);
+    border-radius: 9999px;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 280px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    /* Variable dinámica para anti-colisión */
+    --v-offset: 0px;
+    transform: translateY(calc(-50% + var(--v-offset))) scale(1);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, left 0.3s ease, right 0.3s ease, z-index 0.3s ease;
+}
+
+.Etiqueta-v3d-anchor {
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 0; /* Por defecto en el borde izquierdo */
+}
+
+.Etiqueta-v3d-panel.is-left .Etiqueta-v3d-anchor {
+    left: auto;
+    right: 0; /* En el borde derecho si la etiqueta está a la izquierda */
+}
+
+/* Orientación a la Derecha (Default) */
+.Etiqueta-v3d-panel.is-right {
+    left: 0; /* Tocando el punto de anclaje */
+    right: auto;
+    flex-direction: row;
+}
+
+/* Orientación a la Izquierda (Flipped) */
+.Etiqueta-v3d-panel.is-left {
+    left: auto;
+    right: 0; /* Tocando el punto de anclaje */
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+/* Forzamos que el contenedor de Verge3D también pase al frente */
+.v3d-annotation:hover {
+    z-index: 10000 !important;
+}
+
+.Etiqueta-v3d-panel:hover {
+    transform: translateY(calc(-50% + var(--v-offset))) scale(1.08);
+    box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.4), 0 0 40px var(--glow-primary);
+    background: rgba(255, 255, 255, 0.25);
+    border-color: #fff;
+}
+
+.Etiqueta-v3d-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px var(--glow-primary);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.Etiqueta-v3d-title {
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 2px 0;
+}
+
+.Etiqueta-v3d-subtitle {
+    color: #44474e;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.Etiqueta-v3d-status {
+    color: var(--color-primary);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-top: 4px;
+    display: block;
+}
+
+/* Elemento Punto (Anclaje) */
+.Etiqueta-v3d-point {
+    width: 12px;
+    height: 12px;
+    background-color: var(--color-primary);
+    border: 3px solid var(--color-primary);
+    border-radius: 50%;
+    box-shadow: 0 0 15px var(--glow-primary-strong);
+    animation: Etiqueta-pulse 2s infinite;
+    flex-shrink: 0;
+}
+
+@keyframes Etiqueta-pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 var(--glow-primary); }
+    70% { transform: scale(1.3); box-shadow: 0 0 0 15px rgba(0, 0, 0, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+}
+
+/* Soporte para Idiomas */
+body.lang-en [data-lang="es"] { display: none !important; }
+body.lang-en [data-lang="en"] { display: block !important; }
+body.lang-es [data-lang="en"] { display: none !important; }
+body.lang-es [data-lang="es"] { display: block !important; }

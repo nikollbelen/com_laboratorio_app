@@ -8,11 +8,22 @@ import { SoundManager } from '../../utils/SoundManager.js';
 export class AudioManager {
     constructor() {
         this.currentAudio = null;
+        this.currentId = null;
         this.basePath = './audios/';
     }
 
     playStepAudio(paso) {
         if (!paso) return;
+
+        // Soporta tanto el objeto paso completo como solo el ID (string)
+        const id = (typeof paso === 'string') ? paso : paso.id;
+        if (!id) return;
+
+        // Lógica de TOGGLE: Si es el mismo audio y está sonando, pausamos
+        if (this.currentId === id && this.currentAudio && !this.currentAudio.paused) {
+            this.stop();
+            return;
+        }
 
         if (SoundManager.isMuted()) {
             this.stop();
@@ -20,15 +31,30 @@ export class AudioManager {
         }
 
         this.stop();
+        this.currentId = id;
 
-        // Volviendo al sistema numérico puro por petición del usuario
-        const numericId = paso.id.replace('paso', '');
+        const numericId = id.replace('paso', '');
         const url = `${this.basePath}${numericId}.mp3`;
 
-        console.log(`[AudioManager] Reproduciendo audio: ${url}`);
+        console.log(`[AudioManager] Solicitud de audio para ID: "${id}" -> URL: ${url}`);
+        
         this.currentAudio = new Audio(url);
+
+        // Eventos para sincronizar la UI
+        this.currentAudio.addEventListener('play', () => {
+            window.dispatchEvent(new CustomEvent('v3d:audioStarted', { detail: { id } }));
+        });
+        this.currentAudio.addEventListener('ended', () => {
+            window.dispatchEvent(new CustomEvent('v3d:audioEnded', { detail: { id } }));
+            this.currentId = null;
+        });
+        this.currentAudio.addEventListener('pause', () => {
+            window.dispatchEvent(new CustomEvent('v3d:audioEnded', { detail: { id } }));
+        });
+
         this.currentAudio.play().catch(err => {
-            console.warn(`[AudioManager] Audio no encontrado: ${url}`);
+            console.warn(`[AudioManager] Error o Audio no encontrado: ${url}`, err);
+            window.dispatchEvent(new CustomEvent('v3d:audioEnded', { detail: { id } }));
         });
     }
 
