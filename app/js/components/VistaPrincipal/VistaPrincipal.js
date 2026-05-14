@@ -235,7 +235,7 @@ export class VistaPrincipal {
                     <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' ${active ? 1 : 0};">${icon}</span>
                 </div>
                 <span class="text-[9px] font-bold tracking-tight">${label}</span>
-                ${active ? `<div class="w-3 h-0.5 rounded-full mt-0.5" ${activeBg}></div>` : ''}
+                ${active ? `<div class="w-3 h-0.5 rounded-full mt-0.5 VistaPrincipal-nav-indicator" ${activeBg}></div>` : ''}
             </a>
         `;
     }

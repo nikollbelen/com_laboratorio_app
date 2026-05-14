@@ -157,6 +157,7 @@ async function init() {
                     // Bottom Nav links
                     if (el.tagName === 'A') {
                         el.classList.toggle('text-on-surface-dark', !isTarget);
+                        el.style.color = isTarget ? 'var(--color-primary)' : '';
                         const icon = el.querySelector('.material-symbols-outlined');
                         if (icon) {
                             icon.style.color = isTarget ? 'var(--color-primary)' : '';

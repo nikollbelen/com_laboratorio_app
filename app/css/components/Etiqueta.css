@@ -1,6 +1,14 @@
 /* Estilos para la Etiqueta Premium de Verge3D */
 
 /* Contenedor raíz para la ETIQUETA (Invisible, solo para anclaje de línea) */
+.v3d-annotation {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Contenedor raíz para la ETIQUETA (Invisible, solo para anclaje de línea) */
 .Etiqueta-v3d-label-root {
     position: absolute;
     pointer-events: none;

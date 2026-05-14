@@ -27,7 +27,7 @@ export class AnnotationsManager {
     _startSmartLoop() {
         const update = () => {
             if (this.activeAnnotations.length > 0) {
-                const doc = window.document;
+                const doc = this.iframeWindow.document;
                 const activeData = [];
                 const camPos = this.appInstance.camera.position;
 
@@ -114,14 +114,36 @@ export class AnnotationsManager {
     }
 
     _injectPremiumStyles() {
-        const parentDoc = window.document;
-        if (parentDoc.getElementById('v3d-premium-styles')) return;
+        const doc = this.iframeWindow.document;
+        if (doc.getElementById('v3d-premium-styles')) return;
 
-        const link = parentDoc.createElement('link');
+        // 1. Sincronizar variables de diseño (Esencial para el diseño anterior)
+        const parentRoot = window.document.documentElement;
+        const iframeRoot = doc.documentElement;
+        const themeVars = [
+            '--color-primary', 
+            '--color-primary-rgb', 
+            '--glow-primary', 
+            '--glow-primary-strong'
+        ];
+        
+        themeVars.forEach(v => {
+            const value = getComputedStyle(parentRoot).getPropertyValue(v).trim();
+            if (value) iframeRoot.style.setProperty(v, value);
+        });
+
+        // 2. Fuentes (Necesarias dentro del iframe)
+        const fonts = doc.createElement('link');
+        fonts.rel = 'stylesheet';
+        fonts.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap';
+        doc.head.appendChild(fonts);
+
+        // 3. CSS de Etiquetas (Ajustamos ruta relativa)
+        const link = doc.createElement('link');
         link.id = 'v3d-premium-styles';
         link.rel = 'stylesheet';
-        link.href = './css/components/Etiqueta.css';
-        parentDoc.head.appendChild(link);
+        link.href = '../css/components/Etiqueta.css';
+        doc.head.appendChild(link);
     }
 
     getObjectByName(name) {
@@ -159,7 +181,7 @@ export class AnnotationsManager {
             }
 
             if (add) {
-                const container = window.document.body;
+                const container = this.iframeWindow.document.body;
                 const a = new this.v3d.Annotation(container, '', '');
                 a.fadeObscured = false;
                 
@@ -205,9 +227,9 @@ export class AnnotationsManager {
                 if (o.children[j].isLineHTML) o.remove(o.children[j]);
             }
             if (op === 'DRAW') {
-                const el = window.document.getElementById(id);
+                const el = this.iframeWindow.document.getElementById(id);
                 if (el) {
-                    const themeColor = getComputedStyle(window.document.documentElement).getPropertyValue('--color-primary').trim();
+                    const themeColor = getComputedStyle(this.iframeWindow.document.documentElement).getPropertyValue('--color-primary').trim();
                     const line = new this.v3d.LineHTML(new this.v3d.Color(themeColor || '#0066ff'), 2);
                     line.offset = 0;
                     line.elemHTML = el;
@@ -262,9 +284,9 @@ export class AnnotationsManager {
 
         const res = nodeConfig.objeto_resaltar || [];
 
-        // 4. Configurar eventos en el documento PADRE
+        // 4. Configurar eventos en el documento del IFRAME
         setTimeout(() => {
-            const container = window.document.getElementById(id);
+            const container = this.iframeWindow.document.getElementById(id);
             if (!container) return;
 
             // Bloquear eventos del root pero permitir los del panel
@@ -316,7 +338,7 @@ export class AnnotationsManager {
         this.handleAnnot(false, 'ALL_OBJECTS');
         this.operateLineObjectHTML('ALL_OBJECTS', '', 'REMOVE');
         this.activeAnnotations = [];
-        const annots = window.document.querySelectorAll('[class*="Etiqueta-v3d-"]');
+        const annots = this.iframeWindow.document.querySelectorAll('[class*="Etiqueta-v3d-"]');
         annots.forEach(el => el.remove());
     }
 }
