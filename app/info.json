@@ -929,14 +929,7 @@
         }
       ],
       "objetos_mostrar": [],
-      "objetos_ocultar": [
-        "chute_mesh",
-        "tapaD_mesh",
-        "revestimientos03_mesh",
-        "cojinetePost_P01_mesh",
-        "cojinetePost_P02_mesh",
-        "trunioD_mesh"
-      ],
+      "objetos_ocultar": [],
       "camara": "cam_Pos25",
       "camaraDireccion": "cam_Dir25",
       "objeto_resaltar": [],

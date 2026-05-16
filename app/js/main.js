@@ -400,7 +400,18 @@ function ejecutarPaso(pasoId, skipAudio = false, useGlobalHighlight = false) {
         });
     }
 
-    // 4. Navegación Jerárquica y Etiquetas
+    // 4. Clipping / Rayos X
+    if (pasoId === 'paso5' || pasoId === 'paso4') {
+        // Parámetros solicitados por el usuario (según imagen)
+        const pos = { x: 0, y: -6000, z: 0 };
+        const norm = { x: 0, y: 0, z: -1 };
+        Lab.engine._enableXRay(pos, norm);
+    } else {
+        // Desactivar clipping para los demás pasos
+        if (Lab.engine.clipping) Lab.engine.clipping.disable();
+    }
+
+    // 5. Navegación Jerárquica y Etiquetas
     const hijos = pasoConfig.children && pasoConfig.children.length > 0;
     if (hijos) {
         pasoConfig.children.forEach(child => {

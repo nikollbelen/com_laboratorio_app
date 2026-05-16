@@ -4,6 +4,7 @@ import { HighlightManager } from './features/HighlightManager.js';
 import { AnimationPlayer } from './features/AnimationPlayer.js';
 import { AnnotationsManager } from './features/AnnotationsManager.js';
 import { AudioManager } from './features/AudioManager.js';
+import { ClippingManager } from './features/ClippingManager.js';
 
 export class V3DEngine {
     constructor(iframeId, themeColor = '#00ffff', allMeshes = []) {
@@ -59,13 +60,18 @@ export class V3DEngine {
         this.camera = new CameraController(this.instance);
         this.visibility = new VisibilityManager(this.instance);
         this.highlights = new HighlightManager(this.instance, iframeWindow, this.themeColor);
+        this.clipping = new ClippingManager(this.instance, iframeWindow);
         
         // Exponer herramientas de depuración
         window.enableCameraDebug = () => this.camera.enableDebug();
         window.disableCameraDebug = () => this.camera.disableDebug();
         window.debugHighlightUI = () => this._createHighlightDebugUI();
+        window.debugClippingUI = () => this._createClippingDebugUI();
         window.enableGlassMode = (opts) => this._applyGlassEffect(opts);
         window.disableGlassMode = () => this._restoreOriginalMaterials();
+        
+        window.enableXRay = () => this._enableXRay();
+        window.disableXRay = () => this.clipping.disable();
         this.animations = new AnimationPlayer(this.instance, iframeWindow);
         this.annotations = new AnnotationsManager(this.instance, iframeWindow, this.highlights, this.allMeshes);
         this.audio = new AudioManager();
@@ -309,5 +315,118 @@ export class V3DEngine {
 
     playStepAudio(paso) {
         if (this.audio) this.audio.playStepAudio(paso);
+    }
+
+    _enableXRay(customPos = null, customNorm = null) {
+        const molinoMeshes = this.allMeshes.filter(name => {
+            const n = name.toLowerCase();
+            return n.includes('shell') || 
+                   n.includes('tapa') || 
+                   n.includes('liner') || 
+                   n.includes('revestimiento') || 
+                   n.includes('trunion') ||
+                   n.includes('material') ||
+                   n.includes('ball') ||
+                   n.includes('bola') ||
+                   n.includes('chute') ||
+                   n.includes('tromel') ||
+                   n.includes('cojinete');
+        });
+
+        console.log(`%c[X-Ray] %cActivando para ${molinoMeshes.length} mallas encontradas.`, 'color: #00ffff; font-weight: bold;', 'color: white;');
+        
+        // Usar parámetros personalizados o los por defecto
+        const pos = customPos || { x: 0, y: 0, z: 0 };
+        const norm = customNorm || { x: -1, y: 0, z: 0 };
+
+        this.clipping.enable(molinoMeshes, pos, norm);
+        
+        // Si no se pasaron parámetros personalizados, asumimos que es modo manual y abrimos UI
+        if (!customPos) {
+            this._createClippingDebugUI();
+        }
+    }
+
+    _createClippingDebugUI() {
+        const id = 'v3d-debug-clipping-ui';
+        if (document.getElementById(id)) return;
+
+        const panel = document.createElement('div');
+        panel.id = id;
+        panel.style.cssText = `
+            position: fixed; bottom: 20px; left: 20px; z-index: 9999;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+            padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+            color: white; font-family: sans-serif; display: flex; flex-direction: column; gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 220px;
+        `;
+
+        panel.innerHTML = `
+            <div style="font-weight: bold; margin-bottom: 5px; font-size: 12px; opacity: 0.7;">CLIPPING DEBUGGER</div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label style="font-size: 11px;">Posición X: <span id="clip-x-val">0</span></label>
+                <input type="range" id="clip-x" min="-6000" max="6000" step="10" value="0" style="width: 100%;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label style="font-size: 11px;">Posición Y: <span id="clip-y-val">0</span></label>
+                <input type="range" id="clip-y" min="-6000" max="6000" step="10" value="0" style="width: 100%;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label style="font-size: 11px;">Normal X: <span id="clip-nx-val">-1</span></label>
+                <input type="range" id="clip-nx" min="-1" max="1" step="0.1" value="-1" style="width: 100%;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label style="font-size: 11px;">Normal Z: <span id="clip-nz-val">0</span></label>
+                <input type="range" id="clip-nz" min="-1" max="1" step="0.1" value="0" style="width: 100%;">
+            </div>
+            <div style="display: flex; gap: 5px;">
+                <button id="clip-toggle" style="flex: 1; padding: 5px; font-size: 10px; background: #00ffff; border: none; color: black; cursor: pointer; border-radius: 4px; font-weight: bold;">Activar/Desactivar</button>
+                <button id="close-clip-debug" style="padding: 5px; font-size: 10px; background: rgba(255,255,255,0.1); border: none; color: white; cursor: pointer; border-radius: 4px;">Cerrar</button>
+            </div>
+        `;
+
+        document.body.appendChild(panel);
+
+        const xInput = panel.querySelector('#clip-x');
+        const yInput = panel.querySelector('#clip-y');
+        const nxInput = panel.querySelector('#clip-nx');
+        const nzInput = panel.querySelector('#clip-nz');
+        
+        const xVal = panel.querySelector('#clip-x-val');
+        const yVal = panel.querySelector('#clip-y-val');
+        const nxVal = panel.querySelector('#clip-nx-val');
+        const nzVal = panel.querySelector('#clip-nz-val');
+
+        const update = () => {
+            const x = parseFloat(xInput.value);
+            const y = parseFloat(yInput.value);
+            const nx = parseFloat(nxInput.value);
+            const nz = parseFloat(nzInput.value);
+            
+            xVal.textContent = x;
+            yVal.textContent = y;
+            nxVal.textContent = nx;
+            nzVal.textContent = nz;
+
+            if (this.clipping.active) {
+                this.clipping.updatePlane({ x, y, z: 0 }, { x: nx, y: 0, z: nz });
+            }
+        };
+
+        xInput.addEventListener('input', update);
+        yInput.addEventListener('input', update);
+        nxInput.addEventListener('input', update);
+        nzInput.addEventListener('input', update);
+        
+        panel.querySelector('#clip-toggle').addEventListener('click', () => {
+            if (this.clipping.active) {
+                this.clipping.disable();
+            } else {
+                this._enableXRay();
+                update();
+            }
+        });
+
+        panel.querySelector('#close-clip-debug').addEventListener('click', () => panel.remove());
     }
 }
