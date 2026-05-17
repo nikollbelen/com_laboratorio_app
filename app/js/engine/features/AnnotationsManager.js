@@ -321,6 +321,12 @@ export class AnnotationsManager {
             const container = this.iframeWindow.document.getElementById(id);
             if (!container) return;
 
+            // Si estamos en modo read-only (viewer), no adjuntar eventos
+            if (this.readOnly) {
+                container.style.pointerEvents = 'none';
+                return;
+            }
+
             // Bloquear eventos del root pero permitir los del panel
             container.style.pointerEvents = 'none';
             const panel = container.querySelector('.Etiqueta-v3d-panel');
@@ -333,7 +339,13 @@ export class AnnotationsManager {
                     if (n === currentGlobalSelection.obj) isProtected = true;
                     if (currentStepSelection.indexOf(n) !== -1) isProtected = true;
                 });
-                if (!isProtected && res.length) this.highlightManager.enable(res);
+                if (!isProtected && res.length) {
+                    this.highlightManager.enable(res);
+                    // Notificar al presenter para sincronizar con viewers
+                    window.dispatchEvent(new CustomEvent('lab:label_hover', {
+                        detail: { meshes: res, labelId: nodeConfig.id }
+                    }));
+                }
             });
 
             container.addEventListener('mouseleave', () => {
@@ -342,7 +354,13 @@ export class AnnotationsManager {
                     if (n === currentGlobalSelection.obj) isProtected = true;
                     if (currentStepSelection.indexOf(n) !== -1) isProtected = true;
                 });
-                if (!isProtected && res.length) this.highlightManager.disable(res);
+                if (!isProtected && res.length) {
+                    this.highlightManager.disable(res);
+                    // Notificar al presenter
+                    window.dispatchEvent(new CustomEvent('lab:label_unhover', {
+                        detail: { meshes: res, labelId: nodeConfig.id }
+                    }));
+                }
             });
 
             // Click en el botón de PLAY: Solo AUDIO

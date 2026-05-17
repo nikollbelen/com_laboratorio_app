@@ -11,6 +11,7 @@ import { ModalAyuda }     from './components/ModalAyuda/ModalAyuda.js';
 import { ModalObjetivos } from './components/ModalObjetivos/ModalObjetivos.js';
 import { ModalEquipo }    from './components/ModalEquipo/ModalEquipo.js';
 import { V3DEngine }      from './engine/V3DEngine.js';
+import { RealtimeControls } from './components/RealtimeControls/RealtimeControls.js';
 
 // ── Estado global del laboratorio ─────────────────────────────────────────────
 const Lab = {
@@ -297,6 +298,12 @@ function onVerge3DReady() {
     Lab.v3dReady = true;
     Lab.engine.ejecutarInicioEstado(Lab.config.inicioEstado);
     SoundManager.playMenuOpen();
+
+    // Inicializar controles de Sala y Snapshot en el topbar
+    Lab.realtimeControls = new RealtimeControls({ lang: Lab.config.defaultLang || 'es' });
+
+    // Exponer el laboratorio para uso desde consola (presentador, debugging)
+    window.Lab = Lab;
 }
 
 /**
@@ -422,6 +429,15 @@ function ejecutarPaso(pasoId, skipAudio = false, useGlobalHighlight = false) {
     } else if (pasoConfig.etiqueta && pasoConfig.flecha) {
         Lab.engine.annotations.createLabel(pasoConfig, false, Lab.engine.currentStepSelection, Lab.engine.currentGlobalSelection);
     }
+
+    // Guardar paso actual para el sistema de colaboración
+    window.Lab.currentPasoId = pasoId;
+    window.Lab.currentPasoHighlight = useGlobalHighlight;
+
+    // Notificar al sistema de sincronización (presenter)
+    window.dispatchEvent(new CustomEvent('lab:paso_ejecutado', {
+        detail: { pasoId, useGlobalHighlight }
+    }));
 }
 
 function onNavegacionInterna(id, skipAudio = false, useGlobalHighlight = false) {
@@ -459,6 +475,13 @@ function onMenuReset() {
     Lab.engine.ejecutarInicioEstado(Lab.config.inicioEstado, 1.2);
     
     if (Lab.engine.audio) Lab.engine.audio.stop();
+    
+    // Limpiar paso actual
+    window.Lab.currentPasoId = null;
+    window.Lab.currentPasoHighlight = false;
+
+    // Notificar al sistema de sincronización (presenter)
+    window.dispatchEvent(new CustomEvent('lab:reset'));
     
     console.log('[Lab] → Reset: Cámara a Inicio');
 }
