@@ -105,12 +105,13 @@ export class RealtimeControls {
                 this._closeMobileMenu();
                 this._openSalaModal();
             }
-            if (e.target.closest('#btn-mic')) this._toggleVoice();
+            if (e.target.closest('#btn-mic') || e.target.closest('#btn-mic-mobile')) { this._closeMobileMenu(); this._toggleVoice(); }
+
             if (e.target.closest('#btn-snapshot') || e.target.closest('#btn-snapshot-mobile')) {
                 this._closeMobileMenu();
                 this._openSnapModal();
             }
-            if (e.target.closest('#btn-qa')) this._openQAModal();
+            if (e.target.closest('#btn-qa') || e.target.closest('#btn-qa-mobile')) { this._closeMobileMenu(); this._openQAModal(); }
             if (e.target.closest('#sala-close') || (e.target.closest('.rt-backdrop') && this._modalSala.classList.contains('visible'))) this._close(this._modalSala);
             if (e.target.closest('#snap-close') || (e.target.closest('.rt-backdrop') && this._modalSnap.classList.contains('visible'))) this._close(this._modalSnap);
             if (e.target.closest('#qa-close') || (e.target.closest('.rt-backdrop') && this._modalQA.classList.contains('visible'))) this._close(this._modalQA);
@@ -138,6 +139,18 @@ export class RealtimeControls {
         salaBtn.className = 'flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm w-full';
         salaBtn.innerHTML = '<span class="material-symbols-outlined text-xl text-on-surface-dark">cast</span><span class="font-medium">Sala</span>';
 
+        const micBtn = document.createElement('button');
+        micBtn.id = 'btn-mic-mobile';
+        micBtn.className = 'flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm w-full';
+        micBtn.innerHTML = '<span class="material-symbols-outlined text-xl text-on-surface-dark" id="btn-mic-icon-mobile">mic_off</span><span class="font-medium">Micrófono</span>';
+        micBtn.style.display = 'none';
+
+        const qaBtn = document.createElement('button');
+        qaBtn.id = 'btn-qa-mobile';
+        qaBtn.className = 'flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm w-full';
+        qaBtn.innerHTML = '<span class="material-symbols-outlined text-xl text-on-surface-dark">forum</span><span class="font-medium">Preguntas</span>';
+        qaBtn.style.display = 'none';
+
         const snapBtn = document.createElement('button');
         snapBtn.id = 'btn-snapshot-mobile';
         snapBtn.className = 'flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm w-full';
@@ -145,7 +158,15 @@ export class RealtimeControls {
 
         mobileDropdown.insertBefore(sep, mobileDropdown.firstChild);
         mobileDropdown.insertBefore(snapBtn, mobileDropdown.firstChild);
+        mobileDropdown.insertBefore(qaBtn, mobileDropdown.firstChild);
+        mobileDropdown.insertBefore(micBtn, mobileDropdown.firstChild);
         mobileDropdown.insertBefore(salaBtn, mobileDropdown.firstChild);
+
+        // Restaurar visibilidad si la sala ya estaba activa al re-inyectar
+        if (this._roomActive) {
+            micBtn.style.display = '';
+            qaBtn.style.display = this._qaPresenter ? '' : 'none';
+        }
     }
 
     _open(m) { requestAnimationFrame(() => m.classList.add('visible')); }
@@ -394,6 +415,8 @@ export class RealtimeControls {
 
             const qaContainer = document.getElementById('btn-qa-container');
             if (qaContainer) qaContainer.style.display = '';
+            const qaContainerMobile = document.getElementById('btn-qa-mobile');
+            if (qaContainerMobile) qaContainerMobile.style.display = '';
         } catch (e) {
             console.warn('[RT] Q&A no disponible:', e);
         }
@@ -501,6 +524,8 @@ export class RealtimeControls {
         this._viewerCount = 0;
         const qaContainer = document.getElementById('btn-qa-container');
         if (qaContainer) qaContainer.style.display = 'none';
+        const qaContainerMobile = document.getElementById('btn-qa-mobile');
+        if (qaContainerMobile) qaContainerMobile.style.display = 'none';
         const qaBadge = document.getElementById('rt-qa-topbadge');
         if (qaBadge) qaBadge.style.display = 'none';
         this._close(this._modalQA);
@@ -541,11 +566,13 @@ export class RealtimeControls {
             if (icon) { icon.textContent = 'mic'; icon.style.color = 'var(--color-primary)'; }
             if (status) status.textContent = 'Activa';
             if (btn) { btn.textContent = 'Detener'; btn.disabled = false; btn.classList.add('active'); }
-            // Topbar
+            // Topbar y móvil
             const topBtn = document.getElementById('btn-mic');
             const topIcon = document.getElementById('btn-mic-icon');
             if (topIcon) topIcon.textContent = 'mic';
             if (topBtn) topBtn.classList.add('active');
+            const mobileIcon = document.getElementById('btn-mic-icon-mobile');
+            if (mobileIcon) { mobileIcon.textContent = 'mic'; mobileIcon.style.color = 'var(--color-primary)'; }
         } catch (e) {
             console.error('[Voice] Error iniciando voz:', e);
             const msg = e.name === 'NotAllowedError' ? 'Permiso denegado'
@@ -568,11 +595,13 @@ export class RealtimeControls {
         if (icon) { icon.textContent = 'mic_off'; icon.style.color = '#94a3b8'; }
         if (status) status.textContent = 'Inactiva';
         if (btn) { btn.textContent = 'Activar'; btn.classList.remove('active'); }
-        // Topbar
+        // Topbar y móvil
         const topBtn = document.getElementById('btn-mic');
         const topIcon = document.getElementById('btn-mic-icon');
         if (topIcon) topIcon.textContent = 'mic_off';
         if (topBtn) topBtn.classList.remove('active');
+        const mobileIcon = document.getElementById('btn-mic-icon-mobile');
+        if (mobileIcon) { mobileIcon.textContent = 'mic_off'; mobileIcon.style.color = ''; }
     }
 
     _updateBtn() {
@@ -585,7 +614,7 @@ export class RealtimeControls {
         if (micContainer) micContainer.style.display = this._roomActive ? '' : 'none';
         if (this._viewerChip) this._viewerChip.style.display = this._roomActive ? 'flex' : 'none';
 
-        // Botón móvil: colorear icono y texto cuando la sala está activa
+        // Botón móvil sala: colorear icono y texto cuando la sala está activa
         const mobileBtn = document.getElementById('btn-sala-mobile');
         if (mobileBtn) {
             const icon = mobileBtn.querySelector('.material-symbols-outlined');
@@ -594,6 +623,9 @@ export class RealtimeControls {
             if (icon) { icon.style.color = color; icon.style.fontVariationSettings = this._roomActive ? "'FILL' 1" : ''; }
             if (label) label.style.color = color;
         }
+        // Botón móvil micrófono: solo visible si la sala está activa
+        const mobileMicBtn = document.getElementById('btn-mic-mobile');
+        if (mobileMicBtn) mobileMicBtn.style.display = this._roomActive ? '' : 'none';
     }
 
     // ─── SNAPSHOT MODAL ───────────────────────────────────────
@@ -734,7 +766,7 @@ export class RealtimeControls {
 .rt-voice-btn.active{background:rgba(var(--color-primary-rgb),0.1);color:var(--color-primary);border-color:rgba(var(--color-primary-rgb),0.25)}
 .rt-voice-btn:disabled{opacity:.5;cursor:not-allowed}
 .rt-viewers-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.06);margin-bottom:16px}
-#rt-viewer-chip{position:fixed;top:92px;right:20px;z-index:50;display:none;align-items:center;gap:6px;padding:5px 12px 5px 10px;border-radius:20px;background:rgba(255,255,255,0.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.35);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#1a1c1e;box-shadow:0 4px 16px rgba(0,0,0,0.07);pointer-events:none;animation:rt-chip-in .4s cubic-bezier(.34,1.56,.64,1)}
+#rt-viewer-chip{position:fixed;top:92px;right:20px;z-index:45;display:none;align-items:center;gap:6px;padding:5px 12px 5px 10px;border-radius:20px;background:rgba(255,255,255,0.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.35);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#1a1c1e;box-shadow:0 4px 16px rgba(0,0,0,0.07);pointer-events:none;animation:rt-chip-in .4s cubic-bezier(.34,1.56,.64,1)}
 @keyframes rt-chip-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 .rt-qa-topbadge{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;border-radius:9px;background:var(--color-primary);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid rgba(255,255,255,0.85);pointer-events:none}
 .rt-qa-panel{max-height:80vh;display:flex;flex-direction:column;padding:28px 0 0}
