@@ -34,6 +34,9 @@ export class PresenterSync {
         // ── Métricas ──────────────────────────────────────────
         this._stats = { captures: 0, pushes: 0, skipped: 0, errors: 0, blocked: 0 };
 
+        // ── Estado de voz (actualizado externamente por RealtimeControls) ──
+        this.voiceActive = false;
+
         // ── Escuchar eventos del laboratorio ──────────────────
         this._setupEventListeners();
     }
@@ -204,7 +207,8 @@ export class PresenterSync {
             currentPasoHighlight: this._currentPasoHighlight,
             camera: this._captureCamera(instance),
             action: this._currentAction,
-            ui: this._captureUI()
+            ui: this._captureUI(),
+            voiceActive: this.voiceActive,
         };
     }
 

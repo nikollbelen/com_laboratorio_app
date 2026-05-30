@@ -33,6 +33,7 @@ export class ViewerSync {
         this._lastUpdatedAt = null;
         this._lastActionSeq = -1;
         this._THREE = null;
+        this._lastState = null;
         this._stats = { statesReceived: 0, actionsExecuted: 0, reconnections: 0 };
     }
 
@@ -101,6 +102,7 @@ export class ViewerSync {
     }
 
     getStats() { return { ...this._stats }; }
+    get lastState() { return this._lastState; }
 
     // ─── Realtime ─────────────────────────────────────────────
 
@@ -111,6 +113,7 @@ export class ViewerSync {
 
         this._lastUpdatedAt = data.updated_at;
         const state = data.state;
+        this._lastState = state;
 
         // Aplicar cámara INMEDIATA (sin lerp, primera conexión)
         if (state.camera) {
@@ -173,6 +176,7 @@ export class ViewerSync {
 
     _applyState(state) {
         if (!state) return;
+        this._lastState = state;
         if (state.camera) this._applyCameraTarget(state.camera);
         if (state.action) this._applyAction(state.action);
         if (state.ui) this._applyUI(state.ui);

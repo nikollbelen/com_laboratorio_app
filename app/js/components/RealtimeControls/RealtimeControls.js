@@ -7,6 +7,8 @@ export class RealtimeControls {
         this._presenter = null;
         this._roomActive = false;
         this._roomId = null;
+        this._voiceActive = false;
+        this._presenterVoice = null;
         this._injectStyles();
         this._injectHTML();
         this._bindEvents();
@@ -25,6 +27,12 @@ export class RealtimeControls {
                     <span class="realtime-btn-dot" id="sala-dot" style="display:none;"></span>
                 </button>
                 <span class="realtime-btn-tooltip">Sala</span>
+            </div>
+            <div class="relative group" id="btn-mic-container" style="display:none;">
+                <button id="btn-mic" class="realtime-btn" title="Micrófono en vivo">
+                    <span class="material-symbols-outlined" id="btn-mic-icon">mic_off</span>
+                </button>
+                <span class="realtime-btn-tooltip">Micrófono</span>
             </div>
             <div class="relative group">
                 <button id="btn-snapshot" class="realtime-btn" title="Snapshot">
@@ -52,6 +60,7 @@ export class RealtimeControls {
     _bindEvents() {
         document.addEventListener('click', (e) => {
             if (e.target.closest('#btn-sala')) this._openSalaModal();
+            if (e.target.closest('#btn-mic')) this._toggleVoice();
             if (e.target.closest('#btn-snapshot')) this._openSnapModal();
             if (e.target.closest('#sala-close') || (e.target.closest('.rt-backdrop') && this._modalSala.classList.contains('visible'))) this._close(this._modalSala);
             if (e.target.closest('#snap-close') || (e.target.closest('.rt-backdrop') && this._modalSnap.classList.contains('visible'))) this._close(this._modalSnap);
@@ -161,6 +170,11 @@ export class RealtimeControls {
 
     _showSalaActive(c) {
         const url = this._buildViewerUrl();
+        const vIcon = this._voiceActive ? 'mic' : 'mic_off';
+        const vStatus = this._voiceActive ? 'Activa' : 'Inactiva';
+        const vBtnText = this._voiceActive ? 'Detener' : 'Activar';
+        const vBtnClass = this._voiceActive ? 'rt-voice-btn active' : 'rt-voice-btn';
+        const vIconColor = this._voiceActive ? 'var(--color-primary)' : '#94a3b8';
         c.innerHTML = `
             <div class="rt-icon" style="background:rgba(22,163,74,0.12);color:#16a34a;"><span class="material-symbols-outlined">cast_connected</span></div>
             <h3 class="rt-title">Sala activa: <span style="color:var(--color-primary);">${this._roomId}</span></h3>
@@ -170,12 +184,21 @@ export class RealtimeControls {
                 <span class="material-symbols-outlined rt-copy-icon">content_copy</span>
             </div>
             <div class="rt-toast" id="sala-copied">✓ Enlace copiado</div>
+            <div class="rt-voice-row">
+                <span class="material-symbols-outlined" id="sala-mic-icon" style="font-size:20px;color:${vIconColor};transition:color .3s;">${vIcon}</span>
+                <div style="flex:1;">
+                    <div style="font-size:13px;font-weight:600;color:#1a1c1e;line-height:1.2;">Voz en vivo</div>
+                    <div style="font-size:11px;color:#94a3b8;margin-top:2px;" id="sala-mic-status">${vStatus}</div>
+                </div>
+                <button class="${vBtnClass}" id="sala-mic-btn">${vBtnText}</button>
+            </div>
             <div class="rt-actions">
                 <button class="rt-btn-danger" id="sala-stop">Cerrar sala</button>
             </div>`;
         setTimeout(() => {
             document.getElementById('sala-copy').onclick = () => this._copy(url, 'sala-copied');
             document.getElementById('sala-stop').onclick = () => this._stopRoom();
+            document.getElementById('sala-mic-btn').onclick = () => this._toggleVoice();
         }, 30);
     }
 
@@ -243,6 +266,9 @@ export class RealtimeControls {
     }
 
     async _stopRoom() {
+        // 0. Detener voz si estaba activa
+        if (this._voiceActive) this._stopVoice();
+
         // 1. Detener el presenter PRIMERO (mata el interval y pending pushes)
         const roomId = this._roomId;
         if (this._presenter) { this._presenter.stop(); this._presenter = null; }
@@ -265,12 +291,77 @@ export class RealtimeControls {
         this._close(this._modalSala);
     }
 
+    // ─── VOZ EN VIVO ──────────────────────────────────────────
+
+    _toggleVoice() {
+        if (this._voiceActive) {
+            this._stopVoice();
+        } else {
+            this._startVoice();
+        }
+    }
+
+    async _startVoice() {
+        const btn = document.getElementById('sala-mic-btn');
+        const status = document.getElementById('sala-mic-status');
+        const icon = document.getElementById('sala-mic-icon');
+        if (btn) { btn.disabled = true; btn.textContent = 'Iniciando...'; }
+        if (status) status.textContent = 'Solicitando permiso...';
+
+        try {
+            const { PresenterVoice } = await import('../../realtime/voice.js');
+            this._presenterVoice = new PresenterVoice(this._roomId);
+            await this._presenterVoice.start();
+
+            // Notificar a los viewers que la voz está activa
+            if (this._presenter) this._presenter.voiceActive = true;
+
+            this._voiceActive = true;
+            if (icon) { icon.textContent = 'mic'; icon.style.color = 'var(--color-primary)'; }
+            if (status) status.textContent = 'Activa';
+            if (btn) { btn.textContent = 'Detener'; btn.disabled = false; btn.classList.add('active'); }
+            // Topbar
+            const topBtn = document.getElementById('btn-mic');
+            const topIcon = document.getElementById('btn-mic-icon');
+            if (topIcon) topIcon.textContent = 'mic';
+            if (topBtn) topBtn.classList.add('active');
+        } catch (e) {
+            console.error('[Voice] Error iniciando voz:', e);
+            const msg = e.name === 'NotAllowedError' ? 'Permiso denegado'
+                      : e.name === 'NotFoundError'   ? 'Sin micrófono detectado'
+                      : 'Error al activar';
+            if (status) status.textContent = msg;
+            if (btn) { btn.textContent = 'Activar'; btn.disabled = false; }
+            this._presenterVoice = null;
+        }
+    }
+
+    _stopVoice() {
+        if (this._presenterVoice) { this._presenterVoice.stop(); this._presenterVoice = null; }
+        if (this._presenter) this._presenter.voiceActive = false;
+        this._voiceActive = false;
+
+        const btn = document.getElementById('sala-mic-btn');
+        const status = document.getElementById('sala-mic-status');
+        const icon = document.getElementById('sala-mic-icon');
+        if (icon) { icon.textContent = 'mic_off'; icon.style.color = '#94a3b8'; }
+        if (status) status.textContent = 'Inactiva';
+        if (btn) { btn.textContent = 'Activar'; btn.classList.remove('active'); }
+        // Topbar
+        const topBtn = document.getElementById('btn-mic');
+        const topIcon = document.getElementById('btn-mic-icon');
+        if (topIcon) topIcon.textContent = 'mic_off';
+        if (topBtn) topBtn.classList.remove('active');
+    }
+
     _updateBtn() {
         const btn = document.getElementById('btn-sala');
         const dot = document.getElementById('sala-dot');
+        const micContainer = document.getElementById('btn-mic-container');
         if (!btn || !dot) return;
         btn.classList.toggle('active', this._roomActive);
         dot.style.display = this._roomActive ? 'block' : 'none';
+        if (micContainer) micContainer.style.display = this._roomActive ? '' : 'none';
     }
 
     // ─── SNAPSHOT MODAL ───────────────────────────────────────
@@ -400,6 +491,11 @@ export class RealtimeControls {
 .rt-link-box:hover .rt-copy-icon{opacity:1}
 .rt-toast{font-size:12px;color:#16a34a;font-weight:600;margin-top:4px;margin-bottom:16px;opacity:0;transition:opacity .3s}
 .rt-toast.show{opacity:1}
+.rt-voice-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.06);margin-bottom:16px}
+.rt-voice-btn{padding:7px 16px;border-radius:10px;border:1px solid rgba(0,0,0,0.1);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;background:transparent;color:#44474e;white-space:nowrap}
+.rt-voice-btn:hover:not(:disabled){background:rgba(0,0,0,0.04)}
+.rt-voice-btn.active{background:rgba(var(--color-primary-rgb),0.1);color:var(--color-primary);border-color:rgba(var(--color-primary-rgb),0.25)}
+.rt-voice-btn:disabled{opacity:.5;cursor:not-allowed}
 `;
         document.head.appendChild(s);
     }
