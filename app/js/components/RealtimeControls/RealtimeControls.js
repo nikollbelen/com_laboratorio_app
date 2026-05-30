@@ -15,6 +15,7 @@ export class RealtimeControls {
         this._injectStyles();
         this._injectHTML();
         this._bindEvents();
+        this._restoreRoom();
     }
 
     setLanguage(lang) { this.lang = lang; }
@@ -318,6 +319,23 @@ export class RealtimeControls {
         } catch (e) { statusEl.innerHTML = '<span style="color:#ef4444;">Error buscando</span>'; }
     }
 
+    async _restoreRoom() {
+        const savedRoomId = localStorage.getItem('rt_active_room');
+        if (!savedRoomId) return;
+        try {
+            const { supabase } = await import('../../realtime/supabase-config.js');
+            const { data } = await supabase.from('room_states').select('state').eq('room_id', savedRoomId).maybeSingle();
+            if (data?.state?.active) {
+                console.log(`%c[RT] %cRestaurando sala "${savedRoomId}" desde localStorage`, 'color:#ff6b6b;font-weight:bold;', 'color:#ffd93d;');
+                await this._joinRoom(savedRoomId);
+            } else {
+                localStorage.removeItem('rt_active_room');
+            }
+        } catch (e) {
+            console.warn('[RT] Error restaurando sala:', e);
+        }
+    }
+
     async _createRoom(name) {
         this._roomId = name;
         try {
@@ -328,6 +346,7 @@ export class RealtimeControls {
             const { supabase } = await import('../../realtime/supabase-config.js');
             await supabase.from('room_states').update({ state: { ...this._presenter._captureState(), active: true } }).eq('room_id', this._roomId);
             this._roomActive = true;
+            localStorage.setItem('rt_active_room', this._roomId);
             await this._startQA();
             this._updateBtn();
             this._showSalaActive(document.getElementById('sala-content'));
@@ -346,6 +365,7 @@ export class RealtimeControls {
             const { supabase } = await import('../../realtime/supabase-config.js');
             await supabase.from('room_states').update({ state: { ...this._presenter._captureState(), active: true } }).eq('room_id', this._roomId);
             this._roomActive = true;
+            localStorage.setItem('rt_active_room', this._roomId);
             await this._startQA();
             this._updateBtn();
             this._showSalaActive(document.getElementById('sala-content'));
@@ -487,6 +507,7 @@ export class RealtimeControls {
 
         this._roomActive = false;
         this._roomId = null;
+        localStorage.removeItem('rt_active_room');
         this._updateBtn();
         this._close(this._modalSala);
     }
@@ -563,6 +584,16 @@ export class RealtimeControls {
         dot.style.display = this._roomActive ? 'block' : 'none';
         if (micContainer) micContainer.style.display = this._roomActive ? '' : 'none';
         if (this._viewerChip) this._viewerChip.style.display = this._roomActive ? 'flex' : 'none';
+
+        // Botón móvil: colorear icono y texto cuando la sala está activa
+        const mobileBtn = document.getElementById('btn-sala-mobile');
+        if (mobileBtn) {
+            const icon = mobileBtn.querySelector('.material-symbols-outlined');
+            const label = mobileBtn.querySelector('span:not(.material-symbols-outlined)');
+            const color = this._roomActive ? 'var(--color-primary)' : '';
+            if (icon) { icon.style.color = color; icon.style.fontVariationSettings = this._roomActive ? "'FILL' 1" : ''; }
+            if (label) label.style.color = color;
+        }
     }
 
     // ─── SNAPSHOT MODAL ───────────────────────────────────────
