@@ -9,6 +9,9 @@ export class RealtimeControls {
         this._roomId = null;
         this._voiceActive = false;
         this._presenterVoice = null;
+        this._qaPresenter = null;
+        this._qaQuestions = [];
+        this._viewerCount = 0;
         this._injectStyles();
         this._injectHTML();
         this._bindEvents();
@@ -34,6 +37,13 @@ export class RealtimeControls {
                 </button>
                 <span class="realtime-btn-tooltip">Micrófono</span>
             </div>
+            <div class="relative group" id="btn-qa-container" style="display:none;">
+                <button id="btn-qa" class="realtime-btn" title="Preguntas de alumnos">
+                    <span class="material-symbols-outlined">forum</span>
+                    <span class="rt-qa-topbadge" id="rt-qa-topbadge" style="display:none;"></span>
+                </button>
+                <span class="realtime-btn-tooltip">Preguntas</span>
+            </div>
             <div class="relative group">
                 <button id="btn-snapshot" class="realtime-btn" title="Snapshot">
                     <span class="material-symbols-outlined">photo_camera</span>
@@ -51,21 +61,79 @@ export class RealtimeControls {
         this._modalSnap.className = 'rt-overlay';
         this._modalSnap.innerHTML = `<div class="rt-backdrop"></div><div class="rt-panel"><button class="rt-close" id="snap-close"><span class="material-symbols-outlined">close</span></button><div id="snap-content"></div></div>`;
 
+        this._modalQA = document.createElement('div');
+        this._modalQA.id = 'modal-qa';
+        this._modalQA.className = 'rt-overlay';
+        this._modalQA.innerHTML = `
+            <div class="rt-backdrop"></div>
+            <div class="rt-panel rt-qa-panel">
+                <button class="rt-close" id="qa-close"><span class="material-symbols-outlined">close</span></button>
+                <div id="qa-pres-header" class="rt-qa-pres-header">
+                    <div class="rt-icon" style="width:40px;height:40px;border-radius:12px;flex-shrink:0;"><span class="material-symbols-outlined" style="font-size:22px;">forum</span></div>
+                    <div>
+                        <h3 class="rt-title" style="margin-bottom:2px;">Preguntas de alumnos</h3>
+                        <p style="font-size:12px;color:#94a3b8;margin:0;" id="qa-pres-count-label">Sin preguntas aún</p>
+                    </div>
+                </div>
+                <div id="qa-pres-list" class="rt-qa-pres-list">
+                    <div class="rt-qa-empty">Aún no hay preguntas</div>
+                </div>
+            </div>`;
+
         const topbar = document.querySelector('.VistaPrincipal-root .fixed.top-8.right-8');
         if (topbar) topbar.insertBefore(this._btnContainer, topbar.firstChild);
+
+        // Inyectar botones también en el menú hamburguesa mobile
+        const mobileDropdown = document.querySelector('.VistaPrincipal-root header .absolute.top-full');
+        if (mobileDropdown) {
+            const sep = document.createElement('div');
+            sep.className = 'h-px bg-white/10 mx-2 my-1 rt-mobile-sep';
+
+            const salaBtn = document.createElement('button');
+            salaBtn.id = 'btn-sala-mobile';
+            salaBtn.className = 'flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm w-full';
+            salaBtn.innerHTML = '<span class="material-symbols-outlined text-xl text-on-surface-dark">cast</span><span class="font-medium">Sala</span>';
+
+            const snapBtn = document.createElement('button');
+            snapBtn.id = 'btn-snapshot-mobile';
+            snapBtn.className = 'flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm w-full';
+            snapBtn.innerHTML = '<span class="material-symbols-outlined text-xl text-on-surface-dark">photo_camera</span><span class="font-medium">Snapshot</span>';
+
+            mobileDropdown.insertBefore(sep, mobileDropdown.firstChild);
+            mobileDropdown.insertBefore(snapBtn, mobileDropdown.firstChild);
+            mobileDropdown.insertBefore(salaBtn, mobileDropdown.firstChild);
+        }
+
+        this._viewerChip = document.createElement('div');
+        this._viewerChip.id = 'rt-viewer-chip';
+        this._viewerChip.innerHTML = `
+            <span class="material-symbols-outlined" style="font-size:14px;color:var(--color-primary);font-variation-settings:'FILL' 1;">group</span>
+            <span id="rt-viewer-chip-count">0</span>
+            <span style="opacity:.55;">conectados</span>`;
+
         document.body.appendChild(this._modalSala);
         document.body.appendChild(this._modalSnap);
+        document.body.appendChild(this._modalQA);
+        document.body.appendChild(this._viewerChip);
     }
 
     _bindEvents() {
         document.addEventListener('click', (e) => {
-            if (e.target.closest('#btn-sala')) this._openSalaModal();
+            if (e.target.closest('#btn-sala') || e.target.closest('#btn-sala-mobile')) {
+                this._closeMobileMenu();
+                this._openSalaModal();
+            }
             if (e.target.closest('#btn-mic')) this._toggleVoice();
-            if (e.target.closest('#btn-snapshot')) this._openSnapModal();
+            if (e.target.closest('#btn-snapshot') || e.target.closest('#btn-snapshot-mobile')) {
+                this._closeMobileMenu();
+                this._openSnapModal();
+            }
+            if (e.target.closest('#btn-qa')) this._openQAModal();
             if (e.target.closest('#sala-close') || (e.target.closest('.rt-backdrop') && this._modalSala.classList.contains('visible'))) this._close(this._modalSala);
             if (e.target.closest('#snap-close') || (e.target.closest('.rt-backdrop') && this._modalSnap.classList.contains('visible'))) this._close(this._modalSnap);
+            if (e.target.closest('#qa-close') || (e.target.closest('.rt-backdrop') && this._modalQA.classList.contains('visible'))) this._close(this._modalQA);
         });
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { this._close(this._modalSala); this._close(this._modalSnap); } });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { this._close(this._modalSala); this._close(this._modalSnap); this._close(this._modalQA); } });
     }
 
     _open(m) { requestAnimationFrame(() => m.classList.add('visible')); }
@@ -192,6 +260,14 @@ export class RealtimeControls {
                 </div>
                 <button class="${vBtnClass}" id="sala-mic-btn">${vBtnText}</button>
             </div>
+            <div class="rt-viewers-row">
+                <span class="material-symbols-outlined" style="font-size:20px;color:var(--color-primary);font-variation-settings:'FILL' 1;">group</span>
+                <div style="flex:1;">
+                    <div style="font-size:13px;font-weight:600;color:#1a1c1e;line-height:1.2;">Espectadores conectados</div>
+                    <div style="font-size:11px;color:#94a3b8;margin-top:2px;" id="sala-viewer-count">${this._viewerCount === 0 ? 'Ninguno aún' : `${this._viewerCount} conectado${this._viewerCount !== 1 ? 's' : ''}`}</div>
+                </div>
+                <button class="rt-voice-btn" id="sala-qa-open-btn">Ver preguntas</button>
+            </div>
             <div class="rt-actions">
                 <button class="rt-btn-danger" id="sala-stop">Cerrar sala</button>
             </div>`;
@@ -199,6 +275,7 @@ export class RealtimeControls {
             document.getElementById('sala-copy').onclick = () => this._copy(url, 'sala-copied');
             document.getElementById('sala-stop').onclick = () => this._stopRoom();
             document.getElementById('sala-mic-btn').onclick = () => this._toggleVoice();
+            document.getElementById('sala-qa-open-btn').onclick = () => { this._close(this._modalSala); this._openQAModal(); };
         }, 30);
     }
 
@@ -240,6 +317,7 @@ export class RealtimeControls {
             const { supabase } = await import('../../realtime/supabase-config.js');
             await supabase.from('room_states').update({ state: { ...this._presenter._captureState(), active: true } }).eq('room_id', this._roomId);
             this._roomActive = true;
+            await this._startQA();
             this._updateBtn();
             this._showSalaActive(document.getElementById('sala-content'));
         } catch (e) {
@@ -257,12 +335,109 @@ export class RealtimeControls {
             const { supabase } = await import('../../realtime/supabase-config.js');
             await supabase.from('room_states').update({ state: { ...this._presenter._captureState(), active: true } }).eq('room_id', this._roomId);
             this._roomActive = true;
+            await this._startQA();
             this._updateBtn();
             this._showSalaActive(document.getElementById('sala-content'));
         } catch (e) {
             console.error('[RT] Error conectando sala:', e);
             alert('Error conectando a la sala.');
         }
+    }
+
+    async _startQA() {
+        try {
+            const { QAPresenter } = await import('../../realtime/qa.js');
+            this._qaPresenter = new QAPresenter(this._roomId);
+
+            this._qaPresenter.onQuestionsUpdate = (questions) => {
+                this._qaQuestions = questions;
+                this._updateQABadge(questions);
+                this._renderQAList(questions);
+            };
+
+            this._qaPresenter.onViewerCountChange = (count) => {
+                this._updateViewerCountDisplay(count);
+            };
+
+            await this._qaPresenter.start();
+
+            const qaContainer = document.getElementById('btn-qa-container');
+            if (qaContainer) qaContainer.style.display = '';
+        } catch (e) {
+            console.warn('[RT] Q&A no disponible:', e);
+        }
+    }
+
+    _updateQABadge(questions) {
+        const pending = questions.filter(q => !q.answered).length;
+        const badge = document.getElementById('rt-qa-topbadge');
+        if (!badge) return;
+        if (pending > 0) {
+            badge.textContent = pending;
+            badge.style.display = 'flex';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
+    _escapeHtml(str) {
+        return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    _renderQAList(questions) {
+        const list = document.getElementById('qa-pres-list');
+        const label = document.getElementById('qa-pres-count-label');
+        if (!list) return;
+
+        const total = questions.length;
+        const pending = questions.filter(q => !q.answered).length;
+        if (label) {
+            label.textContent = total === 0
+                ? 'Sin preguntas aún'
+                : `${total} pregunta${total !== 1 ? 's' : ''} · ${pending} pendiente${pending !== 1 ? 's' : ''}`;
+        }
+
+        if (total === 0) {
+            list.innerHTML = '<div class="rt-qa-empty">Aún no hay preguntas</div>';
+            return;
+        }
+
+        list.innerHTML = questions.map(q => `
+            <div class="rt-qa-item ${q.answered ? 'rt-qa-answered' : ''}">
+                <div class="rt-qa-item-text">${this._escapeHtml(q.question)}</div>
+                <div class="rt-qa-item-footer">
+                    <span class="rt-qa-status" style="color:${q.answered ? '#16a34a' : '#94a3b8'};">
+                        <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">${q.answered ? 'check_circle' : 'schedule'}</span>
+                        ${q.answered ? 'Respondida' : 'Pendiente'}
+                    </span>
+                    ${!q.answered ? `<button class="rt-qa-respond-btn" data-id="${q.id}">Marcar respondida</button>` : ''}
+                </div>
+            </div>`).join('');
+
+        // Bindear botones de respuesta
+        list.querySelectorAll('.rt-qa-respond-btn').forEach(btn => {
+            btn.onclick = async () => {
+                btn.disabled = true;
+                btn.textContent = 'Guardando...';
+                await this._qaPresenter?.markAnswered(btn.dataset.id);
+            };
+        });
+    }
+
+    _openQAModal() {
+        this._renderQAList(this._qaQuestions);
+        this._open(this._modalQA);
+    }
+
+    _updateViewerCountDisplay(count) {
+        this._viewerCount = count;
+        const text = count === 0 ? 'Ninguno aún' : `${count} conectado${count !== 1 ? 's' : ''}`;
+        // Modal (solo si está abierto)
+        const modalEl = document.getElementById('sala-viewer-count');
+        if (modalEl) modalEl.textContent = text;
+        // Chip permanente
+        const chipCount = document.getElementById('rt-viewer-chip-count');
+        if (chipCount) chipCount.textContent = count;
     }
 
     async _stopRoom() {
@@ -284,6 +459,20 @@ export class RealtimeControls {
             await supabase.from('room_states').update({ state: { ...curState, active: false } }).eq('room_id', roomId);
             console.log('[RT] Sala marcada como inactiva en Supabase ✓');
         } catch (e) { console.warn('[RT] Error marcando sala inactiva:', e); }
+
+        // 4. Borrar todas las preguntas de la sala y detener Q&A
+        if (this._qaPresenter) {
+            await this._qaPresenter.deleteAllQuestions().catch(() => {});
+            this._qaPresenter.stop();
+            this._qaPresenter = null;
+        }
+        this._qaQuestions = [];
+        this._viewerCount = 0;
+        const qaContainer = document.getElementById('btn-qa-container');
+        if (qaContainer) qaContainer.style.display = 'none';
+        const qaBadge = document.getElementById('rt-qa-topbadge');
+        if (qaBadge) qaBadge.style.display = 'none';
+        this._close(this._modalQA);
 
         this._roomActive = false;
         this._roomId = null;
@@ -362,6 +551,7 @@ export class RealtimeControls {
         btn.classList.toggle('active', this._roomActive);
         dot.style.display = this._roomActive ? 'block' : 'none';
         if (micContainer) micContainer.style.display = this._roomActive ? '' : 'none';
+        if (this._viewerChip) this._viewerChip.style.display = this._roomActive ? 'flex' : 'none';
     }
 
     // ─── SNAPSHOT MODAL ───────────────────────────────────────
@@ -445,6 +635,11 @@ export class RealtimeControls {
         });
     }
 
+    _closeMobileMenu() {
+        const toggle = document.getElementById('menu-toggle');
+        if (toggle) toggle.checked = false;
+    }
+
     // ─── STYLES ──────────────────────────────────────────────
 
     _injectStyles() {
@@ -496,6 +691,22 @@ export class RealtimeControls {
 .rt-voice-btn:hover:not(:disabled){background:rgba(0,0,0,0.04)}
 .rt-voice-btn.active{background:rgba(var(--color-primary-rgb),0.1);color:var(--color-primary);border-color:rgba(var(--color-primary-rgb),0.25)}
 .rt-voice-btn:disabled{opacity:.5;cursor:not-allowed}
+.rt-viewers-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.06);margin-bottom:16px}
+#rt-viewer-chip{position:fixed;top:92px;right:20px;z-index:50;display:none;align-items:center;gap:6px;padding:5px 12px 5px 10px;border-radius:20px;background:rgba(255,255,255,0.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.35);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#1a1c1e;box-shadow:0 4px 16px rgba(0,0,0,0.07);pointer-events:none;animation:rt-chip-in .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes rt-chip-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.rt-qa-topbadge{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;border-radius:9px;background:var(--color-primary);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid rgba(255,255,255,0.85);pointer-events:none}
+.rt-qa-panel{max-height:80vh;display:flex;flex-direction:column;padding:28px 0 0}
+.rt-qa-pres-header{display:flex;align-items:center;gap:14px;padding:0 28px 16px;border-bottom:1px solid rgba(0,0,0,0.06);flex-shrink:0}
+.rt-qa-pres-list{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-height:120px;max-height:52vh}
+.rt-qa-empty{text-align:center;color:#94a3b8;font-family:'Inter',sans-serif;font-size:13px;padding:28px 0}
+.rt-qa-item{border-radius:12px;padding:12px 14px;background:#f8f9fb;border:1px solid rgba(0,0,0,0.06);transition:border-color .3s,background .3s}
+.rt-qa-item.rt-qa-answered{background:rgba(22,163,74,0.05);border-color:rgba(22,163,74,0.18)}
+.rt-qa-item-text{font-family:'Inter',sans-serif;font-size:13px;color:#1a1c1e;line-height:1.55;word-break:break-word;margin-bottom:8px}
+.rt-qa-item-footer{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.rt-qa-status{display:flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600}
+.rt-qa-respond-btn{padding:5px 14px;border-radius:8px;border:none;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;background:var(--color-primary);color:#fff;transition:opacity .2s;flex-shrink:0}
+.rt-qa-respond-btn:hover:not(:disabled){opacity:.85}
+.rt-qa-respond-btn:disabled{opacity:.5;cursor:not-allowed}
 `;
         document.head.appendChild(s);
     }

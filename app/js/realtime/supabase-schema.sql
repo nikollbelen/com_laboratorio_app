@@ -97,15 +97,42 @@ CREATE POLICY "snapshots_insert"
     WITH CHECK (true);
 
 -- ============================================================
--- HABILITAR REALTIME para room_states
+-- TABLA: room_questions
+-- Preguntas enviadas por los viewers durante una sala activa.
+-- Se eliminan en cascada cuando se borra la sala (o manualmente al cerrarla).
+-- ============================================================
+CREATE TABLE IF NOT EXISTS room_questions (
+    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    room_id     TEXT NOT NULL REFERENCES room_states(room_id) ON DELETE CASCADE,
+    question    TEXT NOT NULL,
+    viewer_id   TEXT NOT NULL,
+    answered    BOOLEAN NOT NULL DEFAULT false,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_room_questions_room
+    ON room_questions (room_id, created_at);
+
+-- RLS
+ALTER TABLE room_questions ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "room_questions_select" ON room_questions FOR SELECT USING (true);
+CREATE POLICY "room_questions_insert" ON room_questions FOR INSERT WITH CHECK (true);
+CREATE POLICY "room_questions_update" ON room_questions FOR UPDATE USING (true);
+CREATE POLICY "room_questions_delete" ON room_questions FOR DELETE USING (true);
+
+-- ============================================================
+-- HABILITAR REALTIME para room_states y room_questions
 -- Esto permite que Supabase Realtime envíe eventos postgres_changes
 -- ============================================================
 ALTER PUBLICATION supabase_realtime ADD TABLE room_states;
+ALTER PUBLICATION supabase_realtime ADD TABLE room_questions;
 
 -- ============================================================
 -- VERIFICACIÓN: Ejecutar después para confirmar
 -- ============================================================
 -- SELECT * FROM room_states;
 -- SELECT * FROM snapshots;
--- SELECT schemaname, tablename, policyname FROM pg_policies 
---     WHERE tablename IN ('room_states', 'snapshots');
+-- SELECT * FROM room_questions;
+-- SELECT schemaname, tablename, policyname FROM pg_policies
+--     WHERE tablename IN ('room_states', 'snapshots', 'room_questions');
