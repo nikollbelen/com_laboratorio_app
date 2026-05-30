@@ -83,26 +83,7 @@ export class RealtimeControls {
         const topbar = document.querySelector('.VistaPrincipal-root .fixed.top-8.right-8');
         if (topbar) topbar.insertBefore(this._btnContainer, topbar.firstChild);
 
-        // Inyectar botones también en el menú hamburguesa mobile
-        const mobileDropdown = document.querySelector('.VistaPrincipal-root header .absolute.top-full');
-        if (mobileDropdown) {
-            const sep = document.createElement('div');
-            sep.className = 'h-px bg-white/10 mx-2 my-1 rt-mobile-sep';
-
-            const salaBtn = document.createElement('button');
-            salaBtn.id = 'btn-sala-mobile';
-            salaBtn.className = 'flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm w-full';
-            salaBtn.innerHTML = '<span class="material-symbols-outlined text-xl text-on-surface-dark">cast</span><span class="font-medium">Sala</span>';
-
-            const snapBtn = document.createElement('button');
-            snapBtn.id = 'btn-snapshot-mobile';
-            snapBtn.className = 'flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm w-full';
-            snapBtn.innerHTML = '<span class="material-symbols-outlined text-xl text-on-surface-dark">photo_camera</span><span class="font-medium">Snapshot</span>';
-
-            mobileDropdown.insertBefore(sep, mobileDropdown.firstChild);
-            mobileDropdown.insertBefore(snapBtn, mobileDropdown.firstChild);
-            mobileDropdown.insertBefore(salaBtn, mobileDropdown.firstChild);
-        }
+        this._injectMobileButtons();
 
         this._viewerChip = document.createElement('div');
         this._viewerChip.id = 'rt-viewer-chip';
@@ -134,6 +115,36 @@ export class RealtimeControls {
             if (e.target.closest('#qa-close') || (e.target.closest('.rt-backdrop') && this._modalQA.classList.contains('visible'))) this._close(this._modalQA);
         });
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { this._close(this._modalSala); this._close(this._modalSnap); this._close(this._modalQA); } });
+
+        // VistaPrincipal re-renderiza su DOM al cambiar idioma; re-inyectar botones mobile
+        window.addEventListener('lang:change', () => {
+            requestAnimationFrame(() => this._injectMobileButtons());
+        });
+    }
+
+    _injectMobileButtons() {
+        // Evitar duplicados
+        if (document.getElementById('btn-sala-mobile')) return;
+
+        const mobileDropdown = document.querySelector('.VistaPrincipal-root header .absolute.top-full');
+        if (!mobileDropdown) return;
+
+        const sep = document.createElement('div');
+        sep.className = 'h-px bg-white/10 mx-2 my-1 rt-mobile-sep';
+
+        const salaBtn = document.createElement('button');
+        salaBtn.id = 'btn-sala-mobile';
+        salaBtn.className = 'flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm w-full';
+        salaBtn.innerHTML = '<span class="material-symbols-outlined text-xl text-on-surface-dark">cast</span><span class="font-medium">Sala</span>';
+
+        const snapBtn = document.createElement('button');
+        snapBtn.id = 'btn-snapshot-mobile';
+        snapBtn.className = 'flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm w-full';
+        snapBtn.innerHTML = '<span class="material-symbols-outlined text-xl text-on-surface-dark">photo_camera</span><span class="font-medium">Snapshot</span>';
+
+        mobileDropdown.insertBefore(sep, mobileDropdown.firstChild);
+        mobileDropdown.insertBefore(snapBtn, mobileDropdown.firstChild);
+        mobileDropdown.insertBefore(salaBtn, mobileDropdown.firstChild);
     }
 
     _open(m) { requestAnimationFrame(() => m.classList.add('visible')); }

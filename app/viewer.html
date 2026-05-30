@@ -428,7 +428,8 @@
     }
 
     .qa-sheet-close {
-      width: 32px; height: 32px;
+      /* Mínimo 44px para target táctil en móvil */
+      width: 44px; height: 44px;
       border-radius: 50%;
       border: none;
       background: transparent;
@@ -524,7 +525,7 @@
       border-radius: 12px;
       padding: 10px 14px;
       font-family: 'Inter', sans-serif;
-      font-size: 14px;
+      font-size: 16px; /* 16px mínimo para que iOS Safari no haga zoom al enfocar */
       color: #1a1c1e;
       background: #f8f9fb;
       outline: none;
@@ -980,14 +981,28 @@
         const _qaNotifBadge= document.getElementById('qa-notif-badge');
         const _qaCharCount = document.getElementById('qa-char-count');
 
+        const _isTouchDevice = () => window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
         function _openQASheet() {
           _qaSheet.classList.add('open');
           _qaBackdrop.style.display = 'block';
-          setTimeout(() => _qaInput.focus(), 60);
+          // En móvil NO auto-enfocar: abrir el teclado inmediatamente es abrupto
+          if (!_isTouchDevice()) setTimeout(() => _qaInput.focus(), 60);
         }
         function _closeQASheet() {
           _qaSheet.classList.remove('open');
           _qaBackdrop.style.display = 'none';
+          _qaSheet.style.height = ''; // Resetear altura dinámica del teclado
+        }
+
+        // ── Ajuste de altura por teclado virtual (iOS Safari) ──
+        // En iOS la 'vh' no cambia al abrir el teclado; visualViewport sí.
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener('resize', () => {
+            if (!_qaSheet.classList.contains('open')) return;
+            const visH = window.visualViewport.height;
+            _qaSheet.style.height = Math.min(visH * 0.88, 540) + 'px';
+          });
         }
 
         document.getElementById('qa-open-btn').addEventListener('click', _openQASheet);
@@ -1000,9 +1015,10 @@
           _qaSendBtn.disabled = len === 0;
         });
 
-        // Enviar con Enter (sin Shift) en desktop
+        // Enviar con Enter (sin Shift) solo en desktop
+        // En móvil el Enter del teclado virtual inserta salto de línea (comportamiento esperado)
         _qaInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' && !e.shiftKey && !_qaSendBtn.disabled) {
+          if (e.key === 'Enter' && !e.shiftKey && !_qaSendBtn.disabled && !_isTouchDevice()) {
             e.preventDefault();
             _qaSendBtn.click();
           }
