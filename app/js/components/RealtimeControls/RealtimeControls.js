@@ -781,6 +781,7 @@ export class RealtimeControls {
 .rt-qa-respond-btn{padding:5px 14px;border-radius:8px;border:none;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;background:var(--color-primary);color:#fff;transition:opacity .2s;flex-shrink:0}
 .rt-qa-respond-btn:hover:not(:disabled){opacity:.85}
 .rt-qa-respond-btn:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:767px){#rt-viewer-chip{top:28px;right:auto;left:16px;}}
 `;
         document.head.appendChild(s);
     }
