@@ -18,7 +18,67 @@ export class RealtimeControls {
         this._restoreRoom();
     }
 
-    setLanguage(lang) { this.lang = lang; }
+    static get translations() {
+        return {
+            es: {
+                sala: 'Sala', salaTitle: 'Sala en vivo',
+                mic: 'Micrófono', micTitle: 'Micrófono en vivo',
+                preguntas: 'Preguntas', preguntasTitle: 'Preguntas de alumnos',
+                snapshot: 'Snapshot',
+                // Modal Sala
+                salaModalTitle: 'Sala en vivo',
+                salaModalDesc: 'Transmite tu laboratorio en tiempo real a tus alumnos.',
+                salaNew: 'Crear nueva sala', salaExisting: 'Ya tengo mi sala',
+                // Modal Snapshot
+                snapModalTitle: '¿Tomar un snapshot?',
+                snapModalDesc: 'Se guardará la vista actual del modelado. Podrás compartir el enlace con tus alumnos.',
+                snapCancel: 'Cancelar', snapTake: 'Tomar snapshot',
+                snapSaving: 'Guardando...', snapDone: '¡Snapshot guardado!',
+                snapDoneDesc: 'Comparte este enlace con tus alumnos para que vean el snapshot.'
+            },
+            en: {
+                sala: 'Room', salaTitle: 'Live room',
+                mic: 'Microphone', micTitle: 'Live microphone',
+                preguntas: 'Questions', preguntasTitle: 'Student questions',
+                snapshot: 'Snapshot',
+                // Modal Sala
+                salaModalTitle: 'Live room',
+                salaModalDesc: 'Stream your lab in real time to your students.',
+                salaNew: 'Create new room', salaExisting: 'I already have my room',
+                // Modal Snapshot
+                snapModalTitle: 'Take a snapshot?',
+                snapModalDesc: 'The current 3D view will be saved. You can share the link with your students.',
+                snapCancel: 'Cancel', snapTake: 'Take snapshot',
+                snapSaving: 'Saving...', snapDone: 'Snapshot saved!',
+                snapDoneDesc: 'Share this link with your students so they can view the snapshot.'
+            }
+        };
+    }
+
+    setLanguage(lang) {
+        this.lang = lang;
+        this._updateTopbarLabels();
+    }
+
+    _updateTopbarLabels() {
+        const t = RealtimeControls.translations[this.lang] || RealtimeControls.translations.es;
+        const c = this._btnContainer;
+        if (!c) return;
+        const tooltips = c.querySelectorAll('.realtime-btn-tooltip');
+        const [tSala, tMic, tQA, tSnap] = tooltips;
+        if (tSala) tSala.textContent = t.sala;
+        if (tMic)  tMic.textContent  = t.mic;
+        if (tQA)   tQA.textContent   = t.preguntas;
+        if (tSnap) tSnap.textContent = t.snapshot;
+        const btnSala = c.querySelector('#btn-sala');
+        const btnMic  = c.querySelector('#btn-mic');
+        const btnQA   = c.querySelector('#btn-qa');
+        const btnSnap = c.querySelector('#btn-snapshot');
+        if (btnSala) btnSala.title = t.salaTitle;
+        if (btnMic)  btnMic.title  = t.micTitle;
+        if (btnQA)   btnQA.title   = t.preguntasTitle;
+        if (btnSnap) btnSnap.title = t.snapshot;
+    }
 
     _injectHTML() {
         this._btnContainer = document.createElement('div');
@@ -118,10 +178,28 @@ export class RealtimeControls {
         });
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { this._close(this._modalSala); this._close(this._modalSnap); this._close(this._modalQA); } });
 
-        // VistaPrincipal re-renderiza su DOM al cambiar idioma; re-inyectar botones mobile
-        window.addEventListener('lang:change', () => {
-            requestAnimationFrame(() => this._injectMobileButtons());
-        });
+        // Actualizar idioma cuando cambia
+        window.addEventListener('lang:change', (e) => { this.lang = e.detail?.lang || this.lang; });
+
+        // MutationObserver: detecta cualquier re-render de VistaPrincipal (idioma, ayuda, equipo, etc.)
+        // y re-inyecta los botones del topbar y del menú móvil automáticamente
+        const vpContainer = document.getElementById('vista-principal-container');
+        if (vpContainer) {
+            new MutationObserver(() => {
+                requestAnimationFrame(() => {
+                    this._reinjectTopbarButtons();
+                    this._injectMobileButtons();
+                });
+            }).observe(vpContainer, { childList: true });
+        }
+    }
+
+    _reinjectTopbarButtons() {
+        if (document.getElementById('realtime-controls')) return;
+        const topbar = document.querySelector('.VistaPrincipal-root .fixed.top-8.right-8');
+        if (topbar) topbar.insertBefore(this._btnContainer, topbar.firstChild);
+        this._updateTopbarLabels();
+        this._updateBtn();
     }
 
     _injectMobileButtons() {
@@ -134,27 +212,29 @@ export class RealtimeControls {
         const sep = document.createElement('div');
         sep.className = 'h-px bg-white/10 mx-2 my-1 rt-mobile-sep';
 
+        const t = RealtimeControls.translations[this.lang] || RealtimeControls.translations.es;
+
         const salaBtn = document.createElement('button');
         salaBtn.id = 'btn-sala-mobile';
         salaBtn.className = 'flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm w-full';
-        salaBtn.innerHTML = '<span class="material-symbols-outlined text-xl text-on-surface-dark">cast</span><span class="font-medium">Sala</span>';
+        salaBtn.innerHTML = `<span class="material-symbols-outlined text-xl text-on-surface-dark">cast</span><span class="font-medium">${t.sala}</span>`;
 
         const micBtn = document.createElement('button');
         micBtn.id = 'btn-mic-mobile';
         micBtn.className = 'flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm w-full';
-        micBtn.innerHTML = '<span class="material-symbols-outlined text-xl text-on-surface-dark" id="btn-mic-icon-mobile">mic_off</span><span class="font-medium">Micrófono</span>';
+        micBtn.innerHTML = `<span class="material-symbols-outlined text-xl text-on-surface-dark" id="btn-mic-icon-mobile">mic_off</span><span class="font-medium">${t.mic}</span>`;
         micBtn.style.display = 'none';
 
         const qaBtn = document.createElement('button');
         qaBtn.id = 'btn-qa-mobile';
         qaBtn.className = 'flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm w-full';
-        qaBtn.innerHTML = '<span class="material-symbols-outlined text-xl text-on-surface-dark">forum</span><span class="font-medium">Preguntas</span>';
+        qaBtn.innerHTML = `<span class="material-symbols-outlined text-xl text-on-surface-dark">forum</span><span class="font-medium">${t.preguntas}</span>`;
         qaBtn.style.display = 'none';
 
         const snapBtn = document.createElement('button');
         snapBtn.id = 'btn-snapshot-mobile';
         snapBtn.className = 'flex items-center gap-3 px-4 py-2 rounded-xl transition-all VistaPrincipal-menu-item-hover text-sm w-full';
-        snapBtn.innerHTML = '<span class="material-symbols-outlined text-xl text-on-surface-dark">photo_camera</span><span class="font-medium">Snapshot</span>';
+        snapBtn.innerHTML = `<span class="material-symbols-outlined text-xl text-on-surface-dark">photo_camera</span><span class="font-medium">${t.snapshot}</span>`;
 
         mobileDropdown.insertBefore(sep, mobileDropdown.firstChild);
         mobileDropdown.insertBefore(snapBtn, mobileDropdown.firstChild);
@@ -185,16 +265,17 @@ export class RealtimeControls {
     }
 
     _showSalaMenu(c) {
+        const t = RealtimeControls.translations[this.lang] || RealtimeControls.translations.es;
         c.innerHTML = `
             <div class="rt-icon"><span class="material-symbols-outlined">cast</span></div>
-            <h3 class="rt-title">Sala en vivo</h3>
-            <p class="rt-desc">Transmite tu laboratorio en tiempo real a tus alumnos.</p>
+            <h3 class="rt-title">${t.salaModalTitle}</h3>
+            <p class="rt-desc">${t.salaModalDesc}</p>
             <div class="rt-actions" style="flex-direction:column;gap:10px;">
                 <button class="rt-btn-primary" id="sala-new-btn" style="width:100%;justify-content:center;display:flex;align-items:center;gap:8px;">
-                    <span class="material-symbols-outlined" style="font-size:18px;">add_circle</span> Crear nueva sala
+                    <span class="material-symbols-outlined" style="font-size:18px;">add_circle</span> ${t.salaNew}
                 </button>
                 <button class="rt-btn-secondary" id="sala-existing-btn" style="width:100%;justify-content:center;display:flex;align-items:center;gap:8px;">
-                    <span class="material-symbols-outlined" style="font-size:18px;">login</span> Ya tengo mi sala
+                    <span class="material-symbols-outlined" style="font-size:18px;">login</span> ${t.salaExisting}
                 </button>
             </div>`;
         setTimeout(() => {
@@ -631,14 +712,15 @@ export class RealtimeControls {
     // ─── SNAPSHOT MODAL ───────────────────────────────────────
 
     _openSnapModal() {
+        const t = RealtimeControls.translations[this.lang] || RealtimeControls.translations.es;
         const c = document.getElementById('snap-content');
         c.innerHTML = `
             <div class="rt-icon"><span class="material-symbols-outlined">photo_camera</span></div>
-            <h3 class="rt-title">¿Tomar un snapshot?</h3>
-            <p class="rt-desc">Se guardará la vista actual del modelado. Podrás compartir el enlace con tus alumnos.</p>
+            <h3 class="rt-title">${t.snapModalTitle}</h3>
+            <p class="rt-desc">${t.snapModalDesc}</p>
             <div class="rt-actions">
-                <button class="rt-btn-secondary" id="snap-cancel">Cancelar</button>
-                <button class="rt-btn-primary" id="snap-take">Tomar snapshot</button>
+                <button class="rt-btn-secondary" id="snap-cancel">${t.snapCancel}</button>
+                <button class="rt-btn-primary" id="snap-take">${t.snapTake}</button>
             </div>`;
         this._open(this._modalSnap);
         setTimeout(() => {
@@ -648,9 +730,10 @@ export class RealtimeControls {
     }
 
     async _takeSnap() {
+        const t = RealtimeControls.translations[this.lang] || RealtimeControls.translations.es;
         const c = document.getElementById('snap-content');
         try {
-            c.innerHTML = `<div class="rt-icon"><span class="material-symbols-outlined">hourglass_top</span></div><h3 class="rt-title">Guardando...</h3>`;
+            c.innerHTML = `<div class="rt-icon"><span class="material-symbols-outlined">hourglass_top</span></div><h3 class="rt-title">${t.snapSaving}</h3>`;
             const engine = window.Lab.engine;
             const cam = engine.instance.camera;
             const ctrl = engine.instance.controls;
@@ -678,8 +761,8 @@ export class RealtimeControls {
             const url = this._buildSnapshotUrl(snapId);
             c.innerHTML = `
                 <div class="rt-icon" style="background:rgba(22,163,74,0.12);color:#16a34a;"><span class="material-symbols-outlined">check_circle</span></div>
-                <h3 class="rt-title">¡Snapshot guardado!</h3>
-                <p class="rt-desc">Comparte este enlace con tus alumnos para que vean el snapshot.</p>
+                <h3 class="rt-title">${t.snapDone}</h3>
+                <p class="rt-desc">${t.snapDoneDesc}</p>
                 <div class="rt-link-box" id="snap-copy" title="Clic para copiar"><code>${url}</code><span class="material-symbols-outlined rt-copy-icon">content_copy</span></div>
                 <div class="rt-toast" id="snap-copied">✓ Enlace copiado</div>`;
             setTimeout(() => { document.getElementById('snap-copy').onclick = () => this._copy(url, 'snap-copied'); }, 30);

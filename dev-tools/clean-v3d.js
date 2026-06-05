@@ -25,15 +25,67 @@ function cleanJS() {
     if (!fs.existsSync(JS_FILE)) return;
     let content = fs.readFileSync(JS_FILE, 'utf8');
 
-    const bannerRegex = /([a-zA-Z0-9_$]+)\.innerHTML\s*=\s*[`"'].*?MADE WITH VERGE3D TRIAL.*?[`"']\s*,\s*([a-zA-Z0-9_$]+)\.appendChild\(\1\)\s*,\s*setTimeout\(\s*\(function\(\)\{.*?\1\.textContent\)\s*\|\|\s*([a-zA-Z0-9_$]+)\.dispose\(\)\}\s*\)\s*,1e3\)/;
-    if (bannerRegex.test(content)) {
-        content = content.replace(bannerRegex, (match, div, parent, app) => {
-            return `${div}.innerHTML = ""; ${parent}.appendChild(${div}); setTimeout(() => !${parent}.contains(${div}) && ${app}.dispose(), 1000)`;
-        });
+    if (!content.includes('MADE WITH VERGE3D')) {
+        console.log('v3d.js: banner not found (already clean).');
+        return;
+    }
+
+    let patched = false;
+
+    // Strategy 1: two-pass full-block replacement.
+    // How the DRM works: banner div is appended to the app container; after 1s, if the div
+    // is still in the DOM AND its textContent hashes to the expected value, dispose() is NOT
+    // called. If the div is removed OR the text is altered (hash mismatch), dispose() runs.
+    // Fix: set innerHTML="" so textContent="" → hash never matches → dispose() not called.
+    const divMatch = content.match(/([a-zA-Z0-9_$]+)\.innerHTML\s*=\s*`[^`]*MADE WITH VERGE3D[^`]*`/);
+    if (divMatch) {
+        const origDiv = divMatch[1];
+        const esc = origDiv.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const blockRE = new RegExp(
+            esc + '\\.innerHTML\\s*=\\s*`[^`]*`' +
+            '\\s*,\\s*([a-zA-Z0-9_$]+)\\.appendChild\\(' + esc + '\\)' +
+            '\\s*,\\s*setTimeout\\s*\\(function\\s*\\(\\)\\s*\\{' +
+            '[^}]*([a-zA-Z0-9_$]+)\\.dispose\\(\\)[^}]*\\}\\s*,1e3\\)'
+        );
+        const bm = content.match(blockRE);
+        if (bm) {
+            const [, parent, app] = bm;
+            content = content.replace(blockRE,
+                `${origDiv}.innerHTML="",${parent}.appendChild(${origDiv}),` +
+                `setTimeout(function(){!${parent}.contains(${origDiv})&&${app}.dispose()},1e3)`
+            );
+            patched = true;
+            console.log('v3d.js cleaned (strategy 1: full block).');
+        }
+    }
+
+    // Strategy 2: neutralize the DRM setTimeout entirely.
+    // Matches: setTimeout(function(){A.contains(B)&&HASH==fn(B.textContent)||C.dispose()},1e3)
+    if (!patched) {
+        const drmTimer = /setTimeout\s*\(function\s*\(\)\s*\{[^}]*\.contains\([^)]*\)\s*&&[^}]*\.dispose\s*\(\)[^}]*\}\s*,1e3\)/;
+        if (drmTimer.test(content)) {
+            content = content.replace(drmTimer, 'setTimeout(function(){},1e3)');
+            patched = true;
+            console.log('v3d.js cleaned (strategy 2: DRM timer neutralized).');
+        }
+    }
+
+    // Strategy 3: last resort — clear innerHTML so textContent hash check always fails.
+    if (!patched) {
+        const bannerInner = /([a-zA-Z0-9_$]+)\.innerHTML\s*=\s*`[^`]*MADE WITH VERGE3D[^`]*`/;
+        if (bannerInner.test(content)) {
+            content = content.replace(bannerInner, (_, v) => `${v}.innerHTML=""`);
+            patched = true;
+            console.log('v3d.js cleaned (strategy 3: innerHTML cleared).');
+        }
+    }
+
+    if (!patched) {
+        console.warn('WARNING: MADE WITH VERGE3D found but no strategy matched. Inspect v3d.js manually.');
+        return;
     }
 
     fs.writeFileSync(JS_FILE, content);
-    console.log('v3d.js cleaned.');
 }
 
 function activateXZ() {
