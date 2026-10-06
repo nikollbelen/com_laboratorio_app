@@ -1,22 +1,111 @@
-# 🏗️ Ecosistema Plantilla Laboratorio 3D
+# Laboratorio 3D — Molino SAG
 
-Este proyecto es un motor de navegación 3D industrial basado en **Verge3D**. Permite la creación de laboratorios interactivos mediante una configuración basada en datos (`info.json`).
+Este proyecto es un laboratorio 3D industrial sobre un **Molino SAG**, construido con **Verge3D**. Permite capacitación técnica mediante navegación guiada, despiece, animaciones de funcionamiento, audios, etiquetas, herramientas de inspección visual y modo de clase en vivo. La configuración principal vive en `app/info.json`.
+
+## Funcionalidades del laboratorio
+
+- Visualización interactiva del Molino SAG en 3D.
+- Vista libre del modelo.
+- Recorrido guiado por componentes.
+- Cámaras automáticas por paso.
+- Etiquetas y flechas técnicas sobre el modelo.
+- Subtítulos por componente.
+- Audios narrados por paso.
+- Cambio de idioma soportado por el motor.
+- Botón de sonido/mute.
+- Resaltado de componentes.
+- Ocultar/mostrar mallas según el paso.
+- Modo explosión/despiece del molino.
+- Animación de funcionamiento con mineral, bolas, flechas y material interno.
+- Modo rayos X / clipping para inspección interna.
+- Efecto cristal/glass.
+- Modal de ayuda.
+- Modal de objetivos.
+- Modal de equipo/EPP soportado.
+- Preloader personalizado.
+- Menú lateral desktop y menú móvil.
+- Botón de retroceso en navegación.
+- Debug de cámara con panel de movimiento y logs copiables.
+- Debug de resaltados y clipping.
+- Editor visual para modificar `info.json`.
+- Escaneo de mallas y animaciones desde GLTF.
+- Sincronización de audios al reordenar pasos.
+- Generación de locuciones con ElevenLabs.
+- Build de producción con copiado selectivo de assets.
+
+### Componentes documentados en el recorrido
+
+- Cajón de alimentación
+- Cojinete de alimentación
+- Cuerpo del molino
+- Cojinete de descarga
+- Trommel
+
+Además, los assets incluyen sistemas y componentes asociados al molino, como accionamiento, frenos, lubricación, liners, bolas, mineral y material de proceso.
+
+## Salas en vivo, snapshots y Q&A
+
+El laboratorio incluye una capa colaborativa para clases o presentaciones:
+
+- Crear una sala con nombre personalizado.
+- Reactivar una sala existente.
+- Compartir enlace `viewer.html?room=<sala>` con alumnos.
+- Viewer de alumnos en modo solo lectura.
+- Verificación de sala activa antes de cargar el modelo.
+- Pantalla de sala cerrada.
+- Sincronización en tiempo real de cámara, pasos, reset y hover/resaltados.
+- Ejecución local de animaciones en el viewer para mantener fluidez.
+- Conteo de alumnos conectados por presencia.
+- Voz en vivo del presentador con WebRTC.
+- Botón para que el alumno escuche la voz.
+- Preguntas de alumnos en tiempo real.
+- Panel del presentador para ver y marcar preguntas como respondidas.
+- Notificaciones de preguntas pendientes.
+- Snapshots compartibles por URL.
+- Snapshot guarda cámara, paso actual, idioma y estado visual.
+- Modo snapshot-only con `viewer.html?snapshot=<id>`.
+
+## Requisitos
+
+- Node.js 18+
+- npm 9+
+- Navegador moderno con soporte WebGL
+- Servidor estático local para abrir la app como sitio web
+- Proyecto de Supabase para salas, snapshots y Q&A
+- ElevenLabs API Key opcional para generar locuciones
 
 ## 🚀 Inicio Rápido
 
-1. **Instalar dependencias**:
+1. **Clonar el repositorio**:
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   cd com_laboratorio_app
+   ```
+
+2. **Instalar dependencias**:
    ```bash
    npm install
    ```
 
-2. **Lanzar el Servidor de Desarrollo**:
+3. **Lanzar el servidor de edición**:
    Este servidor es necesario para guardar cambios desde el Editor y gestionar el inventario de activos.
    ```bash
    npm run server
    ```
 
-3. **Abrir el Editor**:
+4. **Abrir el laboratorio**:
+   Sirve la carpeta `app/` con un servidor estático o Live Server y abre:
+   ```text
+   app/index.html
+   ```
+
+5. **Abrir el Editor**:
    Navega a la carpeta `/dev-tools/editor.html` en tu navegador.
+
+6. **Usar salas o snapshots**:
+   - Configura Supabase en los `<meta>` tags de `app/index.html` y `app/viewer.html`, o inyecta `window.__SUPABASE_CONFIG__`.
+   - Ejecuta `app/js/realtime/supabase-schema.sql` en Supabase.
+   - Usa los botones **Sala**, **Micrófono**, **Preguntas** y **Snapshot** desde la app.
 
 ---
 
@@ -31,6 +120,7 @@ Este proyecto es un motor de navegación 3D industrial basado en **Verge3D**. Pe
 | `npm run build:dry` | Simula el build mostrando qué se copiaría y qué se omitiría, sin escribir nada. |
 | `npm run v3d-clean` | **Limpieza de activos**: Elimina marcas de agua, banners de trial y logs de Verge3D de los archivos del modelo. |
 | `npm run storybook` | Abre el Storybook de componentes en el puerto 6006. |
+| `npm run elevenlabs` | Genera audios desde las descripciones de `info.json` usando ElevenLabs. |
 
 ### 🏗️ Build de Producción
 
@@ -93,13 +183,39 @@ El servidor expone los siguientes endpoints para facilitar la integración con e
 
 - `/app`: Contiene el laboratorio 3D y la lógica del motor.
   - `info.json`: **Single Source of Truth**. Toda la navegación se define aquí.
+  - `index.html`: aplicación principal para el presentador.
+  - `viewer.html`: vista para alumnos, salas y snapshots.
   - `verge3d_assets/`: Archivos fuente del molino (.gltf, .bin, .js).
+  - `js/realtime/`: sincronización con Supabase, voz WebRTC, Q&A y snapshots.
 - `/dev-tools`: Herramientas de edición y automatización.
   - `editor.html` + `editor-ui.js`: Interfaz visual para modificar el `info.json`.
   - `save-server.js`: Backend Node.js para persistencia de datos.
   - `scan-assets.js`: Escáner de metadatos GLTF.
   - `build-app.js`: Empaquetador inteligente de producción.
 - `/build`: Carpeta generada por `npm run build` (no se sube a Git).
+
+## Configuración de Supabase para colaboración
+
+Las funciones de sala, snapshots y preguntas usan Supabase. El cliente se configura desde:
+
+- `<meta name="supabase-url">`
+- `<meta name="supabase-anon-key">`
+
+en `app/index.html` y `app/viewer.html`, o mediante `window.__SUPABASE_CONFIG__` antes de importar el módulo realtime.
+
+Ejecuta este archivo en el SQL Editor de Supabase:
+
+```text
+app/js/realtime/supabase-schema.sql
+```
+
+Este script crea:
+
+- `room_states`: estado actual de cada sala.
+- `snapshots`: capturas compartibles de la escena.
+- `room_questions`: preguntas de alumnos.
+- Políticas RLS básicas.
+- Publicación realtime para las tablas necesarias.
 
 ---
 

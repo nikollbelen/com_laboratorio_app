@@ -116,32 +116,106 @@ const server = http.createServer((req, res) => {
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', async () => {
             try {
-                const { text, fileName, extraFileNames } = JSON.parse(body);
+                const { text, lang = 'es', fileName, extraFileNames } = JSON.parse(body);
                 if (!text || !fileName) throw new Error('Faltan parámetros (text, fileName)');
 
-                // Importación dinámica para soporte de ES Modules en CommonJS
                 const { TTSService } = await import('./services/TTSService.mjs');
                 const tts = new TTSService();
-                
-                const outputDir = path.join(__dirname, '../app/audios');
-                const filePath = await tts.generateAudio(text, outputDir, fileName);
 
-                // Si hay nombres de archivo extra (porque el texto se repite), los clonamos
-                if (extraFileNames && Array.isArray(extraFileNames)) {
+                const outputDir = path.join(__dirname, `../app/audios/${lang}`);
+                if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+
+                const filePath = await tts.generateAudio(text, outputDir, fileName, lang);
+
+                if (Array.isArray(extraFileNames)) {
                     extraFileNames.forEach(extraName => {
                         const targetPath = path.join(outputDir, `${extraName}.mp3`);
                         fs.copyFileSync(filePath, targetPath);
-                        console.log(`[TTS] Clonado automático a: ${extraName}.mp3`);
+                        console.log(`[TTS] Clonado: ${extraName}.mp3 (${lang})`);
                     });
                 }
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ 
-                    status: 'success', 
-                    path: `audios/${fileName}.mp3` 
-                }));
+                res.end(JSON.stringify({ status: 'success', path: `audios/${lang}/${fileName}.mp3` }));
             } catch (e) {
                 console.error('[TTS Error]', e.message);
+                res.writeHead(500);
+                res.end(JSON.stringify({ status: 'error', message: e.message }));
+            }
+        });
+    }
+    // --- ENDPOINT: GUARDAR AUDIO GENERADO EN EL BROWSER (Puter AI) ---
+    else if (req.method === 'POST' && url === '/save-audio') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            try {
+                const { lang = 'es', fileName, audioBase64, extraFileNames } = JSON.parse(body);
+                if (!fileName || !audioBase64) throw new Error('Faltan parámetros (fileName, audioBase64)');
+
+                const outputDir = path.join(__dirname, `../app/audios/${lang}`);
+                if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+
+                const buffer = Buffer.from(audioBase64, 'base64');
+                const filePath = path.join(outputDir, `${fileName}.mp3`);
+                fs.writeFileSync(filePath, buffer);
+                console.log(`[Puter TTS] Audio guardado: audios/${lang}/${fileName}.mp3`);
+
+                if (Array.isArray(extraFileNames)) {
+                    extraFileNames.forEach(extraName => {
+                        const targetPath = path.join(outputDir, `${extraName}.mp3`);
+                        fs.copyFileSync(filePath, targetPath);
+                        console.log(`[Puter TTS] Clonado: ${extraName}.mp3 (${lang})`);
+                    });
+                }
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'success', path: `audios/${lang}/${fileName}.mp3` }));
+            } catch (e) {
+                console.error('[Save Audio Error]', e.message);
+                res.writeHead(500);
+                res.end(JSON.stringify({ status: 'error', message: e.message }));
+            }
+        });
+    }
+    // --- ENDPOINT: GUARDAR MÚLTIPLES AUDIOS EN BATCH (Puter AI) ---
+    // Recibe todos los blobs ya generados en el browser y los escribe de una vez,
+    // para que el live-reload solo dispare una recarga en lugar de una por idioma.
+    else if (req.method === 'POST' && url === '/save-audios-batch') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            try {
+                const { audios } = JSON.parse(body);
+                if (!Array.isArray(audios) || audios.length === 0) throw new Error('Falta el array "audios"');
+
+                const saved = [];
+                for (const { lang = 'es', fileName, audioBase64, extraFileNames } of audios) {
+                    if (!fileName || !audioBase64) throw new Error('Faltan parámetros (fileName, audioBase64)');
+
+                    const outputDir = path.join(__dirname, `../app/audios/${lang}`);
+                    if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+
+                    const buffer = Buffer.from(audioBase64, 'base64');
+                    const filePath = path.join(outputDir, `${fileName}.mp3`);
+                    fs.writeFileSync(filePath, buffer);
+                    console.log(`[Puter Batch] Guardado: audios/${lang}/${fileName}.mp3`);
+                    saved.push(`audios/${lang}/${fileName}.mp3`);
+
+                    if (Array.isArray(extraFileNames)) {
+                        extraFileNames.forEach(extraName => {
+                            const targetPath = path.join(outputDir, `${extraName}.mp3`);
+                            fs.copyFileSync(filePath, targetPath);
+                            console.log(`[Puter Batch] Clonado: ${extraName}.mp3 (${lang})`);
+                            saved.push(`audios/${lang}/${extraName}.mp3`);
+                        });
+                    }
+                }
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'success', saved }));
+            } catch (e) {
+                console.error('[Save Batch Error]', e.message);
                 res.writeHead(500);
                 res.end(JSON.stringify({ status: 'error', message: e.message }));
             }

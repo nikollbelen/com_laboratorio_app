@@ -346,6 +346,7 @@ window.openModal = function (nodeData) {
     } else {
         rootFields.style.display = 'none'; stepFields.style.display = 'block';
         document.getElementById('inpNombre').value = nodeData.ESdescription || '';
+        document.getElementById('inpNombreEN').value = nodeData.ENdescription || '';
         const inpId = document.getElementById('inpEtiqueta');
         inpId.value = nodeData.id || '';
         inpId.disabled = true; // Bloquear ID en sub-pasos
@@ -379,7 +380,6 @@ window.openModal = function (nodeData) {
         const audioPath = `audios/${audioId}.mp3`;
         document.getElementById('inpAudioPath').value = audioPath;
         document.getElementById('tts-status').innerText = '';
-        document.getElementById('btnPlayTTS').disabled = false;
     }
 
     // Inicializar modos de cámara (Detectar si es coordenada o nombre de objeto)
@@ -425,6 +425,7 @@ window.saveNodeChanges = async function () {
         else delete selectedNode.epp;
     } else {
         selectedNode.ESdescription = document.getElementById('inpNombre').value; selectedNode.name = selectedNode.ESdescription;
+        selectedNode.ENdescription = document.getElementById('inpNombreEN').value;
         selectedNode.id = document.getElementById('inpEtiqueta').value;
         selectedNode.camara = document.getElementById('inpPosicion').value; selectedNode.camaraDireccion = document.getElementById('inpDireccion').value;
 
@@ -583,108 +584,272 @@ document.getElementById('btn-fit').onclick = () => {
     d3.select("svg").transition().duration(750).call(zoomBehavior.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
 };
 
-// --- FUNCIONES TTS (ElevenLabs) ---
+// --- FUNCIONES TTS (ElevenLabs / Puter AI) ---
 
-window.confirmAndRegenerateTTS = async function() {
-    const text = document.getElementById('inpNombre').value.trim();
-    if (!text) {
-        alert("El nombre no puede estar vacío.");
-        return;
-    }
-    
+function getSelectedTTSProvider() {
+    const sel = document.getElementById('selTTSProvider');
+    return sel ? sel.value : 'elevenlabs';
+}
+
+window.confirmAndRegenerateTTS = async function(onlyLang = null) {
     if (!selectedNode) return;
 
-    // Buscar otros pasos que tengan el mismo texto para avisar al usuario
-    const duplicateIds = [];
-    function searchDuplicates(nodes) {
+    const textES = document.getElementById('inpNombre').value.trim();
+    const textEN = document.getElementById('inpNombreEN').value.trim();
+    const provider = getSelectedTTSProvider();
+
+    const isEtiqueta = document.getElementById('chkEsEtiqueta').checked;
+    const subtitleES = isEtiqueta ? document.getElementById('inpSubtitleES').value.trim() : '';
+    const subtitleEN = isEtiqueta ? document.getElementById('inpSubtitleEN').value.trim() : '';
+
+    const langs = [];
+    if (onlyLang === 'es') {
+        if (!textES) { alert("El campo de español está vacío."); return; }
+        langs.push('es');
+    } else if (onlyLang === 'en') {
+        if (!textEN) { alert("El campo de inglés está vacío."); return; }
+        langs.push('en');
+    } else {
+        if (textES) langs.push('es');
+        if (textEN) langs.push('en');
+        if (langs.length === 0) { alert("Ambos campos de locución están vacíos."); return; }
+    }
+
+    const dupES = [], dupEN = [];
+    (function searchDuplicates(nodes) {
         for (const node of nodes) {
-            if (node.ESdescription && node.ESdescription.trim() === text && node.id !== selectedNode.id) {
-                duplicateIds.push(node.id);
-            }
+            if (node.id === selectedNode.id) { if (node.children) searchDuplicates(node.children); continue; }
+            if (langs.includes('es') && node.ESdescription?.trim() === textES) dupES.push(node.id);
+            if (langs.includes('en') && node.ENdescription?.trim() === textEN) dupEN.push(node.id);
             if (node.children) searchDuplicates(node.children);
         }
-    }
-    searchDuplicates(treeData.children || []);
+    })(treeData.children || []);
 
-    let msg = `Se va a volver a locutar este paso: <b>"${text}"</b>.<br>Esto borrará y reemplazará el audio existente.`;
-    
-    if (duplicateIds.length > 0) {
-        const idsList = duplicateIds.map(id => id.replace('paso', '')).join(', ');
-        msg += `<br><br><span style="color:#ef4444; font-weight:bold;">⚠️ ¡ATENCIÓN!</span> Este texto también se usa en los pasos: <br><b>[${idsList}]</b>.<br><br>Todos ellos serán actualizados automáticamente.`;
-    }
+    const providerLabel = provider === 'puter' ? 'Puter AI (Gemini)' : 'ElevenLabs';
+    let msg = `Motor: <b>${providerLabel}</b><br><br>`;
+    if (langs.includes('es')) msg += `ES: <b>"${textES}"</b>${dupES.length ? ` → clona en: [${dupES.map(i=>i.replace('paso','')).join(', ')}]` : ''}<br>`;
+    if (langs.includes('en')) msg += `EN: <b>"${textEN}"</b>${dupEN.length ? ` → clona en: [${dupEN.map(i=>i.replace('paso','')).join(', ')}]` : ''}<br>`;
+    msg += `<br>Se reemplazarán los audios existentes. ¿Continuar?`;
 
-    msg += `<br><br>¿Deseas continuar?`;
-    
-    const confirmed = await window.showConfirm("Locución de ElevenLabs", msg);
+    const title = langs.length === 2 ? 'Generar ES + EN' : `Generar ${langs[0].toUpperCase()}`;
+    const confirmed = await window.showConfirm(title, msg);
     if (!confirmed) return;
 
     const fileName = selectedNode.id.replace('paso', '');
-    const extraFileNames = duplicateIds.map(id => id.replace('paso', ''));
-    
     const statusEl = document.getElementById('tts-status');
-    const btn = document.getElementById('btnRegenerateTTS');
-    
-    statusEl.innerText = "🎙️ Locutando...";
-    statusEl.style.color = "#64748b";
-    btn.disabled = true;
-    btn.style.opacity = "0.5";
+    const results = { ok: [], fail: [] };
 
-    try {
-        const resp = await fetch('http://localhost:3001/tts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                text, 
-                fileName,
-                extraFileNames // Enviamos los IDs extra para que el servidor los clone
-            })
-        });
-        
-        const result = await resp.json();
-        if (result.status === 'success') {
-            statusEl.innerText = "✅ Audio(s) actualizado(s).";
-            statusEl.style.color = "#16a34a";
-            document.getElementById('btnPlayTTS').disabled = false;
-        } else {
-            statusEl.innerText = "❌ Error: " + result.message;
-            statusEl.style.color = "#dc2626";
+    if (provider === 'puter') {
+        const batch = [];
+
+        for (const lang of langs) {
+            const text = lang === 'es' ? textES : textEN;
+            const subtitle = lang === 'es' ? subtitleES : subtitleEN;
+            const hasSub = !!subtitle;
+            statusEl.style.color = "#64748b";
+            statusEl.innerText = `Generando ${lang.toUpperCase()}${hasSub ? ' (título + subtítulo)' : ''} en memoria...`;
+            try {
+                const audioBase64 = hasSub
+                    ? await _generateCombinedAudioBase64(text, subtitle, lang)
+                    : await _puterToBase64(text, lang);
+                const extras = (lang === 'es' ? dupES : dupEN).map(id => id.replace('paso', ''));
+                batch.push({ lang, fileName, audioBase64, extraFileNames: extras });
+            } catch (e) {
+                console.error(`[TTS] Error Puter ${lang.toUpperCase()}:`, e);
+                results.fail.push(`${lang.toUpperCase()}: ${e.message}`);
+            }
+            if (!hasSub && langs.indexOf(lang) < langs.length - 1) {
+                await new Promise(r => setTimeout(r, 400));
+            }
         }
-    } catch (e) {
-        statusEl.innerText = "❌ Error de conexión.";
+
+        if (batch.length > 0) {
+            statusEl.innerText = `Guardando ${batch.length} archivo(s)...`;
+            try {
+                const resp = await fetch('http://localhost:3001/save-audios-batch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ audios: batch })
+                });
+                const result = await resp.json();
+                if (result.status !== 'success') throw new Error(result.message);
+                results.ok.push(...batch.map(b => b.lang.toUpperCase()));
+            } catch (e) {
+                console.error('[TTS] Error al guardar batch:', e);
+                results.fail.push(...batch.map(b => `${b.lang.toUpperCase()}: error al guardar`));
+            }
+        }
+    } else {
+        for (const lang of langs) {
+            const title = lang === 'es' ? textES : textEN;
+            const subtitle = lang === 'es' ? subtitleES : subtitleEN;
+            const text = subtitle ? `${title}. ${subtitle}` : title;
+            const extras = (lang === 'es' ? dupES : dupEN).map(id => id.replace('paso', ''));
+            statusEl.style.color = "#64748b";
+            statusEl.innerText = `Generando ${lang.toUpperCase()} con ElevenLabs${subtitle ? ' (título + subtítulo)' : ''}...`;
+            try {
+                await _generateTTSWithElevenLabs(text, lang, fileName, extras);
+                results.ok.push(lang.toUpperCase());
+            } catch (e) {
+                console.error(`[TTS ElevenLabs ${lang}]`, e);
+                results.fail.push(`${lang.toUpperCase()}: ${e.message}`);
+            }
+        }
+    }
+
+    if (results.fail.length === 0) {
+        statusEl.innerText = `Generado: ${results.ok.join(' + ')}`;
+        statusEl.style.color = "#16a34a";
+    } else if (results.ok.length > 0) {
+        statusEl.innerText = `Parcial: OK ${results.ok.join(', ')} | Error: ${results.fail.join(', ')}`;
+        statusEl.style.color = "#d97706";
+        alert(`Generación parcial:\nOK ${results.ok.join(', ')}\nError ${results.fail.join('\n')}`);
+    } else {
+        statusEl.innerText = results.fail.join(' | ');
         statusEl.style.color = "#dc2626";
-        console.error(e);
-    } finally {
-        btn.disabled = false;
-        btn.style.opacity = "1";
+        alert(`Error al generar:\n${results.fail.join('\n')}`);
     }
 };
 
-window.playCurrentTTS = function() {
-    const path = document.getElementById('inpAudioPath').value;
-    if (!path) return;
-    
-    // Lista de intentos: el path actual (slug) y el fallback (numérico)
-    const slug = path;
-    const numericId = selectedNode.id.replace('paso', '') + '.mp3';
-    const fallbackPath = `audios/${numericId}`;
+async function _generateTTSWithElevenLabs(text, lang, fileName, extraFileNames) {
+    const resp = await fetch('http://localhost:3001/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, lang, fileName, extraFileNames })
+    });
+    const result = await resp.json();
+    if (result.status !== 'success') throw new Error(result.message || 'Error en el servidor.');
+}
 
-    const tryPlay = (urls) => {
-        if (urls.length === 0) {
-            alert("No se encontró el audio para este paso.\nUsa el botón de locutar (🎙️) para generarlo.");
-            return;
-        }
+function _blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+}
 
-        const currentPath = urls.shift();
-        const fullUrl = `../app/${currentPath}?t=${Date.now()}`; 
-        console.log("[Editor] Probando audio:", fullUrl);
-        
-        const audio = new Audio(fullUrl);
-        audio.play().catch(() => {
-            tryPlay(urls);
-        });
+async function _generateCombinedAudioBase64(titleText, subtitleText, lang) {
+    const titleBase64 = await _puterToBase64(titleText, lang);
+    await new Promise(r => setTimeout(r, 400));
+    const subtitleBase64 = await _puterToBase64(subtitleText, lang);
+
+    const decode = async (b64) => {
+        const binary = atob(b64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const buffer = await ctx.decodeAudioData(bytes.buffer.slice(0));
+        ctx.close();
+        return buffer;
     };
 
-    tryPlay([slug, fallbackPath]);
+    const [titleBuf, subtitleBuf] = await Promise.all([decode(titleBase64), decode(subtitleBase64)]);
+    const sampleRate = titleBuf.sampleRate;
+    const numChannels = Math.max(titleBuf.numberOfChannels, subtitleBuf.numberOfChannels);
+    const silenceSamples = sampleRate;
+
+    const offlineCtx = new OfflineAudioContext(
+        numChannels,
+        titleBuf.length + silenceSamples + subtitleBuf.length,
+        sampleRate
+    );
+
+    const addSource = (buf, startSec) => {
+        const src = offlineCtx.createBufferSource();
+        src.buffer = buf;
+        src.connect(offlineCtx.destination);
+        src.start(startSec);
+    };
+    addSource(titleBuf, 0);
+    addSource(subtitleBuf, (titleBuf.length + silenceSamples) / sampleRate);
+
+    const rendered = await offlineCtx.startRendering();
+    return _blobToBase64(_audioBufferToWavBlob(rendered));
+}
+
+function _audioBufferToWavBlob(buffer) {
+    const numCh = buffer.numberOfChannels;
+    const numSamples = buffer.length;
+    const sr = buffer.sampleRate;
+    const bps = 2;
+    const blockAlign = numCh * bps;
+    const dataSize = numSamples * blockAlign;
+    const ab = new ArrayBuffer(44 + dataSize);
+    const v = new DataView(ab);
+    const ws = (off, str) => { for (let i = 0; i < str.length; i++) v.setUint8(off + i, str.charCodeAt(i)); };
+
+    ws(0, 'RIFF'); v.setUint32(4, 36 + dataSize, true);
+    ws(8, 'WAVE'); ws(12, 'fmt ');
+    v.setUint32(16, 16, true);
+    v.setUint16(20, 1, true);
+    v.setUint16(22, numCh, true);
+    v.setUint32(24, sr, true);
+    v.setUint32(28, sr * blockAlign, true);
+    v.setUint16(32, blockAlign, true);
+    v.setUint16(34, 16, true);
+    ws(36, 'data'); v.setUint32(40, dataSize, true);
+
+    let off = 44;
+    for (let i = 0; i < numSamples; i++) {
+        for (let ch = 0; ch < numCh; ch++) {
+            const s = Math.max(-1, Math.min(1, buffer.getChannelData(ch)[i]));
+            v.setInt16(off, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+            off += 2;
+        }
+    }
+    return new Blob([ab], { type: 'audio/wav' });
+}
+
+async function _puterToBase64(text, lang) {
+    if (!window.puter || typeof window.puter.ai?.txt2speech !== 'function') {
+        throw new Error('puter.js no está disponible. Recarga la página.');
+    }
+    let response;
+    try {
+        response = await window.puter.ai.txt2speech(text, {
+            provider: 'openai',
+            model: 'gpt-4o-mini-tts',
+            voice: 'alloy',
+            response_format: 'mp3'
+        });
+    } catch (error) {
+        throw new Error(_formatPuterError(error));
+    }
+    let blob = null;
+    if (response instanceof Blob) {
+        blob = response;
+    } else if (response instanceof HTMLAudioElement) {
+        const r = await fetch(response.src); blob = await r.blob();
+    } else if (response && (response.src || response.url)) {
+        const r = await fetch(response.src || response.url); blob = await r.blob();
+    }
+    if (!blob) throw new Error('Puter AI no devolvió un audio válido.');
+    return _blobToBase64(blob);
+}
+
+function _formatPuterError(error) {
+    if (!error) return 'Puter AI rechazó la solicitud.';
+    if (typeof error === 'string') return error;
+    if (error.message) return error.message;
+    try {
+        return JSON.stringify(error);
+    } catch (_) {
+        return 'Puter AI rechazó la solicitud.';
+    }
+}
+
+window.playCurrentTTS = function(lang = 'es') {
+    if (!selectedNode) return;
+    const numericId = selectedNode.id.replace('paso', '');
+    const audioPath = `audios/${lang}/${numericId}.mp3`;
+    const fullUrl = `../app/${audioPath}?t=${Date.now()}`;
+    console.log("[Editor] Reproduciendo audio:", fullUrl);
+    const audio = new Audio(fullUrl);
+    audio.play().catch(() => {
+        alert(`No se encontró el audio ${lang.toUpperCase()} para este paso.\nUsa "Generar ES + EN" para crearlo.`);
+    });
 };
 
 // --- HELPER: MODAL DE CONFIRMACIÓN CUSTOM ---
@@ -806,6 +971,129 @@ window.smartPasteCamera = async function(idPos, idDir) {
     } catch (err) {
         console.error('Error al acceder al portapapeles:', err);
         alert("No se pudo acceder al portapapeles. Asegúrate de dar permisos.");
+    }
+};
+
+window.generateAllAudio = async function() {
+    if (!rawConfig || !rawConfig.menu) {
+        alert('No hay datos cargados. Primero carga o guarda un JSON.');
+        return;
+    }
+
+    const provider = document.getElementById('selAllTTSProvider')?.value
+                     || localStorage.getItem('tts-provider')
+                     || 'puter';
+    const providerLabel = provider === 'puter' ? 'Puter AI' : 'ElevenLabs';
+    const statusEl = document.getElementById('all-tts-status');
+
+    const allNodes = [];
+    const collect = (nodes) => {
+        for (const n of nodes) {
+            if (n.id && n.id.startsWith('paso')) allNodes.push(n);
+            if (n.children?.length) collect(n.children);
+        }
+    };
+    collect(rawConfig.menu);
+
+    const withText = allNodes.filter(n => n.ESdescription || n.ENdescription);
+    if (withText.length === 0) {
+        alert('No se encontraron pasos con texto de locución.');
+        return;
+    }
+
+    const totalAudios = withText.reduce((acc, n) =>
+        acc + (n.ESdescription ? 1 : 0) + (n.ENdescription ? 1 : 0), 0);
+
+    const confirmed = await window.showConfirm(
+        'Generación Masiva',
+        `Se van a generar <b>${totalAudios} audios</b> para <b>${withText.length} pasos</b> usando <b>${providerLabel}</b>.<br><br>Este proceso puede tardar varios minutos.`
+    );
+    if (!confirmed) return;
+
+    statusEl.style.color = '#64748b';
+    const results = { ok: 0, fail: [] };
+
+    if (provider === 'puter') {
+        const batch = [];
+        let step = 0;
+
+        for (const node of withText) {
+            const fileName = node.id.replace('paso', '');
+            const isEtiqueta = !!(node.etiqueta || node.flecha);
+            const pairs = [
+                { lang: 'es', text: node.ESdescription, subtitle: isEtiqueta ? node.subtitle : '' },
+                { lang: 'en', text: node.ENdescription, subtitle: isEtiqueta ? node.subtitleEN : '' }
+            ].filter(p => p.text);
+
+            for (const { lang, text, subtitle } of pairs) {
+                step++;
+                const hasSub = !!subtitle;
+                statusEl.innerText = `Generando ${lang.toUpperCase()} [${step}/${totalAudios}] ${node.name || node.id}${hasSub ? ' +sub' : ''}...`;
+                try {
+                    const audioBase64 = hasSub
+                        ? await _generateCombinedAudioBase64(text, subtitle, lang)
+                        : await _puterToBase64(text, lang);
+                    batch.push({ lang, fileName, audioBase64, extraFileNames: [] });
+                    results.ok++;
+                } catch (e) {
+                    console.error(`[GenerarTodos] ${lang} ${node.id}:`, e);
+                    results.fail.push(`${lang.toUpperCase()} — ${node.name || node.id}: ${e.message}`);
+                }
+                if (!hasSub && step < totalAudios) await new Promise(r => setTimeout(r, 400));
+            }
+        }
+
+        if (batch.length > 0) {
+            statusEl.innerText = `Guardando ${batch.length} archivos en disco...`;
+            try {
+                const resp = await fetch('http://localhost:3001/save-audios-batch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ audios: batch })
+                });
+                const result = await resp.json();
+                if (result.status !== 'success') throw new Error(result.message);
+                console.log('[GenerarTodos] Guardados:', result.saved);
+            } catch (e) {
+                results.fail.push(`Error al guardar en servidor: ${e.message}`);
+            }
+        }
+    } else {
+        let step = 0;
+        for (const node of withText) {
+            const fileName = node.id.replace('paso', '');
+            const isEtiqueta = !!(node.etiqueta || node.flecha);
+            const pairs = [
+                { lang: 'es', text: node.ESdescription, subtitle: isEtiqueta ? node.subtitle : '' },
+                { lang: 'en', text: node.ENdescription, subtitle: isEtiqueta ? node.subtitleEN : '' }
+            ].filter(p => p.text);
+
+            for (const { lang, text, subtitle } of pairs) {
+                step++;
+                const fullText = subtitle ? `${text}. ${subtitle}` : text;
+                statusEl.innerText = `ElevenLabs ${lang.toUpperCase()} [${step}/${totalAudios}] ${node.name || node.id}${subtitle ? ' +sub' : ''}...`;
+                try {
+                    await _generateTTSWithElevenLabs(fullText, lang, fileName, []);
+                    results.ok++;
+                } catch (e) {
+                    console.error(`[GenerarTodos ElevenLabs] ${lang} ${node.id}:`, e);
+                    results.fail.push(`${lang.toUpperCase()} — ${node.name || node.id}: ${e.message}`);
+                }
+            }
+        }
+    }
+
+    if (results.fail.length === 0) {
+        statusEl.innerText = `${results.ok} audios generados correctamente.`;
+        statusEl.style.color = '#16a34a';
+    } else if (results.ok > 0) {
+        statusEl.innerText = `${results.ok} OK, ${results.fail.length} errores — ver consola.`;
+        statusEl.style.color = '#d97706';
+        console.warn('[GenerarTodos] Errores:', results.fail);
+    } else {
+        statusEl.innerText = `Todos fallaron — ver consola.`;
+        statusEl.style.color = '#dc2626';
+        console.error('[GenerarTodos] Errores:', results.fail);
     }
 };
 

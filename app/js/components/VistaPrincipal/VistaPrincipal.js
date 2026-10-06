@@ -14,6 +14,7 @@ export class VistaPrincipal {
             tieneBotonEquipo:    options.tieneBotonEquipo === true,
             menuItems:           options.menuItems || [],
             lang:                options.lang || 'es',
+            activePasoId:        options.activePasoId || (options.menuItems?.[0]?.id || null),
             assistantVisible:    options.assistantVisible === true
         };
 
@@ -53,8 +54,17 @@ export class VistaPrincipal {
         this.render();
     }
 
+    setActivePaso(id) {
+        this.options.activePasoId = id || null;
+        this.render();
+    }
+
+    clearActivePaso() {
+        this.setActivePaso(null);
+    }
+
     render() {
-        const { menuItems, lang } = this.options;
+        const { menuItems, lang, activePasoId } = this.options;
         const t = this.translations[lang] || this.translations.es;
 
         this.container.innerHTML = `
@@ -91,13 +101,13 @@ export class VistaPrincipal {
 
                 <!-- DESKTOP: Left HUD Controls -->
                 <aside class="fixed left-8 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-4 items-start pointer-events-auto">
-                    ${menuItems.map((item, idx) => this.renderHudButton(item.icon, lang === 'es' ? item.ESdescription : item.ENdescription, item.id, idx === 0)).join('')}
+                    ${menuItems.map((item) => this.renderHudButton(item.icon, lang === 'es' ? item.ESdescription : item.ENdescription, item.id, item.id === activePasoId)).join('')}
                 </aside>
 
                 <!-- MOBILE: Bottom Navigation (Compact) -->
                 <nav class="fixed bottom-0 left-0 right-0 border-t border-outline-variant/30 VistaPrincipal-glass-panel px-1 pb-4 pt-2 z-40 md:hidden pointer-events-auto">
                     <div class="flex justify-around items-center max-w-md mx-auto">
-                        ${menuItems.map((item, idx) => this.renderBottomNavButton(item.icon, lang === 'es' ? (item.ESdescription || '').toUpperCase() : (item.ENdescription || '').toUpperCase(), item.id, idx === 0)).join('')}
+                        ${menuItems.map((item) => this.renderBottomNavButton(item.icon, lang === 'es' ? (item.ESdescription || '').toUpperCase() : (item.ENdescription || '').toUpperCase(), item.id, item.id === activePasoId)).join('')}
                     </div>
                 </nav>
 

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lab Editor Pro | D3 Visual Configurator</title>
     <link rel="stylesheet" href="css/editor.css">
+    <script src="https://js.puter.com/v2/"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         /* Selector de Paleta de Colores */
@@ -201,6 +202,21 @@
                                     </div>
                                     <div id="list-epp" class="anim-rows-container"></div>
                                 </div>
+
+                                <!-- SECCIÓN GENERACIÓN MASIVA DE AUDIO -->
+                                <div style="margin-top:15px; padding: 12px 15px; background: #eff6ff; border-radius: 4px; border: 1px solid #bfdbfe;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                        <label style="color:#1e40af; font-weight: bold; margin:0;">5. Generar Todos los Audios</label>
+                                        <select id="selAllTTSProvider" class="mini-select" style="border-color: #3b82f6; color: #1d4ed8;">
+                                            <option value="puter">Puter AI</option>
+                                            <option value="elevenlabs">ElevenLabs</option>
+                                        </select>
+                                    </div>
+                                    <div id="all-tts-status" style="font-size: 0.78em; color: #64748b; min-height: 1.1em; margin-bottom: 8px;"></div>
+                                    <button type="button" onclick="generateAllAudio()" style="width:100%; padding: 9px 0; background: #1d4ed8; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; letter-spacing: 0.03em; transition: background 0.15s;" onmouseover="this.style.background='#1e3a8a'" onmouseout="this.style.background='#1d4ed8'">
+                                        Generar TODOS los Audios (ES + EN)
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -209,13 +225,35 @@
                     <div id="step-fields">
                         <h4>Propiedades del Paso / Componente</h4>
                         <div class="form-grid">
-                            <div class="form-group full-width"> 
-                                <label>Nombre (Locución en Español)</label> 
+                            <!-- SELECTOR DE MOTOR TTS -->
+                            <div class="form-group full-width" style="display: flex; gap: 8px; align-items: center;">
+                                <label style="margin: 0; font-size: 11px; color: #64748b; white-space: nowrap;">Motor de voz:</label>
+                                <select id="selTTSProvider" class="mini-select" title="Motor de voz para generar la locución" style="border-color: #ef4444; color: #ef4444; font-weight: 700;">
+                                    <option value="puter">Puter AI</option>
+                                    <option value="elevenlabs">ElevenLabs</option>
+                                </select>
+                            </div>
+                            <!-- LOCUCIÓN ESPAÑOL -->
+                            <div class="form-group full-width">
+                                <label>Locución en Español</label>
                                 <div style="display: flex; gap: 8px; align-items: center;">
                                     <input type="text" id="inpNombre" placeholder="Ej: Vista Explosión" style="flex: 1;" />
-                                    <button type="button" id="btnPlayTTS" class="btn-audio-action" title="Reproducir audio (Escuchar cómo suena)" onclick="playCurrentTTS()">▶️</button>
-                                    <button type="button" id="btnRegenerateTTS" class="btn-audio-action" title="Regenerar locución (Usar ElevenLabs)" style="background: #ef4444;" onclick="confirmAndRegenerateTTS()">🎙️</button>
+                                    <button type="button" class="btn-audio-action" title="Reproducir audio en español" onclick="playCurrentTTS('es')">▶</button>
+                                    <button type="button" class="btn-audio-action" title="Generar locución en español" style="background:#ef4444;" onclick="confirmAndRegenerateTTS('es')">🎤</button>
                                 </div>
+                            </div>
+                            <!-- LOCUCIÓN INGLÉS -->
+                            <div class="form-group full-width">
+                                <label>Locución en Inglés</label>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <input type="text" id="inpNombreEN" placeholder="Ej: Explosion View" style="flex: 1;" />
+                                    <button type="button" class="btn-audio-action" title="Reproducir audio en inglés" onclick="playCurrentTTS('en')">▶</button>
+                                    <button type="button" class="btn-audio-action" title="Generar locución en inglés" style="background:#ef4444;" onclick="confirmAndRegenerateTTS('en')">🎤</button>
+                                </div>
+                            </div>
+                            <!-- BOTÓN GENERAR AMBOS -->
+                            <div class="form-group full-width" style="display: flex; justify-content: flex-end;">
+                                <button type="button" id="btnRegenerateTTS" class="btn-audio-action" title="Generar locuciones ES + EN a la vez" style="background:#b91c1c; padding: 0 14px; font-size: 11px; font-weight: 700; white-space: nowrap;" onclick="confirmAndRegenerateTTS()">Generar ES + EN</button>
                             </div>
                             <div class="form-group"> <label>Etiqueta / ID</label> <input type="text" id="inpEtiqueta" placeholder="Ej: etiquetaPosObj" /> </div>
                              

@@ -146,6 +146,7 @@ async function init() {
             // Buscamos la configuración del paso en el JSON
             const paso = config.menu.find(m => m.id === id);
             if (paso) {
+                Lab.components.vistaPrincipal.setActivePaso(id);
                 window.dispatchEvent(new CustomEvent('menu:paso', { detail: { paso } }));
                 
                 // Actualizar estado visual de botones (HUD y Mobile Nav)
@@ -258,6 +259,8 @@ async function init() {
         Object.values(Lab.components).forEach(c => {
             if (c && typeof c.setLanguage === 'function') c.setLanguage(lang);
         });
+
+        if (Lab.engine?.audio) Lab.engine.audio.setLanguage(lang);
 
         // 3. Iframe (Verge3D)
         const iframe = document.getElementById('v3d-container');
@@ -468,6 +471,7 @@ function onMenuReset() {
     if (!Lab.v3dReady) return;
     
     Lab.historial = [];
+    Lab.components.vistaPrincipal.clearActivePaso();
     Lab.retroceso?.ocultar();
     
     Lab.engine._restoreOriginalMaterials(); // Restaurar materiales originales

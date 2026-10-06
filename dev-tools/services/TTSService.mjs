@@ -23,17 +23,17 @@ export class TTSService {
      * @param {string} fileName - Name of the file (without extension).
      * @returns {Promise<string>} - Path to the generated file.
      */
-    async generateAudio(text, outputDir, fileName) {
+    async generateAudio(text, outputDir, fileName, lang = 'es') {
         try {
-            console.log(`[TTS] Generating audio for: "${text.substring(0, 30)}..."`);
-            
+            console.log(`[TTS] Generating audio (${lang}) for: "${text.substring(0, 30)}..."`);
+
             const audioResponse = await this.client.textToSpeech.convert(
                 this.defaultVoiceId,
                 {
                     text: text,
                     modelId: this.modelId,
                     outputFormat: 'mp3_44100_128',
-                    language_code: 'es',
+                    language_code: lang,
                 }
             );
 
